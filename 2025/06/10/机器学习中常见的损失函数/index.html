@@ -27,7 +27,7 @@
 <meta property="og:description" content="回归任务损失函数(Regression Losses) 均方误差(MSE, Mean Squared Error) 均方误差是回归任务中最常用的损失函数之一。它计算预测值与实际值之间差异的平方和的平均值。公式如下： $$ \text{MSE} &#x3D; \frac{1}{n} \sum_{i&#x3D;1}^{n} (y_i - \hat{y}_i)^2 $$ 其中，yi 是实际值，ŷi 是预测值，n 是样本数">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-10T06:48:08.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:13:15.279Z">
+<meta property="article:modified_time" content="2025-06-10T07:13:38.692Z">
 <meta property="article:author" content="Luocheng Liang">
 <meta property="article:tag" content="机器学习">
 <meta name="twitter:card" content="summary_large_image">
@@ -294,8 +294,8 @@ class="math inline"><em>ŷ</em><sub><em>i</em></sub></span>
 然而，MSE 对异常值非常敏感，因为异常值的平方会显著增加总损失。</p>
 <h3 id="平均绝对误差mae-mean-absolute-error">平均绝对误差(MAE, Mean
 Absolute Error)</h3>
-<p>平均绝对误差是另一种常用的回归损失函数。它计算预测值与实际值之间差异的绝对值的平均值。公式如下：
-<span class="math display">$$
+<p>平均绝对误差是另一种常用的回归损失函数。它计算预测值与实际值之间差异的绝对值的平均值。公式如下：</p>
+<p><span class="math display">$$
 \text{MAE} = \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y}_i|
 $$</span></p>
 <p>MAE 的优点是对异常值不如 MSE 敏感，因此在数据中存在异常值时，MAE
@@ -303,8 +303,8 @@ $$</span></p>
 在梯度下降时可能导致不稳定的梯度，因为绝对值函数在零点处不可导。</p>
 <h3 id="huber-损失函数">Huber 损失函数</h3>
 <p>Huber 损失函数结合了 MSE 和 MAE 的优点。它在误差小于某个阈值时使用
-MSE，在误差大于该阈值时使用 MAE。公式如下： <span
-class="math display">$$
+MSE，在误差大于该阈值时使用 MAE。公式如下：</p>
+<p><span class="math display">$$
 \text{Huber} =
 \begin{cases}
 \frac{1}{2}(y_i - \hat{y}_i)^2 &amp; \text{if } |y_i - \hat{y}_i| \leq
@@ -312,7 +312,8 @@ class="math display">$$
 \delta \cdot (|y_i - \hat{y}_i| - \frac{1}{2}\delta) &amp;
 \text{otherwise}
 \end{cases}
-$$</span> 其中，<span class="math inline"><em>δ</em></span>
+$$</span></p>
+<p>其中，<span class="math inline"><em>δ</em></span>
 是一个超参数，用于控制 MSE 和 MAE 的切换点。 Huber
 损失函数在处理异常值时表现良好，因为它在误差较大时不会像 MSE
 那样过于敏感。</p>
@@ -495,6 +496,12 @@ $$</span> 其中，<span class="math inline"><em>δ</em></span>
 
 
   
+
+
+  
+  
+
+
 
 
 
@@ -687,6 +694,49 @@ $$</span> 其中，<span class="math inline"><em>δ</em></span>
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
 
   <script  src="/js/local-search.js" ></script>
 
