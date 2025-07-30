@@ -27,7 +27,7 @@
 <meta property="og:description" content="Introduction Generative Adversarial Networks is invented in 2014 by Ian J.Goodfellow, et. al. as a generative models, its idea derives from the game theory where two player compete against one another">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-07-22T06:17:15.000Z">
-<meta property="article:modified_time" content="2025-07-22T08:02:51.107Z">
+<meta property="article:modified_time" content="2025-07-30T02:54:20.744Z">
 <meta property="article:author" content="Luocheng Liang">
 <meta property="article:tag" content="Generative Adversarial Networks">
 <meta property="article:tag" content="Wasserstein GAN">
@@ -365,7 +365,7 @@ V(D,G) = \mathbb{E}_{x \sim p_{data}(x)}[\log D(x)] + \mathbb{E}_{x \sim p_{g}(x
 <ol>
 <li><strong>Continuity</strong>: The Wasserstein distance is continuous with respect to the distributions.</li>
 <li><strong>Metric</strong>: The Wasserstein distance satisfies the triangle inequality and is a true metric.</li>
-<li><strong>Sensitivity to Support</strong>: The Wasserstein distance is sensitive to the support of the distributions, meaning it can capture differences in the distribution even when they do not overlap.</li>
+<li><strong>Independence of Support</strong>: When the supports of two distributions have no overlap, Wasserstein distance still provides a suitable gradient for the generator to update.</li>
 </ol>
 <h2 id="Formulation">Formulation</h2>
 <p>The original Wasserstein is difficult to compute, so WGAN uses a simplified version of the 1-Wasserstein distance, which can be computed using the Kantorovich-Rubinstein duality:</p>
@@ -493,6 +493,12 @@ V(D,G) = \mathbb{E}_{x \sim p_{data}(x)}[\log D(x)] + \mathbb{E}_{x \sim p_{g}(x
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2025/07/30/Differential-Geometry/" title="Differential Geometry">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Differential Geometry</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
