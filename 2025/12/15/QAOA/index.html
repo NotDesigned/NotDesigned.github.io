@@ -27,7 +27,7 @@
 <meta property="og:description" content="Quantum Approximate Optimization Algorithm (QAOA)Problem SettingLet $z&#x3D;z_1 z_2 \ldots z_n$ be a string of $n$ bits, where each bit $z_i \in {0, 1}$. We define a cost function $C(z)$ that assigns a rea">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-12-15T07:42:28.000Z">
-<meta property="article:modified_time" content="2025-12-15T09:38:40.466Z">
+<meta property="article:modified_time" content="2025-12-15T10:06:14.980Z">
 <meta property="article:author" content="Luocheng Liang">
 <meta property="article:tag" content="Quantum Algorithms">
 <meta property="article:tag" content="Machine Learning">
@@ -239,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          602 words
+          779 words
         
       </span>
     
@@ -250,7 +250,7 @@
         
         
         
-          6 mins
+          7 mins
         
       </span>
     
@@ -354,6 +354,33 @@ H_+ - H_- = i (G H_C - H_C G) = i [G, H_C]</script><p>Therefore, we have:</p>
 <script type="math/tex; mode=display">
 \nabla_\theta J(\theta) = \frac{1}{2} \langle \psi(\theta) | (H_+ - H_-) | \psi(\theta) \rangle
 = \frac{1}{2} \left( J(\theta + \frac{\pi}{2}) - J(\theta - \frac{\pi}{2}) \right)</script><p>This means we can compute the gradient of $J(\theta)$ by evaluating $J$ at two shifted parameter values, avoiding the need to compute the score function directly.</p>
+<h2 id="Parameterized-Quantum-Circuit-in-QAOA"><a href="#Parameterized-Quantum-Circuit-in-QAOA" class="headerlink" title="Parameterized Quantum Circuit in QAOA"></a>Parameterized Quantum Circuit in QAOA</h2><p>In QAOA, the parameterized quantum circuit is constructed using two types of unitary operators: the cost unitary $U_C(\gamma)$ and the mixing unitary $U_B(\beta)$. The overall circuit for $p$ layers is given by:</p>
+<script type="math/tex; mode=display">
+U(\boldsymbol{\gamma}, \boldsymbol{\beta}) = U_B(\beta_p) U_C(\gamma_p) \ldots U_B(\beta_1) U_C(\gamma_1)</script><p>The cost unitary is defined as:</p>
+<script type="math/tex; mode=display">
+U_C(\gamma) = e^{-i \gamma H_C}</script><p>and the mixing unitary is defined as:</p>
+<script type="math/tex; mode=display">
+U_B(\beta) = e^{-i \beta H_B}</script><p>where $H<em>B = \sum</em>{i=1}^n X_i$ with $X_i = I^{\otimes (i-1)} \otimes X \otimes I^{\otimes (n-i)}$ being the Pauli-X operator acting on qubit $i$.</p>
+<p>The initial state is typically chosen as the uniform superposition state:</p>
+<script type="math/tex; mode=display">
+\ket{\psi_0} = \frac{1}{\sqrt{2^n}} \sum_{z \in \{0,1\}^n} \ket{z}</script><p>which is the ground state of the mixing Hamiltonian $H_B$.</p>
+<p>Reason (Can be omitted, I don’t know very well about this quantum physics part):</p>
+<blockquote>
+<p>The Adiabatic Theorem suggests that if we vary the parameters $\boldsymbol{\gamma}$ and $\boldsymbol{\beta}$ slowly enough, the system will remain in its ground state, allowing us to approximate the optimal solution to the original combinatorial optimization problem.</p>
+<script type="math/tex; mode=display">
+H(t) = (1 - \frac{t}{T}) H_B + \frac{t}{T} H_C</script><p>The time evolution operator can be approximated using the Trotter-Suzuki decomposition:</p>
+<script type="math/tex; mode=display">
+e^{-i (A+B) t} \approx \left( e^{-i A \frac{t}{n}} e^{-i B \frac{t}{n}} \right)^n</script></blockquote>
+<h2 id="Algorithm-Summary"><a href="#Algorithm-Summary" class="headerlink" title="Algorithm Summary"></a>Algorithm Summary</h2><ol>
+<li>Initialize the quantum state $\ket{\psi_0}$ as the uniform superposition state.</li>
+<li>Choose the number of layers $p$ and initialize the parameters $\boldsymbol{\gamma}, \boldsymbol{\beta}$.</li>
+<li>Construct the parameterized quantum circuit $U(\boldsymbol{\gamma}, \boldsymbol{\beta})$.</li>
+<li>Measure the expectation value $J(\boldsymbol{\gamma}, \boldsymbol{\beta}) = \langle \psi(\boldsymbol{\gamma}, \boldsymbol{\beta}) | H_C | \psi(\boldsymbol{\gamma}, \boldsymbol{\beta}) \rangle$.</li>
+<li>Use the parameter shift rule to compute the gradients $\nabla<em>{\boldsymbol{\gamma}} J$ and $\nabla</em>{\boldsymbol{\beta}} J$.</li>
+<li>Update the parameters $\boldsymbol{\gamma}, \boldsymbol{\beta}$ using a classical optimization algorithm (e.g., gradient descent).</li>
+<li>Repeat steps 3-6 until convergence or a stopping criterion is met.</li>
+<li>Measure the final state to obtain a bit string $z$ that approximates the optimal solution to the original problem.</li>
+</ol>
 
                 
               </div>
