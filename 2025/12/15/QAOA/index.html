@@ -19,23 +19,24 @@
   <meta name="author" content="Luocheng Liang">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Given a probability distribution $p(x)$, we want to find an encoder $q_{\theta}(z|x)$ that approximates the true posterior $p(z|x)$. And we resort to minimize the Kullback-Leibler divergence between t">
+    <meta name="description" content="Quantum Approximate Optimization Algorithm (QAOA)Problem SettingLet $z&#x3D;z_1 z_2 \ldots z_n$ be a string of $n$ bits, where each bit $z_i \in {0, 1}$. We define a cost function $C(z)$ that assigns a rea">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Variational Calculus in VAE">
-<meta property="og:url" content="https://notdesigned.github.io/2025/08/25/Variational-Calculus-in-VAE/index.html">
+<meta property="og:title" content="QAOA">
+<meta property="og:url" content="https://notdesigned.github.io/2025/12/15/QAOA/index.html">
 <meta property="og:site_name" content="Adscn&#39;s Blog">
-<meta property="og:description" content="Given a probability distribution $p(x)$, we want to find an encoder $q_{\theta}(z|x)$ that approximates the true posterior $p(z|x)$. And we resort to minimize the Kullback-Leibler divergence between t">
+<meta property="og:description" content="Quantum Approximate Optimization Algorithm (QAOA)Problem SettingLet $z&#x3D;z_1 z_2 \ldots z_n$ be a string of $n$ bits, where each bit $z_i \in {0, 1}$. We define a cost function $C(z)$ that assigns a rea">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-08-25T06:28:57.000Z">
-<meta property="article:modified_time" content="2025-08-25T07:15:07.571Z">
+<meta property="article:published_time" content="2025-12-15T07:42:28.000Z">
+<meta property="article:modified_time" content="2025-12-15T09:38:40.466Z">
 <meta property="article:author" content="Luocheng Liang">
-<meta property="article:tag" content="Calculus of Variation">
-<meta property="article:tag" content="VAE">
+<meta property="article:tag" content="Quantum Algorithms">
+<meta property="article:tag" content="Machine Learning">
+<meta property="article:tag" content="Optimization">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Variational Calculus in VAE - Adscn&#39;s Blog</title>
+  <title>QAOA - Adscn&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -215,7 +216,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Variational Calculus in VAE"></span>
+            <span id="subtitle" data-typed-text="QAOA"></span>
           
         </div>
 
@@ -226,8 +227,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-08-25 14:28" pubdate>
-          August 25, 2025 pm
+        <time datetime="2025-12-15 15:42" pubdate>
+          December 15, 2025 pm
         </time>
       </span>
     
@@ -238,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          350 words
+          602 words
         
       </span>
     
@@ -249,7 +250,7 @@
         
         
         
-          3 mins
+          6 mins
         
       </span>
     
@@ -286,50 +287,73 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Variational Calculus in VAE</h1>
+            <h1 id="seo-header">QAOA</h1>
             
             
               <div class="markdown-body">
                 
-                <p>Given a probability distribution $p(x)$, we want to find an encoder $q_{\theta}(z|x)$ that approximates the true posterior $p(z|x)$. And we resort to minimize the Kullback-Leibler divergence between them:</p>
+                <h1 id="Quantum-Approximate-Optimization-Algorithm-QAOA"><a href="#Quantum-Approximate-Optimization-Algorithm-QAOA" class="headerlink" title="Quantum Approximate Optimization Algorithm (QAOA)"></a>Quantum Approximate Optimization Algorithm (QAOA)</h1><h2 id="Problem-Setting"><a href="#Problem-Setting" class="headerlink" title="Problem Setting"></a>Problem Setting</h2><p>Let $z=z_1 z_2 \ldots z_n$ be a string of $n$ bits, where each bit $z_i \in {0, 1}$. We define a cost function $C(z)$ that assigns a real value to each bit string. The goal is to find the bit string $z^*$ that maximizes the cost function:</p>
 <script type="math/tex; mode=display">
-\min D_{KL}\left(q_{\theta}(z|x) \| p(z|x)\right)</script><p>And $D<em>{KL}\left(q</em>{\theta}(z|x) | p(z|x)\right)$ can be computed as:</p>
+z^* = \arg\max_{z \in \{0,1\}^n} C(z)=\arg\max_{z \in \{0,1\}^n} \sum_{\alpha} C_{\alpha}(z)</script><p>where $C<em>{\alpha}(z)$ are indicator functions $\mathbf{1}</em>{\text{clause } \alpha \text{ is satisfied by } z}$.</p>
+<h2 id="Hamiltonian-Representation"><a href="#Hamiltonian-Representation" class="headerlink" title="Hamiltonian Representation"></a>Hamiltonian Representation</h2><p>We can represent the cost function as a Hamiltonian operator acting on a quantum state. The Hamiltonian $H_C$ corresponding to the cost function $C(z)$ is given by:</p>
 <script type="math/tex; mode=display">
-\begin{align*}
-D_{KL}\left(q_{\theta}(z|x) \| p(z|x)\right) &= \mathbb{E}_{q_{\theta}(z|x)}\left[\log\frac{q_{\theta}(z|x)}{p(z|x)}\right]\\
-&=\int q_{\theta}(z|x) \log\frac{q_{\theta}(z|x)}{p(z|x)} dz\\
-&= J[q]\\
-s.t. \int q_{\theta}(z|x) dz = 1
-\end{align*}</script><p>We introduce a Lagrange multipler $\lambda$, and we can write the constrained optimization problem as:</p>
+H_C = \sum_{\alpha} H_{C_{\alpha}}</script><p>where each $H<em>{C</em>{\alpha}}$ is a diagonal operator in the computational basis defined as:</p>
 <script type="math/tex; mode=display">
-\begin{align*}
-S[q, \lambda] &= J[q] + \lambda\left(\int q_{\theta}(z|x) dz-1\right)\\
-&= \int \left[ q(z) \log q(z) -q(z) \log p(z|x)\right] dz+ \lambda\left(\int q(z) dz- 1\right)\\
-&= \int \left[ q(z) \log q(z) -q(z) \log p(z|x) + \lambda q(z) \right] dz - \lambda
-
-\end{align*}</script><p>Use the Euler-Lagrange Equation w.r.t. $q$</p>
+H_{C_{\alpha}} \ket{z}= C_{\alpha}(z) \ket{z}</script><p>Each $H<em>{C</em>{\alpha}}$ is Hermitian, so is $H_C$ and $H_C \ket{z} = C(z) \ket{z}$.</p>
+<p>We now seek to find the maximum eigenvalue $\lambda^<em>$ of $H_C$ and the corresponding eigenstate $\ket{z^</em>}$.</p>
+<h2 id="What-we-can-learn-from-Score-Based-Model-SBM"><a href="#What-we-can-learn-from-Score-Based-Model-SBM" class="headerlink" title="What we can learn from Score Based Model (SBM)"></a>What we can learn from Score Based Model (SBM)</h2><p>In EBM, we define a probability distribution via the energy function (Hamiltonian):</p>
 <script type="math/tex; mode=display">
-\frac{\partial L}{\partial q} -\frac{d}{dz} \frac{\partial L}{\partial \dot q} = 0</script><p>Reduce to </p>
+p(z) = \frac{\exp(-E(z))}{Z}, Z = \int \exp(-E(z)) dz</script><p>consider a parameterized model $p(z; \theta)$, we can learn the parameters $\theta$ by learning the score function $\nabla_z \log p(z; \theta)$.</p>
 <script type="math/tex; mode=display">
-\frac{\partial L}{\partial q} = 0</script><p>since $L$ is not explicitly dependent on $\dot q$.</p>
-<p>Therefore</p>
+\boxed{
+\mathcal{L}_{\mathrm{SM}}(\theta) = \mathbb{E}_{p_{data}(x)} \left[\mathrm{Tr}(\nabla_x s_{\theta}(x)) + \frac{1}{2} \| s_{\theta}(x) \|_2^2\right]
+}</script><p>where $s_{\theta}(x)= \nabla_x \log p(x; \theta)$ is the score function parameterized by $\theta$.</p>
+<hr>
+<p>In QAOA’s scenario, the energy function is fixed and we want to find the state $\ket{z^*}$ that maximizes the energy.</p>
+<p>Let’s define a quantum state $\ket{\psi(\theta)} = U(\theta) \ket{0}$ parameterized by $\theta$. </p>
+<p>We can measure:</p>
 <script type="math/tex; mode=display">
-\log q(z) + 1 - \log p(z|x) + \lambda  =0</script><p>We can solve the above equations and get</p>
+\langle H_C \rangle_{\theta} = \bra{\psi(\theta)} H_C \ket{\psi(\theta)}</script><p>We want to maximize:</p>
 <script type="math/tex; mode=display">
-q(z) = \exp\left(\log p(z|x) - 1 - \lambda\right) = C \cdot p(z|x)</script><p>And with normalizing constraint, </p>
+J(\theta) = \langle \psi(\theta) | H_C | \psi(\theta) \rangle = \sum_{z \in \{0,1\}^n} P(z|\theta) C(z)</script><p>where $P(z|\theta) = |\langle z | \psi(\theta) \rangle|^2$ is the probability of measuring the state $\ket{z}$ given the parameter $\theta$.</p>
+<p>In the first glance, we try to estimiate the log gradient:</p>
 <script type="math/tex; mode=display">
-\int q(z) dz = 1</script><p>we know that $q(z) = p(z|x)$.</p>
-<p>And the next step is to decompose </p>
+\begin{aligned}
+\nabla_\theta J(\theta) &= \nabla_\theta \sum_{z} P(z|\theta) C(z) \\
+&= \sum_{z} C(z) \nabla_\theta P(z|\theta) \\
+&= \sum_{z} C(z) P(z|\theta) \nabla_\theta \log P(z|\theta) \\
+&= \mathbb{E}_{z \sim P(z|\theta)} \left[ C(z) \nabla_\theta \log P(z|\theta) \right]
+\end{aligned}</script><p>This is similar to the REINFORCE learning gradient method with reward $C(z)$.<br>However, this gradient is not calculable directly on quantum computer since $\log P(z|\theta)$ cannot be computed efficiently. ($2^n$ terms). And it does not use the result of measure $J(\theta)$ directly.</p>
+<p>On the other hand, if we sampling through</p>
 <script type="math/tex; mode=display">
-\begin{align*}
-D_{KL}\left(q_{\theta}(z|x) \| p(z|x)\right) &= \mathbb{E}_{q_{\theta(z|x)}}\left[\log \frac{q_{\theta}(z|x)}{p(z)}\right] + \mathbb{E}_{q_{\theta(z|x)}}\left[\log \frac{p(z)}{p(z|x)}\right] \\
-&= D_{KL}\left(q_{\theta}(z|x) \| p(z)\right) + \mathbb{E}_{q_\theta(z|x)}\left[\log p(x)\right]\\
-&= D_{KL}\left(q_{\theta}(z|x) \| p(z)\right) + \log p(x)
-\end{align*}</script><p>which is equivalent to maximizing the ELBO:</p>
+\lim_{\epsilon \to 0} \frac{J(\theta + \epsilon) - J(\theta)}{\epsilon} = \nabla_\theta J(\theta)</script><p>This suffers from high variance issue. The high variance is due to the high dimensionality of the output space.</p>
+<h2 id="Parameter-Shift-Rule"><a href="#Parameter-Shift-Rule" class="headerlink" title="Parameter Shift Rule"></a>Parameter Shift Rule</h2><p>Remember that in Denoising Score Matching, we can avoid calculating the score function directly by introducing noise and learning to denoise, then the score function can be computed directly. And under Gaussian noise, the score function has a closed form.</p>
+<p>This inspires us to introduce a particular parameterization of $U(\theta)$ in QAOA such that we can compute the gradient of $J(\theta)$ directly.</p>
+<p>For $U(\theta) = e^{-i \frac{\theta}{2} G}$, where $G$ is a Hermitian operator (generator), we have:</p>
 <script type="math/tex; mode=display">
-\mathcal{L}(q) = - D_{KL}\left(q_{\theta}(z|x) \| p(z)\right) =\mathbb {E}_{z\sim q(z|x)}\left [ \log\frac{p(x,z)}{q_{\theta}(z|x)}\right]</script><p>And ELBO can be expressed as:</p>
+\frac{d}{d\theta} U(\theta) = -\frac{i}{2} G U(\theta) = - \frac{i}{2} U(\theta) G</script><p>this uses the property that $G$ commutes with $U(\theta)$. </p>
+<p>Thus,</p>
 <script type="math/tex; mode=display">
-\mathcal{L}(q) = \mathbb{E}_{z\sim q(z|x)} [\log p_{\theta}(x|z)] - D_{KL}(q_{\theta}(z|x) \| p(z))</script><p>And $p_{\theta}(x|z)$ represent the decoder.</p>
+\begin{aligned}
+\nabla_\theta J(\theta) &= \nabla_\theta \langle \psi_0 | U^\dagger(\theta) H_C U(\theta) | \psi_0 \rangle \\
+= & \langle \psi_0 | \left( \frac{d}{d\theta} U^\dagger(\theta) \right) H_C U(\theta) | \psi_0 \rangle + \langle \psi_0 | U^\dagger(\theta) H_C \left( \frac{d}{d\theta} U(\theta) \right) | \psi_0 \rangle \\
+= & \langle \psi_0 | \left( \frac{i}{2} U^\dagger(\theta) G \right) H_C U(\theta) | \psi_0 \rangle + \langle \psi_0 | U^\dagger(\theta) H_C \left( -\frac{i}{2} G U(\theta) \right) | \psi_0 \rangle \\
+= & \frac{i}{2} \langle \psi(\theta) | [G, H_C] | \psi(\theta) \rangle
+\end{aligned}</script><p>where $[G, H_C] = G H_C - H_C G$ is the commutator of $G$ and $H_C$, $\psi(\theta) = U(\theta) \ket{\psi_0}$.</p>
+<p>Now, note that </p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+H_+ &= (e^{-i \frac{\pi}{4} G})^\dagger H_C (e^{-i \frac{\pi}{4} G}) = e^{i \frac{\pi}{4} G} H_C e^{-i \frac{\pi}{4} G}\\
+&= \frac{1}{2} (I + iG) H_C (I - iG) \\
+&= \frac{1}{2} (H_C - i H_C G + i G H_C + G H_C G)\\
+H_- &= (e^{i \frac{\pi}{4} G})^\dagger H_C (e^{i \frac{\pi}{4} G}) = e^{-i \frac{\pi}{4} G} H_C e^{i \frac{\pi}{4} G}\\
+&= \frac{1}{2} (H_C + i H_C G - i G H_C + G H_C G)
+\end{aligned}</script><p>Thus,</p>
+<script type="math/tex; mode=display">
+H_+ - H_- = i (G H_C - H_C G) = i [G, H_C]</script><p>Therefore, we have:</p>
+<script type="math/tex; mode=display">
+\nabla_\theta J(\theta) = \frac{1}{2} \langle \psi(\theta) | (H_+ - H_-) | \psi(\theta) \rangle
+= \frac{1}{2} \left( J(\theta + \frac{\pi}{2}) - J(\theta - \frac{\pi}{2}) \right)</script><p>This means we can compute the gradient of $J(\theta)$ by evaluating $J$ at two shifted parameter values, avoiding the need to compute the score function directly.</p>
 
                 
               </div>
@@ -338,34 +362,15 @@ D_{KL}\left(q_{\theta}(z|x) \| p(z|x)\right) &= \mathbb{E}_{q_{\theta(z|x)}}\lef
             <div>
               <div class="post-metas my-3">
   
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/Machine-Learning/" class="category-chain-item">Machine Learning</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/Calculus-of-Variation/" class="print-no-link">#Calculus of Variation</a>
+        <a href="/tags/Quantum-Algorithms/" class="print-no-link">#Quantum Algorithms</a>
       
-        <a href="/tags/VAE/" class="print-no-link">#VAE</a>
+        <a href="/tags/Machine-Learning/" class="print-no-link">#Machine Learning</a>
+      
+        <a href="/tags/Optimization/" class="print-no-link">#Optimization</a>
       
     </div>
   
@@ -377,8 +382,8 @@ D_{KL}\left(q_{\theta}(z|x) \| p(z|x)\right) &= \mathbb{E}_{q_{\theta(z|x)}}\lef
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Variational Calculus in VAE</div>
-      <div>https://notdesigned.github.io/2025/08/25/Variational-Calculus-in-VAE/</div>
+      <div>QAOA</div>
+      <div>https://notdesigned.github.io/2025/12/15/QAOA/</div>
     </div>
     <div class="license-meta">
       
@@ -390,7 +395,7 @@ D_{KL}\left(q_{\theta}(z|x) \| p(z|x)\right) &= \mathbb{E}_{q_{\theta(z|x)}}\lef
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>August 25, 2025</div>
+          <div>December 15, 2025</div>
         </div>
       
       
@@ -428,18 +433,12 @@ D_{KL}\left(q_{\theta}(z|x) \| p(z|x)\right) &= \mathbb{E}_{q_{\theta(z|x)}}\lef
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/09/18/Flow-matching-Score-based-Generative-Model-Schrodinger-Bridge-and-Optimal-Transport/" title="Flow matching, Score-based Generative Model, Schrödinger Bridge and Optimal Transport">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Flow matching, Score-based Generative Model, Schrödinger Bridge and Optimal Transport</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/08/21/Renormalization-Group-Flow-as-Optimal-Transport/" title="Renormalization Group Flow as Optimal Transport">
-                        <span class="hidden-mobile">Renormalization Group Flow as Optimal Transport</span>
+                      <a href="/2025/11/03/Reading-notes-of-The-Principle-of-Diffusion-Models/" title="Reading notes of The Principle of Diffusion Models">
+                        <span class="hidden-mobile">Reading notes of The Principle of Diffusion Models</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -462,7 +461,7 @@ D_{KL}\left(q_{\theta}(z|x) \| p(z|x)\right) &= \mathbb{E}_{q_{\theta(z|x)}}\lef
         var options = Object.assign(
           {"clientID":"Ov23lisUTr0Y3YpBngo1","clientSecret":"4068f2efc1d2d6015f3c8089a4e0ad4c1aeb8ed2","repo":"gitalkcomment","owner":"NotDesigned","admin":["NotDesigned"],"language":"en","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://autumn-recipe-17e3.theadscn.workers.dev/https://github.com/login/oauth/access_token"},
           {
-            id: '982dac9842af8214462a2588e5548b93'
+            id: '3d5d27e631bf634383862042e871c029'
           }
         )
         var gitalk = new Gitalk(options);
