@@ -1,0 +1,1021 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Luocheng Liang">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Basic Concepts Topology Space A topology space is a set \(X\) with a collection of open sets \(\mathcal{T}\) that satisfy the following properties: 1. \(\emptyset \in \mathcal{T}\) and \(X \in \mathca">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Topology">
+<meta property="og:url" content="https://notdesigned.github.io/2025/07/30/Topology/index.html">
+<meta property="og:site_name" content="Adscn&#39;s Blog">
+<meta property="og:description" content="Basic Concepts Topology Space A topology space is a set \(X\) with a collection of open sets \(\mathcal{T}\) that satisfy the following properties: 1. \(\emptyset \in \mathcal{T}\) and \(X \in \mathca">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-07-30T11:12:53.000Z">
+<meta property="article:modified_time" content="2026-02-26T12:57:24.807Z">
+<meta property="article:author" content="Luocheng Liang">
+<meta property="article:tag" content="Topology">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Topology - Adscn&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"notdesigned.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Adscn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Blog</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Topology"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-30 11:12" pubdate>
+          July 30, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          781 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          7 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Topology</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="basic-concepts">Basic Concepts</h2>
+<h3 id="topology-space">Topology Space</h3>
+<p>A topology space is a set <span class="math inline">\(X\)</span> with
+a collection of open sets <span
+class="math inline">\(\mathcal{T}\)</span> that satisfy the following
+properties: 1. <span class="math inline">\(\emptyset \in
+\mathcal{T}\)</span> and <span class="math inline">\(X \in
+\mathcal{T}\)</span>. 2. if <span class="math inline">\(\{U_i\}_{i \in
+I} \subseteq \mathcal{T}\)</span>, then <span
+class="math inline">\(\bigcup_{i \in I} U_i \in \mathcal{T}\)</span>. 3.
+if <span class="math inline">\(U_1, U_2 \in \mathcal{T}\)</span>, then
+<span class="math inline">\(U_1 \cap U_2 \in \mathcal{T}\)</span>.</p>
+<p>A topological space is denoted as <span class="math inline">\((X,
+\mathcal{T})\)</span>.</p>
+<h3 id="basis-and-subbasis-for-a-topology">Basis and subbasis for a
+Topology</h3>
+<p>A basis <span class="math inline">\(\mathcal{B}\)</span> for a
+topology on <span class="math inline">\(X\)</span> is a collection of
+sets such that: 1. For each <span class="math inline">\(x \in
+X\)</span>, there exists a basis element <span class="math inline">\(B
+\in \mathcal{B}\)</span> such that <span class="math inline">\(x \in
+B\)</span>. 2. If <span class="math inline">\(B_1, B_2 \in
+\mathcal{B}\)</span> and <span class="math inline">\(x \in B_1 \cap
+B_2\)</span>, then there exists a basis element <span
+class="math inline">\(B_3 \in \mathcal{B}\)</span> such that <span
+class="math inline">\(x \in B_3 \subseteq B_1 \cap B_2\)</span>.</p>
+<p>A topology generated by a basis <span
+class="math inline">\(\mathcal{B}\)</span> is the collection of all
+unions of elements of <span class="math inline">\(\mathcal{B}\)</span>.
+Formally, <span class="math inline">\(\mathcal{T} = \{ U \subseteq X : U
+= \bigcup_{i \in I} B_i, B_i \in \mathcal{B}, I \text{ is an index set}
+\}\)</span>.</p>
+<p>A subbasis for a topology on <span class="math inline">\(X\)</span>
+is a collection of sets <span class="math inline">\(\mathcal{S}\)</span>
+such that the collection of finite intersections of elements of <span
+class="math inline">\(\mathcal{S}\)</span> forms a basis for a topology
+on <span class="math inline">\(X\)</span>. Formally, a subbasis <span
+class="math inline">\(\mathcal{S}\)</span> satisfies: 1. For each <span
+class="math inline">\(x \in X\)</span>, there exists a subbasis element
+<span class="math inline">\(S \in \mathcal{S}\)</span> such that <span
+class="math inline">\(x \in S\)</span>. 2. The collection of finite
+intersections of elements of <span
+class="math inline">\(\mathcal{S}\)</span> generates a basis for the
+topology on <span class="math inline">\(X\)</span>.</p>
+<p>A topology generated by a subbasis <span
+class="math inline">\(\mathcal{S}\)</span> is denoted as <span
+class="math inline">\(\mathcal{T} = \{ U \subseteq X : U = \bigcup_{i
+\in I} \bigcap_{j=1}^{n_i} S_{ij}, S_{ij} \in \mathcal{S}, n_i \text{ is
+finite}, I \text{ is an index set} \}\)</span>.</p>
+<h3 id="countability-compactness-and-separation-axioms">Countability,
+Compactness and Separation Axioms</h3>
+<p>A topological space is <strong>first countable</strong> if every
+point has a countable local base, meaning for each point <span
+class="math inline">\(x \in X\)</span>, there exists a countable
+collection of open sets <span
+class="math inline">\(\{U_n\}_{n=1}^{\infty}\)</span> such that for any
+open set <span class="math inline">\(U\)</span> containing <span
+class="math inline">\(x\)</span>, there exists some <span
+class="math inline">\(n\)</span> such that <span
+class="math inline">\(U_n \subseteq U\)</span>.</p>
+<p>A topological space is <strong>second countable</strong> if it has a
+countable base, meaning there exists a countable collection of open sets
+<span class="math inline">\(\mathcal{B}\)</span> such that every open
+set in the topology can be expressed as a union of sets from <span
+class="math inline">\(\mathcal{B}\)</span>.</p>
+<p>A topological space is <strong>compact</strong> if every open cover
+has a finite subcover, meaning for any collection of open sets <span
+class="math inline">\(\{U_i\}_{i \in I}\)</span> such that <span
+class="math inline">\(X = \bigcup_{i \in I} U_i\)</span>, there exists a
+finite subset <span class="math inline">\(J \subseteq I\)</span> such
+that <span class="math inline">\(X = \bigcup_{j \in J} U_j\)</span>.</p>
+<p>A topological space is <span class="math inline">\(T_0\)</span>
+(Kolmogorov) if for any two distinct points <span
+class="math inline">\(x, y \in X\)</span>, there exists an open set
+containing one of the points but not the other. Intuitively, this means
+that a pair of point can be one-sidely distinguished by open sets for
+one of them.</p>
+<p>A topological space is <span class="math inline">\(T_1\)</span>
+(Frechet) if for any two distinct points <span class="math inline">\(x,
+y \in X\)</span>, there exist open sets <span
+class="math inline">\(U_x\)</span> and <span
+class="math inline">\(U_y\)</span> such that <span
+class="math inline">\(x \in U_x\)</span> and <span
+class="math inline">\(y \notin U_x\)</span>, and <span
+class="math inline">\(y \in U_y\)</span> and <span
+class="math inline">\(x \notin U_y\)</span>. Intuitively, this means
+that points can be one-sidely separated by open sets for both of
+them.</p>
+<p>A topological space is <span class="math inline">\(T_2\)</span>
+(Hausdorff) if for any two distinct points <span
+class="math inline">\(x, y \in X\)</span>, there exist disjoint open
+sets <span class="math inline">\(U_x\)</span> and <span
+class="math inline">\(U_y\)</span> such that <span
+class="math inline">\(x \in U_x\)</span> and <span
+class="math inline">\(y \in U_y\)</span>. This means that points can be
+separated by disjoint open sets.</p>
+<p>A topological space is <strong>regular</strong> if it is <span
+class="math inline">\(T_1\)</span> and for every point <span
+class="math inline">\(x\)</span> and closed set <span
+class="math inline">\(F\)</span> not containing <span
+class="math inline">\(x\)</span>, there exist disjoint open sets <span
+class="math inline">\(U\)</span> and <span
+class="math inline">\(V\)</span> such that <span class="math inline">\(x
+\in U\)</span> and <span class="math inline">\(F \subseteq V\)</span>.
+This means that points can be separated from closed sets by disjoint
+open sets.</p>
+<p>A topological space is <strong>normal</strong> if for any two
+disjoint closed sets <span class="math inline">\(A\)</span> and <span
+class="math inline">\(B\)</span>, there exist disjoint open sets <span
+class="math inline">\(U\)</span> and <span
+class="math inline">\(V\)</span> such that <span class="math inline">\(A
+\subseteq U\)</span> and <span class="math inline">\(B \subseteq
+V\)</span>. This means that closed sets can be separated by disjoint
+open sets.</p>
+<p>A topological space is <span class="math inline">\(T_3\)</span>
+(regular Hausdorff) if it is both regular and Hausdorff. This means that
+points can be separated from closed sets by disjoint open sets, and
+distinct points can be separated by disjoint open sets. <span
+class="math inline">\(T_3\)</span> spaces are also normal.</p>
+<p>Important properties of these separation axioms include: - <span
+class="math inline">\(T_0 \subseteq T_1 \subseteq T_2 \subseteq
+T_3\)</span>. - A single point set is closed in a <span
+class="math inline">\(T_1\)</span> space. - A <span
+class="math inline">\(T_2\)</span> space is normal if it is also regular
+since a point is closed in a <span class="math inline">\(T_2\)</span>
+space.</p>
+<h3 id="functions-and-homeomorphisms">Functions and Homeomorphisms</h3>
+<p>A function <span class="math inline">\(f: X \to Y\)</span> between
+two topological spaces <span class="math inline">\((X,
+\mathcal{T}_X)\)</span> and <span class="math inline">\((Y,
+\mathcal{T}_Y)\)</span> is <strong>open</strong> if for every open set
+<span class="math inline">\(U \in \mathcal{T}_X\)</span>, the image
+<span class="math inline">\(f(U)\)</span> is open in <span
+class="math inline">\(\mathcal{T}_Y\)</span>. In other words, <span
+class="math display">\[ f(U) \in \mathcal{T}_Y \text{ for all } U \in
+\mathcal{T}_X.\]</span></p>
+<p>A function <span class="math inline">\(f: X \to Y\)</span> is
+<strong>closed</strong> if for every closed set <span
+class="math inline">\(C \in \mathcal{T}_X\)</span>, the image <span
+class="math inline">\(f(C)\)</span> is closed in <span
+class="math inline">\(\mathcal{T}_Y\)</span>. In other words, <span
+class="math display">\[ f(C) \in \mathcal{T}_Y \text{ for all } C \in
+\mathcal{T}_X.\]</span></p>
+<p>A function <span class="math inline">\(f: (X, \mathcal{T}_X) \to (Y,
+\mathcal{T}_Y)\)</span> between topological spaces is
+<strong>continuous</strong> if for every open set <span
+class="math inline">\(V \in \mathcal{T}_Y\)</span>, the preimage <span
+class="math inline">\(f^{-1}(V)\)</span> is open in <span
+class="math inline">\(\mathcal{T}_X\)</span>. In other words, <span
+class="math display">\[ f^{-1}(V) \in \mathcal{T}_X \text{ for all } V
+\in \mathcal{T}_Y.\]</span></p>
+<p>A function <span class="math inline">\(f: (X, \mathcal{T}_X) \to (Y,
+\mathcal{T}_Y)\)</span> is a <strong>homeomorphism</strong> if it is a
+continuous bijection and its inverse <span class="math inline">\(f^{-1}:
+(Y, \mathcal{T}_Y) \to (X, \mathcal{T}_X)\)</span> is also continuous.
+In other words, both <span class="math inline">\(f\)</span> and <span
+class="math inline">\(f^{-1}\)</span> are continuous functions.</p>
+<p>A homeomorphism establishes a topological equivalence between the two
+spaces, meaning they have the same topological properties.</p>
+<h3 id="connectedness-and-path-connectedness">Connectedness and Path
+Connectedness</h3>
+<p>A topological space is <strong>connected</strong> if it cannot be
+expressed as the union of two disjoint non-empty open sets. In other
+words, there are no two open sets <span class="math inline">\(U\)</span>
+and <span class="math inline">\(V\)</span> such that <span
+class="math inline">\(X = U \cup V\)</span>, <span
+class="math inline">\(U \cap V = \emptyset\)</span>, and both <span
+class="math inline">\(U\)</span> and <span
+class="math inline">\(V\)</span> are non-empty.</p>
+<p>A topological space is <strong>path connected</strong> if for any two
+points <span class="math inline">\(x, y \in X\)</span>, there exists a
+continuous function (path) <span class="math inline">\(f: [0, 1] \to
+X\)</span> such that <span class="math inline">\(f(0) = x\)</span> and
+<span class="math inline">\(f(1) = y\)</span>. This means that there is
+a continuous path connecting any two points in the space.</p>
+<p>A topological space is <strong>locally path connected</strong> if
+every point has a neighborhood base consisting of path connected sets.
+This means that for each point <span class="math inline">\(x \in
+X\)</span>, there exists a collection of open sets <span
+class="math inline">\(\{U_n\}_{n=1}^{\infty}\)</span> such that for each
+<span class="math inline">\(n\)</span>, <span
+class="math inline">\(U_n\)</span> is path connected and contains <span
+class="math inline">\(x\)</span>, and for any open set <span
+class="math inline">\(U\)</span> containing <span
+class="math inline">\(x\)</span>, there exists some <span
+class="math inline">\(n\)</span> such that <span
+class="math inline">\(U_n \subseteq U\)</span>.</p>
+<p>A topological space is <strong>locally connected</strong> if every
+point has a neighborhood base consisting of connected sets. This means
+that for each point <span class="math inline">\(x \in X\)</span>, there
+exists a collection of open sets <span
+class="math inline">\(\{U_n\}_{n=1}^{\infty}\)</span> such that for each
+<span class="math inline">\(n\)</span>, <span
+class="math inline">\(U_n\)</span> is connected and contains <span
+class="math inline">\(x\)</span>, and for any open set <span
+class="math inline">\(U\)</span> containing <span
+class="math inline">\(x\)</span>, there exists some <span
+class="math inline">\(n\)</span> such that <span
+class="math inline">\(U_n \subseteq U\)</span>.</p>
+<h3 id="common-topologies">Common Topologies</h3>
+<p>Fineness and coarseness of topologies are important concepts in
+topology. A topology <span class="math inline">\(\mathcal{T}_1\)</span>
+is finer than another topology <span
+class="math inline">\(\mathcal{T}_2\)</span> on the same set <span
+class="math inline">\(X\)</span> if every open set in <span
+class="math inline">\(\mathcal{T}_2\)</span> is also an open set in
+<span class="math inline">\(\mathcal{T}_1\)</span>. In other words,
+<span class="math inline">\(\mathcal{T}_1 \supseteq
+\mathcal{T}_2\)</span>. Conversely, <span
+class="math inline">\(\mathcal{T}_2\)</span> is coarser than <span
+class="math inline">\(\mathcal{T}_1\)</span> if <span
+class="math inline">\(\mathcal{T}_1\)</span> is finer than <span
+class="math inline">\(\mathcal{T}_2\)</span>.</p>
+<p>The <strong>discrete topology</strong> on a set <span
+class="math inline">\(X\)</span> is the finest topology, where every
+subset of <span class="math inline">\(X\)</span> is open. Formally,
+<span class="math inline">\(\mathcal{T}_{\text{discrete}} =
+\mathcal{P}(X)\)</span>, the power set of <span
+class="math inline">\(X\)</span>.</p>
+<p>The <strong>indiscrete topology</strong> (or trivial topology) on a
+set <span class="math inline">\(X\)</span> is the coarsest topology,
+where only the empty set and the entire set <span
+class="math inline">\(X\)</span> are open. Formally, <span
+class="math inline">\(\mathcal{T}_{\text{indiscrete}} = \{\emptyset,
+X\}\)</span>.</p>
+<p>The <strong>quotient topology</strong> on a set <span
+class="math inline">\(X\)</span> with an equivalence relation <span
+class="math inline">\(\sim\)</span> is defined as follows: 1. The
+quotient set is <span class="math inline">\(X / \sim = \{ [x] : x \in X
+\}\)</span>, where <span class="math inline">\([x]\)</span> is the
+equivalence class of <span class="math inline">\(x\)</span>. 2. A subset
+<span class="math inline">\(U \subseteq X / \sim\)</span> is open in the
+quotient topology if and only if its preimage under the natural
+projection map <span class="math inline">\(\pi: X \to X / \sim\)</span>
+is open in <span class="math inline">\(X\)</span>. That is, <span
+class="math inline">\(U\)</span> is open if <span
+class="math inline">\(\pi^{-1}(U)\)</span> is open in <span
+class="math inline">\(X\)</span>.</p>
+<p>In other words, the quotient topology is the coarsest topology on
+<span class="math inline">\(X / \sim\)</span> such that the natural
+projection map <span class="math inline">\(\pi\)</span> is
+continuous.</p>
+<p>The <strong>product topology</strong> on a product of topological
+spaces <span class="math inline">\(\{X_i\}_{i \in I}\)</span> is defined
+as follows: 1. The product space is <span class="math inline">\(X =
+\prod_{i \in I} X_i\)</span>. 2. A subset <span class="math inline">\(U
+\subseteq X\)</span> is open in the product topology if it can be
+expressed as a union of sets of the form <span
+class="math inline">\(\prod_{i \in I} U_i\)</span>, where <span
+class="math inline">\(U_i\)</span> is open in <span
+class="math inline">\(X_i\)</span> for each <span
+class="math inline">\(i \in I\)</span>, and <span
+class="math inline">\(U_i = X_i\)</span> for all but finitely many <span
+class="math inline">\(i\)</span>. In other words, the product topology
+is generated by the basis consisting of all products of open sets, where
+only finitely many factors are not the entire space.</p>
+<p>The <strong>box topology</strong> on a product of topological spaces
+<span class="math inline">\(\{X_i\}_{i \in I}\)</span> is defined
+similarly to the product topology, but without the restriction that only
+finitely many factors can be different from the entire space: 1. The box
+space is <span class="math inline">\(X = \prod_{i \in I} X_i\)</span>.
+2. A subset <span class="math inline">\(U \subseteq X\)</span> is open
+in the box topology if it can be expressed as a union of sets of the
+form <span class="math inline">\(\prod_{i \in I} U_i\)</span>, where
+<span class="math inline">\(U_i\)</span> is open in <span
+class="math inline">\(X_i\)</span> for each <span
+class="math inline">\(i \in I\)</span>. In other words, the box topology
+is generated by the basis consisting of all products of open sets, where
+each factor can be any open set in the corresponding space.</p>
+<p>The <strong>subspace topology</strong> on a subset <span
+class="math inline">\(Y \subseteq X\)</span> of a topological space
+<span class="math inline">\((X, \mathcal{T})\)</span> is defined as
+follows: 1. The subspace is <span class="math inline">\(Y\)</span>. 2. A
+subset <span class="math inline">\(U \subseteq Y\)</span> is open in the
+subspace topology if it can be expressed as <span
+class="math inline">\(U = Y \cap V\)</span> for some open set <span
+class="math inline">\(V \in X\)</span>. In other words, <span
+class="math inline">\(U\)</span> is open in the subspace topology if it
+is the intersection of <span class="math inline">\(Y\)</span> with an
+open set in <span class="math inline">\(X\)</span>.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Mathematics/" class="category-chain-item">Mathematics</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Topology/" class="print-no-link">#Topology</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Topology</div>
+      <div>https://notdesigned.github.io/2025/07/30/Topology/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Luocheng Liang</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>July 30, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - Share-alike">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/08/04/Differential-Manifold/" title="Differential Manifold">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Differential Manifold</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/07/30/Differential-Geometry/" title="Differential Geometry">
+                        <span class="hidden-mobile">Differential Geometry</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"Ov23lisUTr0Y3YpBngo1","clientSecret":"4068f2efc1d2d6015f3c8089a4e0ad4c1aeb8ed2","repo":"gitalkcomment","owner":"NotDesigned","admin":["NotDesigned"],"language":"en","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://autumn-recipe-17e3.theadscn.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'e0184e742c80597258de76b78b6df76c'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

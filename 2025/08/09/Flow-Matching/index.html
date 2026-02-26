@@ -1,0 +1,1712 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Luocheng Liang">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Reference Flow Matching For Generative Modeling Continuous Normalizing Flows Flow Straight and Fast Preliminaries The objective of generative modeling is to learn the underlying distribution \(p_{data">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flow Matching">
+<meta property="og:url" content="https://notdesigned.github.io/2025/08/09/Flow-Matching/index.html">
+<meta property="og:site_name" content="Adscn&#39;s Blog">
+<meta property="og:description" content="Reference Flow Matching For Generative Modeling Continuous Normalizing Flows Flow Straight and Fast Preliminaries The objective of generative modeling is to learn the underlying distribution \(p_{data">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-08-09T13:49:15.000Z">
+<meta property="article:modified_time" content="2026-02-26T12:57:24.804Z">
+<meta property="article:author" content="Luocheng Liang">
+<meta property="article:tag" content="Flow Matching">
+<meta property="article:tag" content="Generative Models">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Flow Matching - Adscn&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"notdesigned.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Adscn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Blog</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Flow Matching"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-09 13:49" pubdate>
+          August 9, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.3k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          28 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Flow Matching</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="reference">Reference</h2>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2210.02747">Flow Matching For
+Generative Modeling</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://voletiv.github.io/docs/presentations/20200901_Mila_CNF_Vikram_Voleti.pdf">Continuous
+Normalizing Flows</a></p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2209.03003">Flow Straight and
+Fast</a></p>
+<h2 id="preliminaries">Preliminaries</h2>
+<p>The objective of generative modeling is to learn the underlying
+distribution <span class="math inline">\(p_{data}(x)\)</span> of the
+training data <span class="math inline">\(x\)</span>. This is typically
+achieved by training a generative model <span
+class="math inline">\(p_{model}(x)\)</span> to approximate <span
+class="math inline">\(p_{data}(x)\)</span>, allowing for the generation
+of new samples from the learned distribution.</p>
+<p>Let <span class="math inline">\(X\)</span> be a complete and
+separable metric space such as <span class="math inline">\(\Omega
+\subseteq \mathbb R^n\)</span>. Then, the space of probability measures
+<span class="math inline">\(\mathcal{P}(X)\)</span> is defined as the
+set of all Borel probability measures on <span
+class="math inline">\(X\)</span>.</p>
+<p>Generative models usually aims to learn a mapping from a simple
+distribution (e.g., Gaussian) to the complex data distribution <span
+class="math inline">\(p_{data}(x)\)</span> by transforming samples from
+the simple distribution into samples from the data distribution.</p>
+<h3 id="topology-on-mathcal-px">Topology on <span
+class="math inline">\(\mathcal P(X)\)</span></h3>
+<h4 id="weak-topology">Weak Topology</h4>
+<p>the <strong>weak topology</strong> on <span
+class="math inline">\(P(X)\)</span> is defined as the coarsest topology
+making all functionals of the form <span class="math display">\[
+\mu \mapsto \int_{X}f\,d\mu
+\]</span> continuous, where <span class="math inline">\(f\in
+C_{b}(X)\)</span> ranges over all the bounded continuous functions on
+<span class="math inline">\(X\)</span>.</p>
+<p><strong>Convergence characterization</strong>: A sequence <span
+class="math inline">\((\mu_n)\)</span> converges to <span
+class="math inline">\(\mu\)</span> in the weak topology if and only if
+<span class="math display">\[
+\int_X f \, d\mu_n \to \int_X f \, d\mu
+\]</span> for all bounded continuous functions <span
+class="math inline">\(f: X \to \mathbb{R}\)</span>.</p>
+<p>Actually, let <span class="math inline">\(\mathcal M(X)\)</span> be
+the space of all signed, finite measure on <span
+class="math inline">\(X\)</span>. <span
+class="math inline">\(C_b(X)\)</span> can be seen as the dual space
+induced by the pairing: <span class="math display">\[
+\langle f,\mu \rangle = \int_{X}f\,d\mu
+\]</span></p>
+<p>The relation between a measure on <span
+class="math inline">\(X\)</span> and a linear functional (dual space) on
+<span class="math inline">\(C_b(X)\)</span>: <span
+class="math display">\[
+\begin{align*}
+\Phi:\mathcal{M}(X) &amp;\to C_b(X)^*\\
+\mu&amp;\mapsto [f\mapsto \int_X f\, d\mu = \langle f, \mu \rangle]
+\end{align*}
+\]</span></p>
+<p><span class="math inline">\(\Phi\)</span> is linear and
+injective.</p>
+<p>When <span class="math inline">\(X\)</span> is compact, <span
+class="math inline">\(\Phi\)</span> is bijective by the Riesz
+representation theorem. <span class="math inline">\(\mathcal{M}(X)\cong
+C_b(X)^*\)</span>.</p>
+<p>When <span class="math inline">\(X\)</span> is locally compact and
+separable, <span class="math inline">\(\mathcal{M}(X)\cong
+C_0(X)^*\)</span>, where <span class="math inline">\(C_0(X)\)</span> is
+the compactly support function on <span
+class="math inline">\(X\)</span>, which vanishing on infinity.</p>
+<p>And we have the <strong>weak</strong>* topology on the dual space of
+<span class="math inline">\(C_b(X)\)</span> <span
+class="math display">\[
+L_n\overset{w^*}{\to} L \iff L_n(f)\to L(f),\quad \forall f\in C_b(X)
+\]</span></p>
+<p>So <span class="math inline">\(\Phi\)</span> induces the weak*
+topology on <span class="math inline">\(\mathcal M(X)\)</span> and its
+subset <span class="math inline">\(P(X)\)</span>.</p>
+<h4 id="wasserstein-metric-topology">Wasserstein Metric Topology</h4>
+<p>When <span class="math inline">\(X\)</span> is a compact Riemann
+manifold <span class="math inline">\((M,g)\)</span>, the <span
+class="math inline">\(p\)</span>-Wasserstein distance is a metric on
+<span class="math inline">\(\mathcal{P}(X)\)</span>, and induced a
+topology on <span class="math inline">\(M\)</span>. More precisely, for
+probability distribution with finite <span
+class="math inline">\(p\)</span>-th moment, <span
+class="math inline">\(\mathcal{P}_p(X)\)</span>.</p>
+<p><strong>Kantorovich-Rubinstein</strong> duality states that for any
+<span class="math inline">\(p\)</span>-Wasserstein distance, we
+have:</p>
+<p><span class="math display">\[
+W_1(\mu, \nu) = \sup_{f \in \text{Lip}_1(M)} \left( \int_M f \, d\mu -
+\int_M f \, d\nu \right)
+\]</span> where <span class="math inline">\(W_1(\mu, \nu)\)</span> is
+the <span class="math inline">\(1\)</span>-Wasserstein distance.</p>
+<p>This plays an important role in WGAN.</p>
+<p>So <span class="math inline">\(1\)</span>-Wasserstein convergence is
+equivalent to convergence over all Lipschitz functions <span
+class="math inline">\(f\)</span>, which is stronger than weak
+convergence (all <span class="math inline">\(C_b\)</span>
+functions).</p>
+<p>Generally, we have <span class="math display">\[
+W_n(\mu, \nu)\leq W_m(\mu, \nu),\forall n\leq m
+\]</span></p>
+<p>So <span class="math inline">\(2\)</span>-Wasserstein topology is
+weaker than <span class="math inline">\(1\)</span>-Wasserstein metric
+topology, etc.</p>
+<p>But if we assume all the probability measure has compact support, the
+convergence is equivalent.</p>
+<hr />
+<p>Let <span class="math inline">\(\mu \in \mathcal{P}(X)\)</span> be
+the simple distribution, e.g. <span
+class="math inline">\(\mu=\mathcal{N}(0, I)\)</span>, and let <span
+class="math inline">\(\nu \in \mathcal{P}(X)\)</span> be the data
+distribution. The goal is to learn a mapping <span
+class="math inline">\(f: X \to X\)</span> such that <span
+class="math inline">\(f_{*}\mu = \nu\)</span>, where <span
+class="math inline">\(f_{*}\mu\)</span> is the pushforward measure of
+<span class="math inline">\(\mu\)</span> under the mapping <span
+class="math inline">\(f\)</span> defined by <span
+class="math inline">\(f_{*}\mu(A) := \mu(f^{-1}(A))\)</span>, where
+<span class="math inline">\(A\in \mathcal{B}_X\)</span> is a Borel
+set.</p>
+<p><span class="math display">\[
+\begin{align*}
+f_{*}: \mathcal{P}(X) &amp;\to \mathcal{P}(X) \\
+\mu &amp;\mapsto f_{*}\mu = \nu
+\end{align*}
+\]</span></p>
+<p>But in reality, we only have the samples from the data distribution
+<span class="math inline">\(\nu\)</span>. So the best we can do is to
+approximate <span class="math inline">\(\nu\)</span> by <span
+class="math display">\[
+\nu \approx \frac{1}{N}\sum_{i=1}^{N} \delta_{x_i}
+\]</span> where <span class="math inline">\(x_i\in X\)</span> is the
+sample data and <span class="math inline">\(\delta_{x_i}\)</span> is the
+Dirac measure centered at <span class="math inline">\(x_i\)</span>.</p>
+<p>This can be viewed as a semi-discrete optimal transport problem,
+where we aim to find a mapping <span class="math inline">\(f: X \to
+X\)</span> that pushes forward the simple distribution <span
+class="math inline">\(\mu\)</span> to the empirical distribution <span
+class="math inline">\(\nu\)</span>.</p>
+<h3 id="data-manifold-hypothesis">Data Manifold Hypothesis</h3>
+<p>We view the real distribution as a distribution over <span
+class="math inline">\(\mathcal{M}\)</span>, where <span
+class="math inline">\(\mathcal{M}\)</span> is a manifold embedded in
+<span class="math inline">\(\mathbb{R}^n\)</span> and <span
+class="math inline">\(n\)</span> is the dimensionality of the data. More
+precisely, we assume that the data distribution <span
+class="math inline">\(\nu\)</span> has support on a lower-dimensional
+manifold <span class="math inline">\(\mathcal{M} \subset
+\mathbb{R}^n\)</span>, typically with <span
+class="math inline">\(\dim(\mathcal{M}) \ll n\)</span>. This is the data
+manifold hypothesis, which posits that high-dimensional data often lies
+on or near a lower-dimensional manifold.</p>
+<h3 id="theoretical-framework-vs.-practical-implementation">Theoretical
+Framework vs. Practical Implementation</h3>
+<p><strong>Theoretical assumption</strong>:</p>
+<p>The true data distribution <span
+class="math inline">\(p_{data}(x)\)</span> is absolutely continuous with
+respect to the volume measure on the data manifold <span
+class="math inline">\(\mathcal{M}\)</span>, i.e., there exists a smooth
+density function <span class="math inline">\(\rho_{data}: \mathcal{M}
+\to \mathbb{R}_+\)</span> such that:</p>
+<p><span class="math display">\[
+d\nu = \rho_{data}(x) \, d\text{vol}_\mathcal{M}(x)
+\]</span></p>
+<p><strong>Practical reality</strong>:</p>
+<p>We only observe finite samples <span
+class="math inline">\(\{x_i\}_{i=1}^N\)</span> from the true
+distribution, leading to the empirical distribution:</p>
+<p><span class="math display">\[
+\hat{\nu}_N = \frac{1}{N}\sum_{i=1}^{N} \delta_{x_i}
+\]</span> Note that each Dirac measure <span
+class="math inline">\(\delta_{x_i}\)</span> is not absolutely continuous
+with respect to the volume measure, since <span
+class="math inline">\(\{x_i\}\)</span> has zero volume but <span
+class="math inline">\(\delta_{x_i}(\{x_i\}) = 1\)</span>.</p>
+<p>Regularization assumption: We assume that the empirical distribution
+<span class="math inline">\(\hat{\nu}_N\)</span> converges weakly to the
+true continuous distribution <span class="math inline">\(\nu\)</span> as
+<span class="math inline">\(N \to \infty\)</span>:</p>
+<p><span class="math display">\[
+\hat{\nu}_N \rightharpoonup \nu \quad \text{as } N \to \infty
+\]</span> This weak convergence justifies treating the discrete
+empirical distribution as an approximation to the underlying continuous
+distribution.</p>
+<p>But we can instead use a Gaussian kernel to smooth the empirical
+distribution:</p>
+<p><span class="math display">\[
+\tilde{\nu}_N = \frac{1}{N}\sum_{i=1}^{N} K_\sigma(x - x_i) \delta_{x_i}
+\]</span> where <span class="math inline">\(K_\sigma(x)\)</span> is a
+Gaussian kernel with bandwidth <span
+class="math inline">\(\sigma\)</span>.</p>
+<p>We shall see this is the choice of the flow matching.</p>
+<h2 id="discrete-normalizing-flow">(Discrete) Normalizing Flow</h2>
+<p>We learn a bijective mapping <span class="math inline">\(f:
+\mathbb{R}^n \to \mathbb{R}^n\)</span> such that the pushforward measure
+<span class="math inline">\(f_{*}\mu\)</span> matches the target
+distribution <span class="math inline">\(\nu\)</span>.</p>
+<p>The Normalizing Flow method assumes that <span
+class="math inline">\(f\)</span> can be expressed as a sequence of
+invertible transformations, typically using neural networks, such that
+the Jacobian determinant can be efficiently computed.</p>
+<p><span class="math display">\[
+y \sim \nu, y = f(x), x \sim \mu= \mathcal{N}(0, I)
+\]</span></p>
+<p>$$ <span class="math display">\[\begin{align*}
+f &amp;= f_n \cdots \circ f_1\\
+
+x_1 &amp;= f_1(x) \\
+x_2 &amp;= f_2(x_1) \\
+\vdots \\
+y = x_n &amp;= f_n(x_{n-1})
+\end{align*}\]</span> $$</p>
+<p>And each <span class="math inline">\(f_i\)</span> is a neural network
+parameterized by <span class="math inline">\(\theta_i\)</span>, i.e.,
+<span class="math inline">\(f_i = f_i(x; \theta_i)\)</span>.</p>
+<h4 id="loss-and-training">Loss and Training</h4>
+<p>The objective is maximum likelihood estimation or KL divergence,
+equivalently.</p>
+<p>By the change of variables formula, we have: <span
+class="math display">\[
+p_Y(y) = p_X(f^{-1}(y)) \left| \det \frac{\partial f^{-1}}{\partial y}
+\right|
+\]</span></p>
+<p><span class="math display">\[
+\begin{align*}
+\mathcal L(\theta) &amp;= \frac{1}{N}\sum_{i=1}^N \log p_Y(y_i) \\
+&amp;= \frac{1}{N}\sum_{i=1}^N \log p_X(f^{-1}(y_i)) \left| \det
+\frac{\partial f^{-1}}{\partial y_i} \right|\\
+\end{align*}
+\]</span></p>
+<h2 id="continuous-normalizing-flows">Continuous Normalizing Flows</h2>
+<p>Let <span class="math inline">\(n\to \infty\)</span>, it is
+equivalent to construct a vector field (and corresponding ODE) and take
+the transform process as particle flows.</p>
+<p>Given a time dependent transformation <span class="math display">\[
+\begin{align*}
+g: [0,1] \times \mathbb \Omega &amp;\to \mathbb \Omega\\
+(t,x) &amp;\mapsto g(t,x)
+\end{align*}
+\]</span></p>
+<p>The flow <span class="math inline">\(g\)</span> induces a
+time-dependent one parameter group of diffeomorphisms: <span
+class="math display">\[
+g_t(x) = g(t,x)
+\]</span> And the trajectory of a particle <span
+class="math inline">\(x\)</span> is denoted as <span
+class="math inline">\(\gamma_x(t)\)</span>: <span
+class="math display">\[
+\gamma_x(t) = g(t,x) = g_t(x)
+\]</span> Note that here particle <span class="math inline">\(x\)</span>
+means it was initially at position <span
+class="math inline">\(x\)</span> at time <span
+class="math inline">\(t=0\)</span>.</p>
+<p>We want a gradual transformation of the input distribution to the
+target distribution, i.e. <span class="math display">\[
+g_0 = \text{id}, g_1 = T
+\]</span> And <span class="math inline">\(T\)</span> satisfies <span
+class="math inline">\(T_* \mu = \nu\)</span>.</p>
+<p>Fix a position <span class="math inline">\(y\)</span> and describe
+the speed of the particles at <span class="math inline">\(y\)</span>, we
+can define the velocity field <span
+class="math inline">\(v_t(y)\)</span> as: <span class="math display">\[
+v_t(y) = \frac{\partial}{\partial t} g(t, x)\bigg|_{g(t,x)=y} =
+\frac{\partial g}{\partial t}(t, g_t^{-1}(y))
+\]</span></p>
+<p>And the Eulerian description and Lagrangian description are related
+as follows: Eulerian: <span class="math display">\[
+\begin{cases}
+\frac{d}{dt}g_t(x) = v_t(g_t(x)),\\
+g_0(x)=x.
+\end{cases}
+\]</span> Lagrangian: <span class="math display">\[
+\begin{cases}
+\frac{d}{dt}\gamma_x(t) = v_t(\gamma_x(t)),\\
+\gamma_x(0)=x.
+\end{cases}
+\]</span></p>
+<p>We shall now consider the conservation of mass, i.e., we want to
+ensure that the flow preserves the total mass <span
+class="math inline">\(1\)</span> of the distribution.</p>
+<p>We thus introduce a density function <span
+class="math inline">\(\rho\)</span> induced by the flow <span
+class="math display">\[
+\begin{align*}
+\rho(t,x): [0,1] \times \Omega &amp;\to \mathbb{R}\\
+(t,x) &amp;\mapsto \rho(t,x)
+\end{align*}
+\]</span> And denote <span class="math inline">\(\rho_t(x):\Omega \to
+\mathbb {R}\)</span> as <span
+class="math inline">\(\rho(t,x)\)</span>.</p>
+<p>We require <span class="math display">\[
+\rho_t = (g_t)_*\rho_0
+\]</span> Particularly, <span class="math inline">\(\rho_0 = \mu, \rho_1
+= \nu\)</span>.</p>
+<p>And we assume <span class="math inline">\(v\)</span> is tangent to
+the boundary <span class="math inline">\(\partial \Omega\)</span>, and
+the flow remains inside of <span class="math inline">\(\Omega\)</span>,
+thus <span class="math inline">\(\rho_t \in
+\mathcal{P}(\Omega)\)</span>.</p>
+<p>It must satisfy the continuity equation to make the probability mass
+conserve <span class="math display">\[
+\partial_t \rho_t + \nabla \cdot (v_t \rho_t) = 0
+\]</span></p>
+<h3 id="proof-of-continuity-equation">Proof of continuity equation</h3>
+<hr />
+<p>Let <span class="math inline">\(\phi\in C_b(\Omega)\)</span>, <span
+class="math display">\[
+\begin{align*}
+\int_{\Omega} \partial_t \phi\rho_t\, d\Omega &amp;=\int_{\Omega}
+\partial_t \phi\, d\rho_t\\
+&amp;= \frac{d}{dt} \int_{\Omega} \phi(x) \, d((g_t)_* \rho_0)  \\
+&amp;= \frac{d}{dt} \int_{\Omega} \phi(g_t)\, d\rho_0 \\
+&amp;= \int_{\Omega} \nabla \phi(g_t) \cdot v_t(g_t) \, d\rho_0 \\
+&amp;= \int_{\Omega} \nabla \phi \cdot v_t \, d\rho_t\\
+&amp;= -\int_{\Omega} \phi \left(\nabla\cdot v_t\rho_t \right) d\Omega
+\end{align*}
+\]</span> By the arbitrariness of <span
+class="math inline">\(\phi\)</span>, we get the continuity equation:
+<span class="math display">\[
+\partial_t \rho_t + \nabla \cdot (v_t \rho_t) = 0
+\]</span></p>
+<p>We say the <span class="math inline">\((\rho_t,v_t)\)</span> solve
+the continuity in distributional sense, which is called a weak solution
+or distributional solution.</p>
+<p>From the Lagrangian description, we know the formula: <span
+class="math display">\[
+J_t = \left |\det \frac{\partial g_t}{\partial x} \right | = \left |
+\det  F_t \right|
+\]</span> <span class="math display">\[
+\rho_t(g_t)\cdot J_t = \rho_0
+\]</span> Take differential on both side, <span class="math display">\[
+J_td \rho_t(g_t) + \rho_t(g_t) dJ_t = 0
+\]</span> And <span class="math display">\[
+\frac{d J_t}{dt}=J_t\cdot \operatorname{tr}\left(F_t^{-1}
+\frac{dF_t}{dt}\right)
+\]</span></p>
+<p><span class="math display">\[
+\frac{d F_t}{d t} = \frac{\partial}{\partial t}\frac{\partial
+g_t}{\partial x} = \frac{d}{d x} \frac{\partial g_t}{\partial t} =
+\frac{d}{dx} v_t(g_t) = \nabla v_t(g_t) \cdot F_t
+\]</span> Hence <span class="math display">\[
+\frac{d J_t}{d t}= J_t \cdot \operatorname{tr}\left(\nabla
+v_t(g_t)\right) = J_t \cdot( \nabla \cdot v_t(g_t))
+\]</span></p>
+<p>Take it back, and eliminate <span class="math inline">\(J_t\)</span>
+<span class="math display">\[
+d\rho_t(g_t) + \rho_t(g_t) (\nabla \cdot v_t(g_t)) = 0
+\]</span> And <span class="math inline">\(d\rho_t(g_t) = \frac{\partial
+\rho_t}{\partial t}(g_t) + \nabla \rho_t(g_t) \cdot v_t(g_t)\)</span>.
+<span class="math display">\[
+\frac{\partial \rho_t}{\partial t}(g_t) + \nabla \rho_t(g_t) \cdot
+v_t(g_t) + \rho_t(g_t) (\nabla \cdot v_t(g_t)) = 0
+\]</span> <span class="math display">\[
+\frac{\partial \rho_t}{\partial t}(g_t) + \nabla \cdot (v_t(g_t)
+\rho_t(g_t)) = 0
+\]</span> since <span class="math inline">\(g_t\)</span> is a
+diffeomorphism, we have: <span class="math display">\[
+\frac{\partial \rho_t}{\partial t} + \nabla \cdot (v_t \rho_t) = 0
+\]</span></p>
+<p>Note: If we further assume the incompressibility condition, i.e.
+<span class="math display">\[
+\frac{\partial \rho_t}{\partial t} = 0
+\]</span> then we have <span class="math display">\[
+\nabla \cdot v_t = 0
+\]</span></p>
+<hr />
+<p>So we know <span class="math display">\[
+\frac{\partial \rho_t}{\partial t} (x)= -\nabla \cdot (v_t(x) \cdot
+\rho_t(x))
+\]</span></p>
+<p>Now we focus on a particle is initially at <span
+class="math inline">\(x\)</span>, moving on trajectory <span
+class="math inline">\(x_t=\gamma_x(t)\)</span></p>
+<p><span class="math display">\[
+\begin{align*}
+\frac{d}{dt} \rho_t(\gamma_x(t)) &amp;= \frac{\partial \rho_t}{\partial
+t}(\gamma_x(t)) + \nabla \rho_t(\gamma_x(t)) \cdot \frac{d}{dt}
+\gamma_x(t) \\
+&amp;= \frac{\partial \rho_t}{\partial t}(\gamma_x(t)) + \nabla
+\rho_t(\gamma_x(t)) \cdot v_t(\gamma_x(t)) \\
+&amp;= -\nabla \cdot (v_t\rho_t)(\gamma_x(t)) + \nabla
+\rho_t(\gamma_x(t)) \cdot v_t(\gamma_x(t))\\
+&amp;= -\rho_t(\gamma_x(t))\nabla \cdot v_t(\gamma_x(t))
+\end{align*}
+\]</span></p>
+<p>So <span class="math display">\[
+\frac{d}{dt}\log \rho_t(\gamma_x(t)) = \frac{1}{\rho_t(\gamma_x(t))}
+\frac{d}{dt} \rho_t(\gamma_x(t)) = - \nabla \cdot v_t(\gamma_x(t))
+\]</span> Thus <span class="math display">\[
+\log \rho_{1}(x_1) - \log \rho_{0}(x_0)= -\int_0^1 \nabla \cdot v_t(x_t)
+dt
+\]</span></p>
+<h3 id="loss-and-training-1">Loss and Training</h3>
+<p>We simulate the flow by using a neural network <span
+class="math inline">\(g_\theta\)</span> with parameter <span
+class="math inline">\(\theta\)</span>.</p>
+<p>Similar to the discrete normalizing flow, we use MLE:</p>
+<p><span class="math display">\[
+\begin{align*}
+\mathcal L(\theta)&amp;= -\mathbb{E}_{x_1\sim \nu}\left[\log
+\rho_{1,\theta}(x_1)\right] \\
+&amp;= -\mathbb{E}_{x_1\sim\nu}\left[\log \mu(x_0)-\int_0^1 \nabla \cdot
+v_{t,\theta}(x_t)\right]
+\end{align*}
+\]</span></p>
+<p>Or equivalently, minimize the KL divergence between <span
+class="math inline">\(\rho_{1,\theta}\)</span> and <span
+class="math inline">\(\nu\)</span>.</p>
+<h2 id="flow-matching">Flow Matching</h2>
+<p>Instead of learning <span class="math inline">\(g\)</span>, flow
+matching directly learns the velocity field <span
+class="math inline">\(v_{t,\theta}(x)\)</span>.</p>
+<p>The theoretical objective is: <span class="math display">\[
+\mathcal{L}_{FM}=\mathbb E_{t\sim\mathcal{U}[0,1],x_t\sim \rho_t}
+\|v_{t,\theta}(x_t)-v_t(x_t)\|^2
+\]</span> But this cannot be trained directly since we don’t know <span
+class="math inline">\(v_t\)</span>.</p>
+<h3 id="conditional-flow-matching">Conditional Flow Matching</h3>
+<p>conditioning on <span class="math inline">\(x_1\)</span>, CFM use the
+conditional distribution <span
+class="math inline">\(\rho_t(x_t|x_1)\)</span></p>
+<p>Key theorem:</p>
+<p>Given conditional probability path <span
+class="math inline">\(\rho_t(x_t|x_1)\)</span> satisfying the continuity
+equation with conditional vector field <span
+class="math inline">\(v_t(x_t| x_1)\)</span>.</p>
+<p>Then the marginal vector field <span
+class="math inline">\(v_t\)</span>: <span class="math display">\[
+v_t(x)=\int v_t(x_t|x_1) \frac{\rho_t(x_t|x_1)\nu(x_1)}{\rho_t(x)}
+d{x_1}
+\]</span> satisfy the continuity equation and generate the marginal
+probability path <span class="math inline">\(\rho_t(x_t)\)</span>.</p>
+<p>And one can choose any conditional probability path as long as <span
+class="math display">\[
+\rho_0(x|x_1) = \mu, \rho_1(x|x_1) = \delta(x-x_1)
+\]</span> And the paper use Gaussian kernal as an approximation.</p>
+<p>If the above condition is satisfied, the paper proves that optimizing
+the objective of CFM is equivalent to optimizing the objective of the
+original flow model.</p>
+<p><span class="math display">\[
+\mathcal L_{CFM} =
+\mathbb{E}_{t\sim\mathcal{U}[0,1],x_1\sim\nu,x_t\sim\rho_t(x_t|x_1)}
+\left[\|v_{t,\theta}(x_t|x_1) - v_t(x_t|x_1)\|^2\right]
+\]</span></p>
+<p>And <span class="math inline">\(\nabla_{\theta} \mathcal L_{CFM}=
+\nabla_{\theta} \mathcal L_{FM}\)</span></p>
+<p>And you can also condition on <span
+class="math inline">\(x_0\)</span>.</p>
+<p>or both <span class="math inline">\(x_0\)</span> and <span
+class="math inline">\(x_1\)</span>, the formula <span
+class="math inline">\(\nabla_{\theta} \mathcal L_{CFM}\)</span> is still
+valid if if the coupling <span class="math inline">\(\pi\in
+\Gamma(\mu,\nu)\)</span> is fixed.</p>
+<h2 id="rectified-flow">Rectified Flow</h2>
+<p>In the paper, <strong>rectified flow</strong> optimized the velocity
+field <span class="math inline">\(v_t\)</span> by minimizing the
+following objective:</p>
+<p><span class="math display">\[
+\mathcal{L}_{RF}=\int_0^1 \mathbb{E} \left[\|(X_1-X_0)-v(X_t,t)\|^2
+\right]\, \text{d}t,\, \text{with}\,\, X_t=tX_1+(1-t)X_0
+\]</span> where <span class="math inline">\(X_0\sim \mu, X_1\sim
+\nu\)</span>.</p>
+<p>First, lets translate this into the CFM language.</p>
+<p>Conditioning on <span class="math inline">\(x_0\)</span> and <span
+class="math inline">\(x_1\)</span>, rectified flow defined a
+deterministic path as the interpolation between <span
+class="math inline">\(x_0\)</span> and <span
+class="math inline">\(x_1\)</span>: <span class="math display">\[
+\begin{align*}
+g_t(x|x_0,x_1) &amp;= t x_1 + (1-t)x_0\\
+v_t(x|x_0,x_1) &amp;= \partial_t g_t(x|x_0,x_1) = x_1 - x_0\\
+\rho_t(x|x_0,x_1) &amp;= (g_t(x|x_0,x_1))_* \rho_0(x|x_0,x_1)\\
+&amp;= (g_t(x|x_0,x_1))_* \delta(x - x_0) \\
+&amp;= \delta(g_t^{-1}(x|x_0,x_1) - x_0) \left| \det \frac{\partial
+g_t^{-1}}{\partial x} \right|\\
+&amp;= \delta(\frac{x-tx_1}{1-t} - x_0) \frac{1}{(1-t)^n}\\
+&amp;= \delta\left(\frac{x-tx_1-(1-t)x_0}{1-t}\right)
+\frac{1}{(1-t)^n}\\
+&amp;= \delta\left(x-tx_1-(1-t)x_0\right) (1-t)^{n} \frac{1}{(1-t)^n}\\
+&amp;= \delta\left(x-tx_1-(1-t)x_0\right)\\
+\end{align*}
+\]</span></p>
+<p>And apply the CFM objective: <span class="math display">\[
+\begin{align*}
+\mathcal{L}_{RF} &amp;=
+\mathbb{E}_{t\sim\mathcal{U}[0,1],x_0\sim\mu,x_1\sim\nu,x_t\sim\rho_t(x|x_0,x_1)}
+\left[\|v_{t,\theta}(x_t|x_0,x_1) - v_t(x_t|x_0,x_1)\|^2\right]\\
+&amp;= \int_0^1
+\mathbb{E}_{x_0\sim\mu,x_1\sim\nu,x_t\sim\rho_t(x|x_0,x_1)}
+\left[\|v_{t,\theta}(x_t|x_0,x_1) - (x_1-x_0)\|^2\right]\, \text{d}t\\
+&amp;= \int_0^1 \mathbb{E}_{x_0\sim\mu,x_1\sim\nu} \left[
+v_{t,\theta}(x_t|x_0,x_1) - (x_1-x_0)\right]^2 \, \text{d}t\\
+\end{align*}
+\]</span> And this is exactly the objective of rectified flow.</p>
+<p>Actually, the author of <a
+target="_blank" rel="noopener" href="https://arxiv.org/pdf/2210.02747">Flow Matching For Generative
+Modeling</a> also proposed an similar objective, but they use the name
+“OT-Flow” instead of “rectified flow” (And Gaussian kernal). We shall
+see the reason in the next section.</p>
+<h3 id="relation-to-optimal-transport">Relation to Optimal
+Transport</h3>
+<p>What does the rectified flow and conditional flow matching have to do
+with optimal transport? Let’s recall the method of conditional
+probability path.</p>
+<p>The claim is that to get the vector field <span
+class="math inline">\(v_t\)</span>, we can use the conditional vector
+field <span class="math inline">\(\rho_t(x_t|x_0,x_1)\)</span> and do
+summation over all <span class="math inline">\(x_0\)</span> and <span
+class="math inline">\(x_1\)</span>. Then we shall get the vector field
+<span class="math inline">\(v_t\)</span> that satisfies the continuity
+equation and generates the marginal probability path <span
+class="math inline">\(\rho_t(x_t)\)</span>.</p>
+<p>It is not difficult to see that summing over the conditional vector
+field will yield a valid vector field that satisfies the continuity
+equation and transport the distribution from <span
+class="math inline">\(\mu\)</span> to <span
+class="math inline">\(\nu\)</span>. But what is the property of such
+vector field?</p>
+<p>Let’s think about a principle in traditional physics, the
+<strong>principle of least action</strong>. It states that the path
+taken by a system between two states is the one for which the action is
+stationary (usually minimized).</p>
+<p>In the context of traditional physics, the shortest path between two
+points is a straight line. But in quantum mechanics, the particle is no
+longer deterministic as a point, but rather a wave function that can be
+spread out over a region of space assigning a probability amplitude to
+each point. But the principle of least action still holds, and the path
+taken by the particle is the one that minimizes the action.</p>
+<h3 id="benamou-brenier-theory">Benamou-Brenier Theory</h3>
+<p>The Benamou-Brenier theory states that the optimal transport problem
+can be reformulated as a dynamic problem, where the optimal transport
+plan is the one that minimizes the action functional.</p>
+<p>In every time <span class="math inline">\(t\)</span>, we have a
+distribution <span class="math inline">\(\rho_t\)</span> and a velocity
+field <span class="math inline">\(v_t\)</span>. The kinetic energy is
+given by the integral of the squared velocity field: <span
+class="math display">\[
+E(t) = \int_{\Omega} \frac{1}{2}\|v_t(x)\|^2 \rho_t(x) \, dx
+\]</span></p>
+<p>The action functional is then defined as: <span
+class="math display">\[
+A(\rho, v) = \int_0^1 E(t) \, dt
+= \int_0^1 \int_{\Omega}\frac{1}{2}\|v_t(x)\|^2 \rho_t(x) \, dx \, dt
+\]</span></p>
+<p>And we see the action functional is exactly the total energy of using
+the velocity field <span class="math inline">\(v_t\)</span> to transport
+the distribution <span class="math inline">\(\rho_t\)</span> from <span
+class="math inline">\(\mu\)</span> to <span
+class="math inline">\(\nu\)</span>.</p>
+<p><strong>Problem</strong> (Benamou-Brenier): Given two probability
+measures <span class="math inline">\(\mu\)</span> and <span
+class="math inline">\(\nu\)</span>, find the optimal transport plan that
+minimizes the action functional <span class="math inline">\(A(\rho,
+v)\)</span> subject to some conditions. <span class="math display">\[
+\begin{align*}
+\text{min} \quad &amp; A(\rho, v) \\
+\text{s.t.} \quad &amp;(\rho,v)\in V(\mu,\nu)
+\end{align*}
+\]</span> <strong>Admissible pairs</strong> <span
+class="math inline">\(V(\mu,\nu)\)</span> are pairs <span
+class="math inline">\((\rho, v)\)</span> such that: - <span
+class="math inline">\(\rho_0 = \mu\)</span>, <span
+class="math inline">\(\rho_1 = \nu\)</span>, - <span
+class="math inline">\(\partial_t \rho_t + \nabla \cdot (v_t \rho_t) =
+0\)</span> in distributional sense, - <span
+class="math inline">\(\bigcup_{t\in[0,1]} \text{supp}(\rho_t) \subseteq
+\Omega\)</span>, - <span class="math inline">\(v \in L^2(d\rho_t(x)
+dt)\)</span>, i.e., the velocity field is square integrable with respect
+to the measure <span class="math inline">\(\rho_t\)</span>. - <span
+class="math inline">\(\rho \in C([0,1]; w^*\text{-}P_{ac}(\mathbb
+\Omega))\)</span>, i.e., the probability path is absolutely continuous
+with respect to the weak* topology on the space of probability
+measures.</p>
+<p><strong>Theorem</strong>: (Benamou-Brenier)</p>
+<p>The <span class="math inline">\(2\)</span>-Wasserstein distance
+between two probability measures <span
+class="math inline">\(\mu\)</span> and <span
+class="math inline">\(\nu\)</span> can be expressed as the infimum of
+the action functional over all admissible pairs <span
+class="math inline">\((\rho, v)\)</span> <span class="math display">\[
+W_2^2 (\mu, \nu) = \inf_{(\rho, v) \in V(\mu, \nu)} A(\rho, v)
+\]</span></p>
+<p>This means that the optimal transport plan is the one that minimizes
+the action functional, which is equivalent to minimizing the total
+energy of the velocity field.</p>
+<h4 id="variational-calculus">Variational Calculus</h4>
+<p><span class="math display">\[
+\begin{align*}
+\min A(\rho, v) &amp;= \int_0^1 \int_{\Omega} \frac{1}{2}\|v_t(x)\|^2
+\rho_t(x) \, dx \, dt \\
+\text{s.t.} \quad &amp; \partial_t \rho_t + \nabla \cdot (v_t \rho_t) =
+0 \\
+&amp; \rho_0 = \mu, \rho_1 = \nu
+\end{align*}
+\]</span> We introduce a Lagrange multiplier <span
+class="math inline">\(\varphi_t(x)\)</span> to enforce the continuity
+equation constraint: <span class="math display">\[
+\begin{align*}
+\mathcal{J}(\rho, v, \phi) &amp;=\int_0^1 \int_{\Omega}
+\left[\frac{1}{2}\|v_t(x)\|^2 \rho_t(x)+\varphi_t(x) \left( \partial_t
+\rho_t(x) + \nabla \cdot (v_t(x) \rho_t(x)) \right) \right] \,dx \, dt
+\end{align*}
+\]</span></p>
+<p><strong>Variation with respect to <span
+class="math inline">\(v\)</span></strong>: <span class="math display">\[
+\frac{\delta \mathcal{J}}{\delta v_t} = \int_0^1 \int_{\Omega} \left[
+v_t\cdot \delta v_t \rho_t + \varphi_t \nabla \cdot (\delta v_t \rho_t)
+\right] \, dx \, dt
+\]</span> Using integration by parts on the second term <span
+class="math display">\[
+\begin{align*}
+\int_{\Omega} \varphi_t \nabla \cdot (\delta v_t \rho_t) \, dx &amp;=
+\int_{\Omega} \nabla \cdot (\varphi_t \rho_t \delta v_t) \, dx -
+\int_{\Omega} \nabla \varphi_t \cdot (\delta v_t \rho_t) \, dx\\
+&amp;=\int_{\partial \Omega} \varphi_t \rho_t \delta v_t \cdot n \, dS -
+\int_{\Omega} \nabla \varphi_t \cdot (\delta v_t \rho_t) \, dx\\
+&amp;= - \int_{\Omega} \nabla \varphi_t \cdot (\delta v_t \rho_t) \, dx
+\end{align*}
+\]</span> where the boundary term vanishes due to the assumption that
+<span class="math inline">\(v\)</span> is tangent to the boundary <span
+class="math inline">\(\partial \Omega\)</span>.</p>
+<p>we get <span class="math display">\[
+\frac{\delta \mathcal{J}}{\delta v_t} = \int_0^1 \int_{\Omega} \left[
+v_t\rho_t - \rho_t\nabla \varphi_t \right] \cdot \delta v_t  \, dx \,dt
+\]</span></p>
+<p>Which forces <span class="math display">\[
+v_t =  \nabla \varphi_t
+\]</span></p>
+<p><strong>Variation with respect to <span
+class="math inline">\(\rho\)</span></strong>: <span
+class="math display">\[
+\frac{\delta \mathcal{J}}{\delta \rho_t} = \int_0^1 \int_{\Omega} \left[
+\frac{1}{2}\|v_t(x)\|^2 + \varphi_t(x) \partial_t \delta \rho_t(x) +
+\varphi_t(x) \nabla \cdot (v_t(x) \delta \rho_t(x)) \right] \, dx \, dt
+\]</span> Similarly, using integration by parts on the second term and
+the third term <span class="math display">\[
+\begin{align*}
+\int_{\Omega} \varphi_t\partial_t\delta\rho_t \, d\Omega &amp;=
+-\int_{\Omega} \partial_t\varphi_t\delta\rho_t\, d\Omega\\
+\int_{\Omega} \varphi_t \nabla \cdot (v_t \delta \rho_t)\, d\Omega
+&amp;= - \int_{\Omega} \nabla \varphi_t \cdot (v_t \delta \rho_t) \,
+d\Omega
+\end{align*}
+\]</span> Note <span class="math inline">\(\rho_0 = \mu\)</span> and
+<span class="math inline">\(\rho_1 = \nu\)</span> are fixed, so
+variations <span class="math inline">\(\delta \rho_t\)</span> are zero
+at the endpoints <span class="math inline">\((\delta \rho_0 = \delta
+\rho_1 = 0)\)</span>.</p>
+<p>we get <span class="math display">\[
+\begin{align*}
+\frac{\delta \mathcal{J}}{\delta \rho_t} &amp;= \int_0^1 \int_{\Omega}
+\left[ \frac{1}{2}\|v_t(x)\|^2 - \partial_t\varphi_t(x) - \nabla
+\varphi_t(x) \cdot v_t(x) \right] \delta\rho_t(x) \, dx \, dt
+\end{align*}
+\]</span> Setting this to zero for all <span
+class="math inline">\(\delta \rho_t(x)\)</span>, we have <span
+class="math display">\[
+\frac{1}{2}\|v_t(x)\|^2 - \partial_t\varphi_t(x) - \nabla \varphi_t(x)
+\cdot v_t(x) = 0
+\]</span></p>
+<p>Substituting <span class="math inline">\(v_t = \nabla
+\varphi_t\)</span>, we have <span class="math display">\[
+\partial_t \varphi_t(x) + \frac{1}{2}\|v_t(x)\|^2 = 0
+\]</span></p>
+<p>To summarize, we have three equations for the action functional,
+which gives us the necessary conditions for optimality: <span
+class="math display">\[
+\begin{cases}
+v_t = \nabla \varphi_t, \quad \text{Velocity field as gradient of
+potential} \\
+\partial_t \varphi_t(x) + \frac{1}{2}\|v_t(x)\|^2 = 0, \quad
+\text{Hamilton-Jacobi equation} \\
+\partial_t \rho_t + \nabla \cdot (v_t \rho_t) = 0. \quad
+\text{Continuity equation for mass conservation}
+\end{cases}
+\]</span></p>
+<p>By the <span class="math inline">\(\varphi\)</span>, we can get
+Kantorovich potential <span class="math inline">\((\psi,\phi)\)</span>,
+<span class="math display">\[
+\psi(x):=\varphi_1(x), \quad \phi(x)=-\varphi_0(x)
+\]</span> as the dual potentials for the optimal transport problem.</p>
+<p>One can prove it by integral along the optimal pair <span
+class="math inline">\((x,T(x))\)</span>, and verify the duality
+optimality. (Actually, this maybe give a proof to the Benamou-Brenier
+theorem)</p>
+<h3 id="economic-interpretation">Economic interpretation</h3>
+<p>The optimal transport problem can be interpreted in an economic
+context, where we want to transport resources (e.g., goods, people) from
+one location to another while minimizing the cost of transportation.</p>
+<p>(Monge’s formulation) <span class="math display">\[
+\begin{align*}
+\min \int_X c(x, T(x)) \, d\mu(x) \\
+\text{s.t.} \quad T_* \mu = \nu
+\end{align*}
+\]</span> where <span class="math inline">\(c(x, T(x))\)</span> is the
+cost of transporting from location <span
+class="math inline">\(x\)</span> to location <span
+class="math inline">\(T(x)\)</span>, and <span
+class="math inline">\(\mu\)</span> and <span
+class="math inline">\(\nu\)</span> are the source and target
+distributions, respectively.</p>
+<p>(Kantorovich’s formulation) <span class="math display">\[
+\begin{align*}
+\min \int_{X \times Y} c(x, y) \, d\gamma(x, y) \\
+\text{s.t.} \quad \gamma \in \Pi(\mu, \nu)
+\end{align*}
+\]</span> where <span class="math inline">\(\gamma\)</span> is a joint
+distribution over the source and target locations, and <span
+class="math inline">\(\Pi(\mu, \nu)\)</span> is the set of all couplings
+between <span class="math inline">\(\mu\)</span> and <span
+class="math inline">\(\nu\)</span>.</p>
+<p>(Kantorovich dual formulation) <span class="math display">\[
+\begin{align*}
+\max \int_X \phi(x) \, d\mu(x) + \int_Y \psi(y) \, d\nu(y) \\
+\text{s.t.} \quad \phi(x) + \psi(y) \leq c(x, y) \quad \forall (x, y)
+\in X \times Y
+\end{align*}
+\]</span></p>
+<p>Let’s consider the economic interpretation:</p>
+<p><span class="math inline">\(\mu\)</span> is the distribution of
+resources at the source location <span class="math inline">\(X\)</span>,
+and <span class="math inline">\(\nu\)</span> is the target distribution
+of resources at the destination location <span
+class="math inline">\(Y\)</span>. The cost function <span
+class="math inline">\(c(x, y)\)</span> represents the cost of
+transporting resources from location <span
+class="math inline">\(x\)</span> to location <span
+class="math inline">\(y\)</span>. And merchants are trying to maximize
+their profit by transporting resources.</p>
+<p>Let <span class="math inline">\(\varphi(t,x)\)</span> be the
+potential function that represents the value of resources at <span
+class="math inline">\(g_t(x)\in\Omega\)</span>, and in the nation <span
+class="math inline">\(X\)</span>, let <span
+class="math inline">\(\phi\)</span> denote the cost of buying resources
+at <span class="math inline">\(x\)</span> and <span
+class="math inline">\(\psi\)</span> denote the cost of selling resources
+at <span class="math inline">\(y\)</span>.</p>
+<p>Now look back at the setting: <span class="math display">\[
+\phi:=-\varphi_0, \quad \psi:=\varphi_1
+\]</span> The potential <span class="math inline">\(\phi\)</span>
+represents the change of the balance of merchants buying resources at
+the source location <span class="math inline">\(X\)</span>, and the
+potential <span class="math inline">\(\psi\)</span> represents the gain
+of merchants selling resources at the destination location <span
+class="math inline">\(Y\)</span>.</p>
+<p>So the Kantorovich dual formulation can be interpreted as maximizing
+the profit of merchants by buying resources at the source location <span
+class="math inline">\(X\)</span> and selling them at the destination
+location <span class="math inline">\(Y\)</span>.</p>
+<p>And the no arbitrage condition <span class="math inline">\(\phi(x) +
+\psi(y) \leq c(x, y)\)</span> ensures that the profit from buying and
+selling resources is not greater than the cost of transportation,
+preventing arbitrage opportunities.</p>
+<p>Look back at the optimality conditions, we have: 1. The velocity
+field <span class="math inline">\(v_t = \nabla \varphi_t\)</span>
+represents the optimal transportation direction of resources, which is
+the gradient of the potential function <span
+class="math inline">\(\varphi_t\)</span>.</p>
+<p>This is quite intuitive.</p>
+<ol start="2" type="1">
+<li>The Hamilton-Jacobi equation <span class="math inline">\(\partial_t
+\varphi_t(x) + \frac{1}{2}\|v_t(x)\|^2 = 0\)</span> describes the
+evolution of the potential function over time, where the term <span
+class="math inline">\(\frac{1}{2}\|v_t(x)\|^2\)</span> can be
+interpreted as the cost of transportation.</li>
+</ol>
+<p>But here is a problem, the cost of transportation is formulated as
+the integral of the instantaneous cost over time, but in the original
+optimal transport problem, the cost is formulated as independent of
+path, i.e., the cost is only dependent on the source and target
+locations, not on the path taken.</p>
+<p>To make the two formulations consistent, we impose a constraint:</p>
+<p>Let <span class="math display">\[C[\gamma]=\int_0^1 c(\dot\gamma_t)\,
+dt\]</span></p>
+<p>be the cost of transportation along the path <span
+class="math inline">\(\gamma\)</span>, if <span class="math display">\[
+c(x,y) = \inf\left\{C[(\gamma_t)_{t\in[0,1]}]\right\} \quad \text{for
+all } (x,y)\in X\times Y
+\]</span> then the two formulations give the same optimal transport
+plan.</p>
+<p>A common situation is <span class="math display">\[
+c(x,y):= c(y-x) = \|x-y\|^k
+\]</span> where <span class="math inline">\(k\geq 1\)</span> is an
+integer.</p>
+<p>When <span class="math inline">\(k=1\)</span>, the cost function is
+linear and not strictly convex, and the optimal transport plan is not
+unique. Any linear parameterization of the line segment connecting <span
+class="math inline">\(x\)</span> and <span
+class="math inline">\(y\)</span> will yield the same cost.</p>
+<p>When <span class="math inline">\(k\geq 2\)</span>, the cost function
+is strictly convex, and the optimal transport plan is unique. The
+optimal path is the straight line connecting <span
+class="math inline">\(x\)</span> and <span
+class="math inline">\(y\)</span> with velocity parameterized by the arc
+length.</p>
+<hr />
+<p><strong>Lemma</strong>: If <span class="math inline">\(c\)</span> is
+a convex function over <span class="math inline">\(\mathbb R^n\)</span>,
+then <span class="math display">\[
+\inf\left\{\int_0^1 c(\dot\gamma_t) dt; \gamma_0=x,\gamma_1=y\right\} =
+c(y-x)
+\]</span> Moreover, if <span class="math inline">\(c\)</span> is
+strictly convex, then the infimum is achieved by a unique path <span
+class="math inline">\(\gamma_t = tx + (1-t)y\)</span>.</p>
+<p><strong>Proof</strong></p>
+<p>Use the Jensen’s inequality of integral.</p>
+<hr />
+<p>So for the <span class="math inline">\(2\)</span>-Wasserstein
+distance, the cost function can be seen as the integral of velocity
+field over time. <span class="math display">\[
+c(x,y)=\inf C_{\text{path}}=\int_0^1 c(\dot\gamma_t) dt = \int_0^1
+v_t(x) dt = \frac{1}{2}\|y-x\|_2^2
+\]</span> where the best path <span
+class="math inline">\(\gamma_t\)</span> is the straight line connecting
+<span class="math inline">\(x\)</span> and <span
+class="math inline">\(y\)</span> with constant velocity <span
+class="math inline">\(\dot\gamma_t=1\)</span>.</p>
+<h3 id="why-conditioning-works">Why Conditioning Works?</h3>
+<p>Turning back to the rectified flow, the author condition on <span
+class="math inline">\(x_0,x_1\)</span>, let <span
+class="math inline">\(\pi(x_0,x_1)\)</span> be the product coupling
+<span class="math inline">\(\mu(x_0)\nu(x_1)\)</span>.</p>
+<p><span class="math display">\[
+\begin{align*}
+v_t(x_t|x_0,x_1) &amp;= x_1-x_0\\
+v_t(x_t) &amp;= \int \int v_t(x_t|x_0,x_1)
+\frac{\rho_t(x_t|x_0,x_1)\pi(x_0,x_1)}{\rho_t(x_t)} \, dx_0 \, dx_1\\
+&amp;= \int \int (x_1-x_0)
+\frac{\rho_t(x_t|x_0,x_1)\mu(x_0)\nu(x_1)}{\rho_t(x_t)} \, dx_0 \,
+dx_1\\
+\end{align*}
+\]</span></p>
+<p>It is easy to see if <span class="math inline">\(\pi =
+\pi^*\)</span>, then the marginal vector field <span
+class="math inline">\(v_t(x_t)\)</span> is exactly the optimal transport
+vector field.</p>
+<p>But rectified flow set <span class="math inline">\(\pi = \mu \otimes
+\nu\)</span>, so it cannot get the optimal transport vector field in 1
+step. But the paper proves every time of reflow matching will decrease
+the transport cost, and the rectified flow will converge to the optimal
+transport vector field by the speed of <span
+class="math inline">\(\mathcal{O}(1/k)\)</span>, where <span
+class="math inline">\(k\)</span> is the number of iterations.</p>
+<p>And in the <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2210.02747">Flow Matching
+For Generative Modeling</a>, the author proposed “OT-flow” is
+conditioning on <span class="math inline">\(x_1\)</span> only.
+Therefore, since the target is a Gaussian kernal and the source is a
+Gaussian distribution, they just know the exact form of the optimal
+transport vector field <span class="math display">\[
+v_t(x_t|x_1) = \frac{x_1 - (1-\sigma_{min})x_t}{1-(1-\sigma_{min})t}
+\]</span> and there is no problem of coupling since they only condition
+on <span class="math inline">\(x_1\)</span>.</p>
+<h4 id="why-reflow-works">Why Reflow Works?</h4>
+<p>The <span class="math inline">\(1\)</span>-rectified flow is
+calculated by: <span class="math display">\[
+\begin{align*}
+v_t^1(x) = \mathbb{E}_{(x_0,x_1)\sim \pi_0} \left[x_1-x_0 | x = t x_0 +
+(1-t) x_1\right]
+\end{align*}
+\]</span> where <span class="math inline">\(\pi_0 = \mu \otimes
+\nu\)</span> is the independent coupling of the source and target
+distributions. This is the expectation of line direction that pass <span
+class="math inline">\(x\)</span> at time <span
+class="math inline">\(t\)</span>.</p>
+<p>For <span class="math inline">\(k\geq 2\)</span>, the <span
+class="math inline">\(k\)</span>-rectified flow is calculated by: <span
+class="math display">\[
+\begin{align*}
+v_t^k(x) = \mathbb{E}_{(x_0,x_1)\sim \pi_{k-1}} \left[x_1-x_0 | x = t
+x_0 + (1-t) x_1\right]
+\end{align*}
+\]</span> where <span class="math inline">\(\pi_{k-1} =\pi_{g^{k-1}_1} =
+(\text{Id}, g_1^{k-1})_* \mu\)</span> is the coupling induced by the
+<span class="math inline">\((k-1)\)</span>-rectified flow.</p>
+<p><span class="math display">\[
+C(\pi)=\mathbb{E}_{(x_0,x_1)\sim \pi} \left[c(x_0,x_1)\right]
+\]</span> as the transport cost of the coupling <span
+class="math inline">\(\pi\)</span>.</p>
+<p>We assume the cost function has the form <span
+class="math inline">\(c(x,y)=c(y-x)\)</span> and <span
+class="math inline">\(c\)</span> is convex and <span
+class="math inline">\(C^1\)</span>, we know the cost can be represented
+as the infimum of the path cost.</p>
+<p>We has the following transform sequence: <span
+class="math display">\[
+\pi_0=\mu \otimes \nu \xrightarrow{\Phi} g^1 \xrightarrow{\Psi} \pi_1
+\xrightarrow{\Phi} g^2 \xrightarrow{\Psi} \cdots \xrightarrow{\Phi}
+g^{k} \xrightarrow{\Psi} \pi_{k}
+\]</span> where <span class="math inline">\(\Psi\)</span> is pushforward
+<span class="math inline">\(\Psi(g)=(\text{Id}, g)_*\mu\)</span>.</p>
+<p>For <span class="math inline">\(\Phi\)</span>, given <span
+class="math inline">\(\pi\)</span>, <span
+class="math inline">\(v\)</span> is calculated by: <span
+class="math display">\[
+v_t(x) = \mathbb{E}_{(x_0,x_1)\sim \pi} \left[x_1-x_0 | x = t x_0 +
+(1-t) x_1\right]
+\]</span> And <span class="math inline">\(g\)</span> is determined by
+the following equation: <span class="math display">\[
+\begin{cases}
+\frac{d}{dt}g_t(x) = v_t(g_t(x)) \\
+g_0(x)=x.
+\end{cases}
+\]</span></p>
+<p><strong>Theorem</strong>:</p>
+<p><span class="math display">\[
+C(\pi_{k+1}) \leq C(\pi_k)\, \text{for all } k\geq 1
+\]</span></p>
+<p><strong>Proof</strong>: <span class="math display">\[
+\begin{align*}
+C(\pi_{k+1}) &amp;= \mathbb{E}_{(x_0,x_1)\sim \pi_{k+1}}
+\left[c(x_1-x_0)\right]\\
+&amp;=\mathbb{E}_{(x_0,x_1)\sim \pi_{k+1}} \left[c \left(\int_0^1
+v_t^{k+1}(g_t^{k+1}(x_0))\right) dt\right] \\
+&amp;\leq \mathbb{E}_{(x_0,x_1)\sim \pi_{k+1}} \left[\int_0^1
+c\left(v_t^{k+1}(g_t^{k+1}(x_0))\right) dt\right] \quad \text{(by
+Jensen&#39;s inequality)}\\
+&amp;= \int_0^1 \mathbb{E}_{(x_0,x_1)\sim \pi_{k+1}}
+\left[c\left(v_t^{k+1}(g_t^{k+1}(x_0))\right)\right] dt\\
+&amp;= \int_0^1 \mathbb{E}_{x_t \sim \rho_t^{k+1}}
+\left[c\left(v_t^{k+1}(x_t)\right)\right] dt\\
+&amp;= \int_0^1 \mathbb{E}_{x_t \sim \rho_t^k}
+\left[c\left(v_t^{k+1}(x_t)\right)\right] dt\\
+&amp;= \mathbb{E}_{(x_0,x_1)\sim \pi_k} \left[\int_0^1
+c\left(v_t^{k+1}(x_t)\right) dt\right]\\
+&amp;= \mathbb{E}_{(x_0,x_1)\sim \pi_k} \left[\int_0^1
+c\left(\mathbb{E}[x_1-x_0|x_t] \right) dt\right]\\
+&amp;\leq \mathbb{E}_{(x_0,x_1)\sim \pi_k} \left[\int_0^1
+\mathbb{E}[c(x_1-x_0)|x_t] dt\right] \quad \text{(Jensen)}\\
+&amp;= \mathbb{E}_{(x_0,x_1)\sim \pi_k} \left[c(x_1-x_0)\right] \\
+&amp;= C(\pi_k)
+\end{align*}
+\]</span></p>
+<p>Note that <span class="math inline">\(\rho_t\)</span> as the marginal
+distribution of <span class="math inline">\(x_t = t x_1 +
+(1-t)x_0\)</span>, <span class="math inline">\(\rho_{t}&#39;\)</span> is
+the distribution generated by the marginal vector field <span
+class="math inline">\(v_t^{k+1}\)</span>. They are the same since the
+continuity equation is satisfied.</p>
+<p><strong>Proof</strong></p>
+<p>For all <span class="math inline">\(\phi\in C_0(\Omega)\)</span>,</p>
+<p><span class="math display">\[
+\begin{align*}
+\frac{d}{dt} \mathbb{E}_{(x_0,x_1)\sim \pi^k}[\phi(x_t)] &amp;=
+\mathbb{E}_{(x_0,x_1)\sim \pi^k} \left[\nabla \phi(x_t) \cdot (x_1 -
+x_0)\right] \\
+&amp;=\mathbb{E}_{x\sim \rho_t^k} \left[\nabla \phi(x)
+\mathbb{E}_{(x_0,x_1)\sim \pi^k}[x_1 - x_0 | x_t = x]\right] \\
+&amp;=\mathbb{E}_{x\sim \rho_t^k} \left[\nabla \phi(x) \cdot
+v_t^{k+1}(x)\right]
+\end{align*}
+\]</span></p>
+<p>Solves the weak form of the continuity equation.</p>
+<hr />
+<p>This is the key construct in the rectified flow.</p>
+<h4 id="straightness">Straightness</h4>
+<p>Define <span class="math display">\[
+S(g)=\int_0^1 \mathbb{E}_{(x_0,x_1)\sim \pi_{g_1}}
+\left[\|x_1-x_0-v_t(x_t)\|^2\right] dt
+\]</span> as the straightness of the flow <span
+class="math inline">\(g\)</span>.</p>
+<p>Theorem 3.7 in <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2209.03003">Flow
+Straight and Fast</a> states: <span class="math display">\[
+\min_{k\in\{1,\cdots,K\}} S(Z^k) \leq \frac{\mathbb{E}_{(x_0,x_1)\sim
+\pi_0}[\|x_1-x_0\|^2]}{K}
+\]</span></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Machine-Learning/" class="category-chain-item">Machine Learning</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Generative-Models/" class="print-no-link">#Generative Models</a>
+      
+        <a href="/tags/Flow-Matching/" class="print-no-link">#Flow Matching</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Flow Matching</div>
+      <div>https://notdesigned.github.io/2025/08/09/Flow-Matching/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Luocheng Liang</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>August 9, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - Share-alike">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/08/21/Renormalization-Group-Flow-as-Optimal-Transport/" title="Renormalization Group Flow as Optimal Transport">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Renormalization Group Flow as Optimal Transport</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/08/04/Differential-Manifold/" title="Differential Manifold">
+                        <span class="hidden-mobile">Differential Manifold</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"Ov23lisUTr0Y3YpBngo1","clientSecret":"4068f2efc1d2d6015f3c8089a4e0ad4c1aeb8ed2","repo":"gitalkcomment","owner":"NotDesigned","admin":["NotDesigned"],"language":"en","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://autumn-recipe-17e3.theadscn.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'add9f6e85cc8ff39e244c87a2b3b4e21'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

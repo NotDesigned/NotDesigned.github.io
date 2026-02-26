@@ -1,0 +1,3055 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Luocheng Liang">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="References  John Lee, Introduction to Smooth Manifolds Loring Tu, An Introduction to Manifolds Victor Guillemin and Alan Pollack, Differential Topology  For Chinese reader, you can refer to the websit">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Differential Geometry">
+<meta property="og:url" content="https://notdesigned.github.io/2025/07/30/Differential-Geometry/index.html">
+<meta property="og:site_name" content="Adscn&#39;s Blog">
+<meta property="og:description" content="References  John Lee, Introduction to Smooth Manifolds Loring Tu, An Introduction to Manifolds Victor Guillemin and Alan Pollack, Differential Topology  For Chinese reader, you can refer to the websit">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-07-30T10:47:26.000Z">
+<meta property="article:modified_time" content="2026-02-26T12:57:24.803Z">
+<meta property="article:author" content="Luocheng Liang">
+<meta property="article:tag" content="Differential Geometry">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Differential Geometry - Adscn&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"notdesigned.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Adscn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Blog</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Differential Geometry"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-30 10:47" pubdate>
+          July 30, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.4k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          71 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Differential Geometry</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="references">References</h2>
+<ul>
+<li><p>John Lee, Introduction to Smooth Manifolds</p></li>
+<li><p>Loring Tu, An Introduction to Manifolds</p></li>
+<li><p>Victor Guillemin and Alan Pollack, Differential Topology</p></li>
+</ul>
+<p>For Chinese reader, you can refer to the website
+http://staff.ustc.edu.cn/~wangzuoq/Courses/23F-Manifolds/#notes for
+Chinese course note in USTC.</p>
+<h2 id="review-on-manifolds">Review on Manifolds</h2>
+<p>Please refer to the “<a
+href="https://notdesigned.github.io/2025/08/04/Differential-Manifold/">Differential
+Manifold</a>” article.</p>
+<p>For the sake of this articles, one at least need to understand the
+following concept in that article.</p>
+<ul>
+<li>Topological Manifold</li>
+<li>Smooth Manifold</li>
+<li>Manifold with Boundary</li>
+<li>Partition of Unity</li>
+<li>Submersion, Immersion and Embedding</li>
+<li>etc.</li>
+</ul>
+<h2 id="lie-algebra-and-lie-groups">Lie Algebra and Lie Groups</h2>
+<h3 id="smooth-differential-operators">Smooth Differential
+Operators</h3>
+<p>A <strong>smooth differential operator</strong> of order <span
+class="math inline">\(n\)</span> on <span
+class="math inline">\(M\)</span> is a linear map <span
+class="math inline">\(P: C^{\infty}(M) \to C^{\infty}(M)\)</span> that
+can be expressed locally as a finite sum of the form on each coordinate
+chart <span class="math inline">\((U,x)\)</span>: <span
+class="math display">\[
+P=\sum_{|j|\leq n} a_j(p) \left(\frac{\partial}{\partial
+x^1}\right)^{j_1}\left(\frac{\partial}{\partial x^2}\right)^{j_2} \cdots
+\left(\frac{\partial}{\partial x^m}\right)^{j_m}
+\]</span> where <span class="math inline">\(a_j(p)\)</span> are smooth
+functions on <span class="math inline">\(M\)</span>, <span
+class="math inline">\(m=\dim M\)</span>, and <span
+class="math inline">\(j=(j_1,j_2,\ldots,j_m)\)</span> is a multi-index
+with <span class="math inline">\(|j|=j_1+j_2+\ldots+j_m\)</span>.</p>
+<p>And by definition, a smooth vector field <span
+class="math inline">\(X\)</span> on <span
+class="math inline">\(M\)</span> is a smooth differential operator of
+order <span class="math inline">\(1\)</span>.</p>
+<p>Using partition of unity, we can prove that any smooth differential
+operator can be expressed as composition of at most <span
+class="math inline">\(n\)</span> smooth vector fields.</p>
+<p>And <span class="math inline">\(\operatorname{supp}(Pf) \subseteq
+\operatorname{supp}(f)\)</span> for any smooth function <span
+class="math inline">\(f\in C^{\infty}(M)\)</span>.</p>
+<p>Peetre proves that any linear differential operator that satisfies
+the above condition is a smooth differential operator.</p>
+<h3 id="lie-bracket-on-smooth-vector-fields">Lie Bracket on Smooth
+Vector Fields</h3>
+<p>Given two smooth vector fields <span
+class="math inline">\(X,Y\)</span> on a smooth manifold <span
+class="math inline">\(M\)</span>, the <strong>Lie bracket</strong> of
+<span class="math inline">\(X\)</span> and <span
+class="math inline">\(Y\)</span>, denoted as <span
+class="math inline">\([X,Y]\)</span>, on a local coordinate <span
+class="math inline">\((U,\phi)\)</span> it is defined as: <span
+class="math display">\[
+[X,Y]= X \circ Y - Y \circ X = \sum_{i=1}^m \left( X^i \frac{\partial
+Y^j}{\partial \phi^i} - Y^i \frac{\partial X^j}{\partial \phi^i} \right)
+\frac{\partial}{\partial \phi^j}
+\]</span> note the second order derivative is diminished, it is a the
+smooth vector field on <span class="math inline">\(M\)</span>.</p>
+<p>Generally speaking, if <span class="math inline">\(X\)</span> is a
+differential operator of order <span class="math inline">\(p\)</span>,
+<span class="math inline">\(Y\)</span> is of order <span
+class="math inline">\(q\)</span>. <span class="math inline">\(X\circ
+Y-Y\circ X\)</span> shall be a differential operator of order <span
+class="math inline">\(p+q-1\)</span>.</p>
+<p>The Lie bracket <span class="math inline">\([\cdot,\cdot]:
+\mathfrak{X}(M) \times \mathfrak{X}(M) \to \mathfrak{X}(M)\)</span>
+satisfy the following property for any <span
+class="math inline">\(X,Y,Z\in\mathfrak{X}(M)\)</span></p>
+<ol type="1">
+<li>Antisymmetry: <span class="math inline">\([X,Y]=-[Y,X]\)</span></li>
+<li>Jacobi Identity: <span class="math inline">\([X,[Y,Z]] + [Y,[Z,X]] +
+[Z,[X,Y]] = 0\)</span>.</li>
+<li><span class="math inline">\(\mathbb R\)</span>-Linearity: <span
+class="math inline">\([aX+bY,Z]=a[X,Z]+b[Y,Z],\forall a,b\in \mathbb
+R\)</span></li>
+</ol>
+<p>Note that it is not linear with respect to the second argument.</p>
+<p>The Lie bracket gives a <strong>Lie Algebra</strong> structure on
+<span class="math inline">\(\mathfrak{X}(M)\)</span> <span
+class="math inline">\((\text{or } \Gamma^{\infty}(TM))\)</span>.</p>
+<h3 id="integral-curves">Integral Curves</h3>
+<p>Let <span class="math inline">\(X\in \mathfrak{X}(M)\)</span>, if a
+smooth curve <span class="math inline">\(\gamma: I \to M\)</span> is
+such that</p>
+<p><span class="math display">\[
+\dot \gamma(t) = X_{\gamma(t)}
+\]</span> for all <span class="math inline">\(t \in I\)</span>, then
+<span class="math inline">\(\gamma\)</span> is called an
+<strong>integral curve</strong> of the vector field <span
+class="math inline">\(X\)</span>.</p>
+<p>if <span class="math inline">\(0\in I\)</span>, then <span
+class="math inline">\(\gamma(0)\)</span> is called the <strong>initial
+point</strong> of the integral curve.</p>
+<p>Example:</p>
+<hr />
+<p>For the vector field <span class="math inline">\(\widetilde{X} =
+\sum_{i=1}^n a^i \frac{\partial}{\partial x^i}\)</span>, the integral
+curve is: <span class="math display">\[
+\widetilde{\gamma}(t)=(c_1 + a^1 t, c_2 + a^2 t, \ldots, c_n + a^n t)
+\]</span> where <span class="math inline">\(c_i = \gamma(0)^i\)</span>
+are the initial point of the integral curve.</p>
+<hr />
+<p>Assume <span class="math inline">\(\gamma\)</span> is in a coordinate
+chart <span class="math inline">\((U,x)\)</span>, we write <span
+class="math inline">\(\phi(\gamma(t))=(x^1(\gamma(t)),\cdots,x^n(\gamma(t)))\)</span>.</p>
+<p>We denote <span class="math inline">\(\gamma^i:I\to
+\mathbb{R}=x^i\circ \gamma\)</span> as the <span
+class="math inline">\(i\)</span>-th coordinate of <span
+class="math inline">\(\gamma\)</span> on <span
+class="math inline">\(U\)</span>.</p>
+<p><span class="math display">\[
+\dot \gamma(t)=(d\gamma)_t(\frac{d}{dt})|_{t}=\sum_{i=1}^n
+(d\gamma)_t(\frac{d}{dt})|_{t}(x^i)\left.\frac{\partial}{\partial
+x^i}\right|_{\gamma(t)}=\sum_{i=1}^n\frac{d (x^i\circ
+\gamma)}{dt}\left.\frac{\partial}{\partial
+x^i}\right|_{\gamma(t)}=\sum_{i=1}^n \dot{\gamma}^i
+\left.\frac{\partial}{\partial x^i}\right|_{\gamma(t)}
+\]</span></p>
+<p>So the equation <span class="math inline">\(\dot \gamma(t) =
+X_{\gamma(t)}\)</span> can be written as:</p>
+<p><span class="math display">\[
+\sum_{i=1}^n \dot{\gamma}^i(t) \left.\frac{\partial}{\partial
+x^i}\right|_{\gamma(t)} = \sum_{i=1}^n X^i(\gamma(t))
+\left.\frac{\partial}{\partial x^i}\right|_{\gamma(t)}
+\]</span></p>
+<p>So we have the system of ordinary differential equations: <span
+class="math display">\[\dot{\gamma}^i(t) = X^i\circ
+x^{-1}(\gamma^1(t),\ldots,\gamma^n(t))\]</span> for <span
+class="math inline">\(i=1,2,\ldots,n\)</span>.</p>
+<p>Conversely, every system of ordinary differential equations of the
+form above defines a unique integral curve <span
+class="math inline">\(\gamma\)</span> on <span
+class="math inline">\(U\)</span> of the vector field <span
+class="math inline">\(X\)</span>.</p>
+<p>By the existence and uniqueness theorem of ordinary differential
+equations on <span class="math inline">\(\mathbb R^n\)</span>, we have
+the following theorem:</p>
+<p>Assume <span class="math inline">\(X\in \mathfrak{X}(M)\)</span> is a
+smooth vector field on a smooth manifold <span
+class="math inline">\(M\)</span>, then for every <span
+class="math inline">\(p\in M\)</span>, there exists a neighborhood <span
+class="math inline">\(U\)</span> of <span
+class="math inline">\(p\)</span>, <span
+class="math inline">\(\epsilon&gt;0\)</span> and a smooth mapping <span
+class="math inline">\(\Gamma: (-\epsilon,\epsilon) \times U \to
+M\)</span> such that: 1. <span
+class="math inline">\(\Gamma(0,p)=p\)</span> for all <span
+class="math inline">\(p\in U\)</span>. 2. For fixed <span
+class="math inline">\(q\in U\)</span>, <span
+class="math inline">\(\gamma_q(t)=\Gamma(t,q)\)</span> is the integral
+curve of <span class="math inline">\(X\)</span> with initial point <span
+class="math inline">\(\gamma_q(0)=q\)</span> for all <span
+class="math inline">\(t\in (-\epsilon,\epsilon)\)</span>. 3. The
+integral curve in <span class="math inline">\([2]\)</span> is unique in
+the sense that if <span class="math inline">\(\sigma: I \to U\)</span>
+is another smooth curve with <span
+class="math inline">\(\sigma(0)=q\)</span>, then <span
+class="math inline">\(\gamma_q(t)=\sigma(t)\)</span> for all <span
+class="math inline">\(t\in (-\epsilon,\epsilon)\cap I\)</span>.</p>
+<h3 id="reparametrization">Reparametrization</h3>
+<p>Generally, the reparametrization of an integral curve <span
+class="math inline">\(\gamma\)</span> is not an integral curve of the
+vector field <span class="math inline">\(X\)</span>. But if the
+reparametrization is linear, the reparametrization is still an integral
+curve of the vector field <span class="math inline">\(X\)</span>.</p>
+<p>If <span class="math inline">\(\gamma:I\to M\)</span> is an integral
+curve of <span class="math inline">\(X\)</span>, then: 1. Let <span
+class="math inline">\(I_{a}={t|t+a\in I}\)</span>, <span
+class="math inline">\(\gamma_a:I_a\to M\)</span> be the curve defined by
+<span class="math inline">\(\gamma_a(t)=\gamma(t+a)\)</span> for all
+<span class="math inline">\(t\in I_a\)</span>. Then <span
+class="math inline">\(\gamma_a\)</span> is also an integral curve of
+<span class="math inline">\(X\)</span>. 2. Let <span
+class="math inline">\(I^{a}={t|at\in I} (a\neq 0)\)</span>, then <span
+class="math inline">\(\gamma^a:I^a\to M, \gamma^a(t)=\gamma(at)\)</span>
+is an integral curve of <span class="math inline">\(X^a=aX\)</span></p>
+<p>For any <span class="math inline">\(p\in M\)</span>, the integral
+curve starting at <span class="math inline">\(p\)</span> has a maximal
+interval of existence <span class="math inline">\(J_p\)</span>. It is
+easy to prove that <span class="math inline">\(J_p\)</span> must be
+open.</p>
+<p>Denote the maximal curve as <span class="math display">\[
+\gamma_p:J_p\to M
+\]</span></p>
+<p>We have the following property:</p>
+<blockquote>
+<p>For <span class="math inline">\(X\in \mathfrak{X}(M)\)</span>, <span
+class="math inline">\(\gamma_{\gamma_p(s)}(t)=\gamma_p(t+s)\)</span> if
+<span class="math inline">\(t,s,t+s\in J_p\)</span>.</p>
+</blockquote>
+<p>And <span class="math inline">\(X\in \mathfrak{X}(M)\)</span> is
+called a <strong>complete vector field</strong> if <span
+class="math inline">\(J_p=\mathbb R,\forall p\in M\)</span></p>
+<h3 id="flow">Flow</h3>
+<p>The <strong>flow</strong> is a mapping on set <span
+class="math inline">\(X\)</span> <span class="math display">\[
+\Phi: X\times \mathbb{R} \to X
+\]</span> such that <span
+class="math inline">\(\Phi(x,0)=x,\Phi(\Phi(x,s),t) =
+\Phi(x,s+t)\)</span>.</p>
+<p>In certain situations one might also consider local flows, which are
+defined only in some subset <span
+class="math inline">\(\operatorname{dom}\Phi=\mathcal{X}\)</span> is an
+open subset of <span class="math inline">\(X\times\mathbb
+R\)</span>.</p>
+<p>We can see that a vector field <span class="math inline">\(X\)</span>
+on <span class="math inline">\(M\)</span> induced a flow on <span
+class="math inline">\(M\)</span>.</p>
+<p>We have the following theorem stating the smoothness of such flow:
+&gt; For any <span class="math inline">\(X\in
+\Gamma^{\infty}(TM)\)</span>, the flow <span
+class="math inline">\(\Phi:M\times R\to M\)</span> is smooth on its
+domain <span class="math inline">\(\operatorname{dom}\Phi=\{(p,t)|p\in
+M, t\in J_p\}\)</span>.</p>
+<p><strong>Proof</strong></p>
+<hr />
+<p>By the property of flow, it suffices to prove that <span
+class="math inline">\(\Phi\)</span> is smooth around any point <span
+class="math inline">\((p,0)\)</span>. And then we can transfer the
+smoothness to any point <span class="math inline">\((q,t)\)</span> by
+the property of flow.</p>
+<p>By the fundamental theorem above, there exists a neighborhood <span
+class="math inline">\(U\)</span> of <span
+class="math inline">\(p\)</span> and <span
+class="math inline">\(\epsilon&gt;0\)</span> such that <span
+class="math inline">\(\Phi(q,t): U \times (-\epsilon,\epsilon)\)</span>
+is smooth. So <span class="math inline">\(\Phi\)</span> is smooth around
+<span class="math inline">\((p,0)\)</span>.</p>
+<hr />
+<p>If the vector field <span class="math inline">\(X\)</span> is
+complete, then the flow <span class="math inline">\(\Phi\)</span> is
+defined on the whole <span class="math inline">\(M\times \mathbb
+R\)</span>.</p>
+<p>We call the flow <span class="math inline">\(\Phi\)</span> of a
+complete vector field <span class="math inline">\(X\)</span> the
+<strong>global flow</strong> of <span class="math inline">\(X\)</span>.
+Otherwise, we call it a <strong>local flow</strong>.</p>
+<h3 id="completeness-and-the-induced-diffeomorphism">Completeness and
+the induced diffeomorphism</h3>
+<p>We shall naturally ask, when is a vector field complete?</p>
+<p>A sufficient condition is that the vector field has compact
+support.</p>
+<p>We define the support of a vector field <span
+class="math inline">\(X\in \mathfrak{X}(M)\)</span> as: <span
+class="math display">\[
+\operatorname{supp}(X) = \overline{\{p\in M|X_p\neq 0\}}
+\]</span></p>
+<p>We state the proof idea here:</p>
+<ul>
+<li>For <span class="math inline">\(X_p = 0\)</span>, the integral curve
+is constant, so it is defined on <span class="math inline">\(\mathbb
+R\)</span>.</li>
+<li>For <span class="math inline">\(X_p \neq 0\)</span>, then the
+integral curve <span class="math inline">\(\gamma_p(t)\)</span> shall be
+always in <span class="math inline">\(C=\operatorname{supp}(X)\)</span>.
+And there exists a <span class="math inline">\(\epsilon_p\)</span> such
+that <span class="math inline">\(\Gamma(q,t)\)</span> is defined on
+<span class="math inline">\(U_p\times (-\epsilon_p,\epsilon_p)\)</span>.
+Now since <span class="math inline">\(C\)</span> is compact, we can
+cover <span class="math inline">\(C\)</span> with finite many <span
+class="math inline">\(U_{p_i}\)</span>, and let <span
+class="math inline">\(\epsilon = \min \epsilon_{p_i}\)</span>. Then for
+any <span class="math inline">\(q\in C\)</span>, <span
+class="math inline">\(\gamma_q(t)\)</span> is defined on <span
+class="math inline">\((-\epsilon,\epsilon)\)</span>. And by proper
+reparametrization, we can extend the integral curve to the whole <span
+class="math inline">\(\mathbb R\)</span>.</li>
+</ul>
+<p>As a corollary, a vector field on a compact manifold is always
+complete.</p>
+<h4 id="induced-diffeomorphism">Induced Diffeomorphism</h4>
+<p>Let <span class="math inline">\(X\in \mathfrak{X}(M)\)</span> be a
+complete vector field on <span class="math inline">\(M\)</span>, then
+the flow <span class="math inline">\(\Phi:M\times \mathbb R\to
+M\)</span> induces a one-parameter group of diffeomorphisms <span
+class="math inline">\(\{\phi_t:M\to M|t\in \mathbb R\}\)</span> defined
+as: <span class="math display">\[
+\phi_t(p) = \Phi(p,t)
+\]</span> And <span class="math inline">\(\phi_t\)</span> satisfies the
+following properties: - <span class="math inline">\(\phi_0 =
+\text{id}_M\)</span> - <span class="math inline">\(\phi_{s+t} = \phi_s
+\circ \phi_t\)</span> for all <span class="math inline">\(s,t\in \mathbb
+R\)</span>. - Each <span class="math inline">\(\phi_t\)</span> is a
+diffeomorphism and <span class="math inline">\(\phi_t^{-1} =
+\phi_{-t}\)</span>.</p>
+<p>That is to say, a complete vector field on <span
+class="math inline">\(M\)</span> induces a family of diffeomorphisms
+from <span class="math inline">\(M\)</span> to itself.</p>
+<h3 id="dynamical-systems-induced-by-vector-fields">Dynamical Systems
+Induced by Vector Fields</h3>
+<p>Mathematically, a <strong>dynamical system</strong> is a triple <span
+class="math inline">\((T,X,\Phi)\)</span>, where <span
+class="math inline">\(X\)</span> is a set called the <strong>state
+space</strong>, <span class="math inline">\(T\)</span> is a semi-group
+of transformation parameters called the <strong>time set</strong>, and
+<span class="math inline">\(\Phi\)</span> is a mapping from <span
+class="math inline">\(X \times T\)</span> to <span
+class="math inline">\(X\)</span> that satisfies the properties of
+flow.</p>
+<p>So a complete vector field <span class="math inline">\(X\)</span> on
+a smooth manifold <span class="math inline">\(M\)</span> induces a
+dynamical system <span class="math inline">\((\mathbb R, M,
+\Phi)\)</span>, where <span class="math inline">\(\Phi\)</span> is the
+flow of <span class="math inline">\(X\)</span>.</p>
+<h4 id="application-in-morse-theory">Application in Morse Theory</h4>
+<p>The following theorem is a fundamental result in Morse theory
+indicating the topological structure of the manifold <span
+class="math inline">\(M\)</span> is determined by the properties of the
+vector field <span class="math inline">\(X\)</span> around the critical
+points.</p>
+<p>Let <span class="math inline">\(M\)</span> be a smooth manifold, and
+<span class="math inline">\(f: M \to \mathbb R\)</span> be a smooth
+function on <span class="math inline">\(M\)</span>. For any <span
+class="math inline">\(a\in \mathbb R\)</span>, we define the
+<strong>sublevel set</strong> <span class="math inline">\(M_a = \{p\in M
+| f(p) \leq a\}=f^{-1}((-\infty,a))\)</span></p>
+<blockquote>
+<p>For <span class="math inline">\(a&lt;b\)</span>, assuming that <span
+class="math inline">\(f^{-1}([a,b])\)</span> is compact and <span
+class="math inline">\(\forall c\in [a,b]\)</span> is a regular value of
+<span class="math inline">\(f\)</span>, then there exists a
+diffeomorphism <span class="math inline">\(\varphi:M\to M\)</span> such
+that <span class="math inline">\(\varphi(M^a)=M^b\)</span> (a
+deformation retract, more precisely).</p>
+</blockquote>
+<p><strong>Proof</strong></p>
+<p>First we embed <span class="math inline">\(M\)</span> into a Eulidean
+space, so a inner product is given in every tangent space <span
+class="math inline">\(T_pM\)</span>.</p>
+<p>We define a <strong>gradient vector field</strong> <span
+class="math inline">\(\nabla f\)</span> as following: <span
+class="math display">\[
+\langle \nabla f|_p,X_p\rangle = df_p(X_p)= X_p(f), \quad \forall X_p\in
+T_pM
+\]</span> We take a compact support bump function <span
+class="math inline">\(h\)</span> such that <span
+class="math inline">\(f^{-1}([a,b])\subseteq
+\operatorname{supp}(h)\subseteq U\)</span> and <span
+class="math inline">\(U\)</span> is a open set not containing any
+critical point.</p>
+<p>And <span class="math display">\[
+X:=\frac{h}{\langle \nabla f, \nabla f \rangle} \nabla f
+\]</span> is a compact support vector field on <span
+class="math inline">\(M\)</span>.</p>
+<p>Let <span class="math inline">\(\varphi: M \times \mathbb{R} \to
+M\)</span> be the global flow generated by <span
+class="math inline">\(X\)</span>, then <span class="math display">\[
+\frac{d}{dt}\varphi_t^*f(p) = \frac{d}{dt} f(\varphi_t(p)) = \langle
+\nabla f, X \rangle = \frac{h}{\langle \nabla f, \nabla f \rangle}
+\langle \nabla f, \nabla f \rangle = h
+\]</span></p>
+<p>So we have <span class="math inline">\(f(\varphi_t(p)) = t +
+f(p)\)</span> for any <span class="math inline">\(\varphi_t(p)\in
+f^{-1}([a,b])\)</span>.</p>
+<p>Thus, the diffeomorphism <span
+class="math inline">\(\varphi_{b-a}\)</span> maps <span
+class="math inline">\(M^a\)</span> to <span
+class="math inline">\(M^b\)</span>.</p>
+<h3 id="lie-derivative">Lie Derivative</h3>
+<p>The <strong>Lie derivative</strong> of a function <span
+class="math inline">\(f\in C^{\infty}(M)\)</span> with respect to a
+vector field <span class="math inline">\(X\in \mathfrak{X}(M)\)</span>
+is defined as: <span class="math display">\[
+\mathcal{L}_X f = X(f) = \lim_{t\to 0} \frac{f\circ \varphi_t - f}{t}
+\]</span> where <span class="math inline">\(\varphi_t\)</span> is the
+flow of <span class="math inline">\(X\)</span>.</p>
+<p>The <strong>Lie derivative</strong> of a vector field <span
+class="math inline">\(Y\in \mathfrak{X}(M)\)</span> with respect to a
+vector field <span class="math inline">\(X\in \mathfrak{X}(M)\)</span>
+is defined as: <span class="math display">\[
+\mathcal{L}_X Y = \frac{d}{dt}\bigg|_{t=0}
+(d\varphi_{-t})_{\varphi_t(p)}(Y_{\varphi_t(p)}) = \lim_{t\to 0}
+\frac{(d\varphi_{-t})_{\varphi_t(p)}(Y_{\varphi_t(p)}) - Y_p}{t} = [X,Y]
+\]</span> where <span class="math inline">\(\varphi_t\)</span> is the
+flow of <span class="math inline">\(X\)</span>.</p>
+<p>The second equality is because for any <span
+class="math inline">\(f\in C^{\infty}(U)\)</span> defined around <span
+class="math inline">\(p\)</span>: <span class="math display">\[
+\begin{align*}
+(d\varphi_{-t})_{\varphi_t(p)}(Y_{\varphi_t(p)})(f) &amp;=
+Y_{\varphi_t(p)}(f\circ \varphi_{-t}) \\
+&amp;= Y(f\circ \varphi_{-t})\circ \varphi_t(p) \\
+&amp;= (\varphi_t^*(Y(f\circ \varphi_{-t})))(p) \\
+&amp;= (\varphi_t^*Y\varphi_{-t}^*f)(p)
+\end{align*}
+\]</span></p>
+<p>And <span class="math display">\[
+\begin{align*}
+\frac{d}{dt}\bigg|_{t=0} (d\varphi_{-t})
+_{\varphi_t(p)}(Y_{\varphi_t(p)}) f &amp;= \frac{d}{dt}\bigg|_{t=0}
+(\varphi_t^*Y\varphi_{-t}^*f) \\
+&amp;= \frac{d}{dt}\bigg|_{t=0} \varphi_t^*Yf +
+Y\frac{d}{dt}\bigg|_{t=0} \varphi_{-t}^*f\\
+&amp;= XYf-YXf = [X,Y]f
+\end{align*}
+\]</span></p>
+<p>The Lie derivative is a derivation on the Lie algebra <span
+class="math inline">\(\mathfrak{X}(M)\to \mathfrak{X}(M)\)</span>. That
+is to say, for any <span class="math inline">\(X,Y,Z\in
+\mathfrak{X}(M)\)</span> and <span class="math inline">\(a,b\in \mathbb
+R\)</span>, we have the Leibniz rule: <span class="math display">\[
+L_X([Y,Z]) = [L_X Y, Z] + [Y, L_X Z]
+\]</span></p>
+<p><strong>Proof</strong></p>
+<p>By the Jacobi identity, we have: <span class="math display">\[
+\begin{align*}
+L_X([Y,Z]) &amp;= [X,[Y,Z]] \\
+&amp;= - [Y,[Z,X]] - [Z,[X,Y]] \\
+&amp;= [ [X,Y], Z] + [Y, [X,Z]] \\
+&amp;= [L_X Y, Z] + [Y, L_X Z]
+\end{align*}
+\]</span></p>
+<p>So we can see the Jacobi identity as the Leibniz rule of the Lie
+derivative.</p>
+<h3 id="lie-group">Lie Group</h3>
+<p>Let <span class="math inline">\(G\)</span> be a group, we say <span
+class="math inline">\(G\)</span> is a <strong>Lie group</strong> if it
+is a smooth manifold and the group operation <span
+class="math inline">\(\mu:G\times G\to G, (g_1,g_2)\mapsto g_1\cdot
+g_2\)</span> is smooth mappings.</p>
+<p>Examples of Lie groups include: - <span
+class="math inline">\(\mathbb{R}^n\)</span> with addition as the group
+operation. - <span
+class="math inline">\(\mathbb{R}^n\setminus\{0\}\)</span> with
+multiplication as the group operation. - The general linear group <span
+class="math inline">\(\operatorname{GL}(n,\mathbb{R})\)</span>, which
+consists of all invertible <span class="math inline">\(n \times
+n\)</span> matrices with real entries, with matrix multiplication as the
+group operation. - The special orthogonal group <span
+class="math inline">\(\operatorname{SO}(n)\)</span>, which consists of
+all <span class="math inline">\(n \times n\)</span> orthogonal matrices
+with determinant 1, with matrix multiplication as the group operation. -
+<span class="math inline">\(\mathbb S^1\)</span>, the circle group,
+which can be identified with the unit complex numbers under
+multiplication. - <span class="math inline">\(\mathbb S^3\)</span>, the
+3-sphere, which can be identified with unit quaternions under
+multiplication.</p>
+<p>A Lie group must satisfy the following properties: - The base space
+<span class="math inline">\(G\)</span> (i.e. the underlying topological
+space) is orientable. - The fundamental group <span
+class="math inline">\(\pi_1(G)\)</span> is a abelian group for a
+connected Lie group <span class="math inline">\(G\)</span>. - Every Lie
+group is parallelizable, i.e., its tangent bundle is trivial <span
+class="math inline">\(TM \cong G \times \mathbb{R}^n\)</span>, where
+<span class="math inline">\(n = \dim G\)</span>.</p>
+<h4 id="left-and-right-multiplication">Left and Right
+Multiplication</h4>
+<p>Assume <span class="math inline">\(G\)</span> is a Lie group, for any
+<span class="math inline">\(g\in G\)</span>, the left multiplication and
+right multiplication induce two mappings on <span
+class="math inline">\(G\)</span>: <span class="math display">\[
+L_g: G \to G, \quad L_g(h) = g\cdot h
+\]</span> <span class="math display">\[
+R_g : G \to G, \quad R_g(h) = h\cdot g
+\]</span></p>
+<p>Note we can write them as the composition of the group operation and
+the inclusion map: <span class="math display">\[
+L_g = \mu \circ l_g=(i_g, \text{id}_G), \quad R_g = \mu \circ
+r_g=(\text{id}_G, i_g)
+\]</span> where <span class="math inline">\(i_g: \{e\} \to G\)</span> is
+the inclusion map from the identity element <span
+class="math inline">\(e\)</span> to <span
+class="math inline">\(g\)</span>.</p>
+<p>And <span class="math inline">\(L_g^{-1} = L_{g^{-1}}, R_g^{-1} =
+R_{g^{-1}}\)</span>.</p>
+<p>Thus, <span class="math inline">\(L_g\)</span> and <span
+class="math inline">\(R_g\)</span> are diffeomorphisms on <span
+class="math inline">\(G\)</span>.</p>
+<p>To show the usefulness of left and right multiplication, we leveraged
+them to prove that every Lie group is parallelizable.</p>
+<p><strong>Theorem</strong> Every Lie group <span
+class="math inline">\(G\)</span> is parallelizable, i.e., its tangent
+bundle is trivial <span class="math inline">\(TG \cong G \times
+\mathbb{R}^n\)</span>, where <span class="math inline">\(n = \dim
+G\)</span>.</p>
+<p><strong>Proof</strong> Consider <span class="math display">\[
+\begin{align*}
+\Phi: G \times T_eG &amp;\to TG \\
+(g,v) &amp;\mapsto (g, (dL_g)_e(v))
+\end{align*}
+\]</span> where <span class="math inline">\(e\)</span> is the identity
+element of <span class="math inline">\(G\)</span>. It is easy to see
+that <span class="math inline">\(\Phi\)</span> is a bijection. And since
+<span class="math inline">\(L_g\)</span> is a diffeomorphism, <span
+class="math inline">\((dL_g)_e\)</span> is a linear isomorphism from
+<span class="math inline">\(T_eG\)</span> to <span
+class="math inline">\(T_gG\)</span>. So <span
+class="math inline">\(\Phi\)</span> is a diffeomorphism.</p>
+<p>Use the same technique, we can also show that the inverse mapping
+<span class="math inline">\(g\mapsto g^{-1}\)</span> is a smooth
+diffeomorphism on <span class="math inline">\(G\)</span>.</p>
+<p>And the differential of the inverse mapping is given by: <span
+class="math display">\[
+(d\iota)_a X_a = -(dL_{a^{-1}})_e (dR_{a^{-1}})_a X_a
+\]</span></p>
+<p>And <span class="math inline">\((d\mu)_{e,e}(X_e,Y_e) = X_e+Y_e,
+(d\iota)_e(X_e) = -X_e\)</span>.</p>
+<h3 id="lie-algebra">Lie Algebra</h3>
+<p>From the proof above, we see that the tangent space <span
+class="math inline">\(T_eG\)</span> determines the structure around any
+point <span class="math inline">\(g\in G\)</span>.</p>
+<p>So we focus on the structure around the identity element <span
+class="math inline">\(e\)</span> of the Lie group <span
+class="math inline">\(G\)</span>.</p>
+<p><strong>Definition</strong></p>
+<p>Let <span class="math inline">\(V\)</span> be a vector space over
+<span class="math inline">\(\mathbb R\)</span> (or any field <span
+class="math inline">\(\mathbb K\)</span>) with a map <span
+class="math inline">\([\cdot,\cdot]: V \times V \to V\)</span>
+satisfying the following properties: - Antisymmetry: <span
+class="math inline">\([X,Y] = -[Y,X]\)</span> for all <span
+class="math inline">\(X,Y\in V\)</span>. - Linearity: <span
+class="math inline">\([aX+bY,Z]=a[X,Z]+b[Y,Z],\forall a,b\in \mathbb
+R\)</span>. - Jacobi Identity: <span class="math inline">\([X,[Y,Z]] +
+[Y,[Z,X]] + [Z,[X,Y]] = 0\)</span> for all <span
+class="math inline">\(X,Y,Z\in V\)</span>.</p>
+<p>Then <span class="math inline">\((V,[\cdot,\cdot])\)</span> is called
+a <strong>Lie algebra</strong> and the map <span
+class="math inline">\([\cdot,\cdot]\)</span> is called the <strong>Lie
+bracket</strong>.</p>
+<h4 id="left-invariant-vector-fields">Left Invariant Vector Fields</h4>
+<p>Assume <span class="math inline">\(G\)</span> is a Lie group, <span
+class="math inline">\(X_e\in T_eG\)</span> is a vector in the tangent
+space at the identity element <span class="math inline">\(e\)</span>. We
+can define a vector field <span class="math inline">\(X\in
+\mathfrak{X}(G)\)</span> as follows: <span class="math display">\[
+X(g) = (dL_g)_e(X_e)
+\]</span> This vector field is called a <strong>left invariant vector
+field</strong> because it is invariant under left multiplication, i.e.,
+<span class="math inline">\(dL_g X(h) = X(gh)\)</span> for all <span
+class="math inline">\(g,h\in G\)</span>.</p>
+<p>It is obvious that any left invariant vector field is uniquely
+determined by its value at the identity element <span
+class="math inline">\(e\)</span>.</p>
+<p>Denote the set of all left invariant vector fields on <span
+class="math inline">\(G\)</span> as <span
+class="math inline">\(\mathfrak{g} = \{X\in \mathfrak{X}(G)| X(g) =
+(dL_g)_e(X_e), \forall g\in G\}\)</span>.</p>
+<p>The set <span class="math inline">\(\mathfrak{g}\)</span> is a vector
+space over <span class="math inline">\(\mathbb R\)</span> and <span
+class="math inline">\(\mathfrak{g} \simeq T_eG\)</span>, <span
+class="math inline">\(\dim \mathfrak{g} = \dim G\)</span>.</p>
+<p>For any <span class="math inline">\(X,Y\in \mathfrak{g}, g\in
+G\)</span>, we can verify that: <span class="math display">\[
+\begin{align*}
+( (dL_g)_e([X,Y]_e) )f &amp;= [X,Y]_e (f\circ L_g) \\
+&amp;= (X(Y(f\circ L_g)) - Y(X(f\circ L_g)))(e) \\
+&amp;= (XYf-YXf)(g)\\
+&amp;= [X,Y]_g f
+\end{align*}
+\]</span> Thus <span class="math inline">\([X,Y]\)</span> is also a left
+invariant vector field.</p>
+<p>So <span class="math inline">\(\mathfrak{g}\)</span> is a Lie algebra
+with the Lie bracket induced by the Lie bracket of <span
+class="math inline">\(\mathfrak{X}(G)\)</span>, which is called
+<strong>the Lie Algebra on Lie group <span
+class="math inline">\(G\)</span></strong>.</p>
+<p><strong>Example</strong></p>
+<p><span class="math inline">\(\text{GL}(n,\mathbb{R})\)</span> is a
+open subset of <span class="math inline">\(M(n,\mathbb{R})\cong \mathbb
+R^{n^2}\)</span></p>
+<p>So <span class="math inline">\(\mathfrak{gl}(n,\mathbb{R})\)</span>
+as the tangent space of <span
+class="math inline">\(\text{GL}(n,\mathbb{R})\)</span> on <span
+class="math inline">\(e=I_n\)</span> is isomorphic to <span
+class="math inline">\(M(n,\mathbb R)\)</span>.</p>
+<p>And <span class="math inline">\([X_A,X_B]= X_{[A,B]}\)</span> for all
+<span class="math inline">\(A,B\in T_{I_n} \text{GL}(n,\mathbb
+R)\)</span>.</p>
+<h3 id="homomorphism-of-lie-groups-and-lie-algebras">Homomorphism of Lie
+Groups and Lie Algebras</h3>
+<p>There are two types of homomorphism, one is the <strong>Lie group
+homomorphism</strong> and the other is the <strong>Lie algebra
+homomorphism</strong>, which are morphism between Lie group categories
+and Lie algebra categories respectively.</p>
+<p>Let <span class="math inline">\(G,H\)</span> be Lie groups, if smooth
+mapping <span class="math inline">\(\phi: G\to H\)</span> is a group
+homomorphism, we call <span class="math inline">\(\phi\)</span> a Lie
+group homomorphism. If <span class="math inline">\(\phi\)</span> is a
+diffeomorphism, we call <span class="math inline">\(\phi\)</span> a Lie
+group isomorphism.</p>
+<p>Let <span class="math inline">\(\mathfrak{g,h}\)</span> be Lie
+algebras, if a linear mapping <span
+class="math inline">\(L:\mathfrak{g}\to \mathfrak{h}\)</span> satisfies
+<span class="math inline">\(L([X,Y]) = [L(X),L(Y)]\)</span> for all
+<span class="math inline">\(X,Y\in \mathfrak{g}\)</span>, we call <span
+class="math inline">\(L\)</span> a Lie algebra homomorphism. If <span
+class="math inline">\(L\)</span> is invertible, we call <span
+class="math inline">\(L\)</span> a Lie algebra isomorphism. Note that if
+<span class="math inline">\(L\)</span> is invertible, then <span
+class="math inline">\(L^{-1}\)</span> is also a Lie algebra
+homomorphism.</p>
+<p><strong>Examples</strong></p>
+<p>For any Lie group <span class="math inline">\(G\)</span>, the
+conjugation mapping <span class="math inline">\(C_g: G\to G\)</span>
+defined as: <span class="math display">\[
+C_g(h) = g h g^{-1} = L_g \circ R_{g^{-1}}(h)
+\]</span> is a Lie group isomorphism for any <span
+class="math inline">\(g\in G\)</span>. The inverse mapping is given by
+<span class="math inline">\(C_{g^{-1}}\)</span>.</p>
+<p>For any <span class="math inline">\(X\in GL(n,\mathbb R)\)</span>,
+the adjoint mapping <span class="math inline">\(\operatorname{Ad}_X:
+\mathfrak{gl}(n,\mathbb R) \to \mathfrak{gl}(n,\mathbb R)\)</span>
+defined as: <span class="math display">\[
+\operatorname{Ad}_X(Y) = XYX^{-1}
+\]</span> is a Lie group isomorphism. The inverse mapping is given by
+<span class="math inline">\(\operatorname{Ad}_{X^{-1}}\)</span>.</p>
+<h4 id="induced-lie-algebra-homomorphism">Induced Lie Algebra
+Homomorphism</h4>
+<p>Let <span class="math inline">\(\phi: G\to H\)</span> be a Lie group
+homomorphism, then the differential of <span
+class="math inline">\(\phi\)</span> at the identity element <span
+class="math inline">\(e\in G\)</span>, induced a mapping <span
+class="math inline">\(d\phi: \mathfrak{g} \simeq T_eG \to
+T_{\phi(e)}H\simeq \mathfrak{h}\)</span>, is a Lie algebra homomorphism
+from the Lie algebra <span class="math inline">\(\mathfrak{g}\)</span>
+of <span class="math inline">\(G\)</span> to the Lie algebra <span
+class="math inline">\(\mathfrak{h}\)</span> of <span
+class="math inline">\(H\)</span>.</p>
+<p>To write it more explicitly, for any <span class="math inline">\(X\in
+\mathfrak{g}\)</span>, <span class="math inline">\(X_e\in T_eG\)</span>
+is the value of <span class="math inline">\(X\)</span> at <span
+class="math inline">\(e\)</span>. <span class="math display">\[
+\begin{align*}
+d\phi_e: T_eG &amp;\to T_{\phi(e)}H \\
+X_e &amp;\mapsto (d\phi)_e(X_e)
+\end{align*}
+\]</span> <span class="math display">\[
+\begin{align*}
+d\phi: \mathfrak{g} &amp;\to \mathfrak{h} \\
+X &amp;\mapsto [h \mapsto dL_h(d\phi_e(X_e))]
+\end{align*}
+\]</span></p>
+<p>To see that <span class="math inline">\(d\phi\)</span> is a Lie
+algebra homomorphism, we need to show that <span
+class="math inline">\(d\phi([X,Y]) = [d\phi(X), d\phi(Y)]\)</span> for
+any <span class="math inline">\(X,Y\in \mathfrak{g}\)</span>.</p>
+<p>For any <span class="math inline">\(f\in C^{\infty}(H)\)</span>, we
+have: <span class="math display">\[
+\begin{align*}
+(d\phi([X,Y]))_{e_{h}} f &amp;= dL_{e_{h}}(d\phi_e([X,Y]_e)) f \\
+&amp;= (d\phi_e([X,Y]_e))(f) \\
+&amp;= [X,Y]_e (f\circ \phi) \\
+\end{align*}
+\]</span></p>
+<p><span class="math display">\[
+\begin{align*}
+[d\phi(X), d\phi(Y)]_{e_{h}} f &amp;= (d\phi(X) d\phi(Y) f - d\phi(Y)
+d\phi(X) f)(e_{h}) \\
+&amp;= (d\phi(X)(d\phi(Y) f))(e_{h}) - (d\phi(Y)(d\phi(X) f))(e_{h}) \\
+&amp;= (d\phi_e(X_e))(d\phi(Y) f) - (d\phi_e(Y_e))(d\phi(X) f) \\
+&amp;= X_e (d\phi(Y) f \circ \phi) - Y_e (d\phi(X) f \circ \phi) \\
+\end{align*}
+\]</span></p>
+<p>To move on, we need:</p>
+<p><strong>Lemma</strong>:</p>
+<p><span class="math display">\[
+(d\phi(X)f) \phi = X(f\circ \phi)
+\]</span></p>
+<p><strong>Proof</strong>: For any <span class="math inline">\(g\in
+G\)</span>, we have: <span class="math display">\[
+\begin{align*}
+(d\phi(X)f) \phi(g) &amp;= d\phi(X)|_{\phi(g)} f \\
+&amp;= (dL_{\phi(g)})_{e_H}(d\phi_e(X_e)) f \\
+&amp;= d\phi_g (dL_g)_e (X_e) f \\
+&amp;= d\phi_g X_g f \\
+&amp;= X_g (f \circ \phi) \\
+&amp;= X(f \circ \phi) (g)
+\end{align*}
+\]</span></p>
+<blockquote>
+<p>For the third step, <span class="math inline">\(\phi\)</span> is a
+group homomorphism, we know that <span class="math inline">\(\phi(g h) =
+\phi(g)\phi(h)\)</span>, so <span class="math inline">\(L_{\phi(g)}
+\circ \phi = \phi \circ L_g\)</span>, differentiating both sides at
+<span class="math inline">\(e\)</span> gives us <span
+class="math inline">\(d(L_{\phi(g)})_{e_H} \circ d\phi_e = d\phi_g \circ
+(dL_g)_e\)</span>.</p>
+</blockquote>
+<p>That is to say, the definition of the push forward <span
+class="math inline">\(d\phi(X)\)</span> by the differential of the
+diffeomorphism <span class="math inline">\(\phi\)</span> is equivalent
+to the corresponding vector field induced by the left action <span
+class="math inline">\(dL_{\phi(\cdot)}\)</span> on <span
+class="math inline">\(d\phi_e(X_e)\)</span>.</p>
+<p>So we have: <span class="math display">\[
+\begin{align*}
+[d\phi(X), d\phi(Y)]_{e_{h}} f &amp;= X_e (d\phi(Y) f \circ \phi) - Y_e
+(d\phi(X) f \circ \phi) \\
+&amp;= X_e (Y (f\circ \phi)) - Y_e (X (f\circ \phi)) \\
+&amp;= [X,Y]_e (f\circ \phi) \\
+&amp;= (d\phi([X,Y]))_{e_{h}} f
+\end{align*}
+\]</span></p>
+<p>The above proof can be summerized as the following:</p>
+<p>Step 1: <span class="math inline">\(d\phi(X)\)</span> is <span
+class="math inline">\(\phi\)</span>-related to <span
+class="math inline">\(X\)</span>.</p>
+<p>For <span class="math inline">\(X \in \mathfrak{g}\)</span>, <span
+class="math inline">\(d\phi(X) \in \mathfrak{h}\)</span> is
+left-invariant, and for <span class="math inline">\(f \in
+C^\infty(H)\)</span>, since <span class="math inline">\(\phi(g h) =
+\phi(g) \phi(h)\)</span>, we have <span
+class="math inline">\(L_{\phi(g)} \circ \phi = \phi \circ
+L_g\)</span>.</p>
+<p>Differentiating at <span class="math inline">\(e\)</span>: <span
+class="math inline">\(d(L_{\phi(g)}){e_H} \circ d\phi_e = d\phi_g \circ
+(dL_g)e.\)</span> Thus: <span class="math inline">\(d\phi(X)|_{\phi(g)}
+f = (dL{\phi(g)})_{e_H} (d\phi_e(X_e)) f = d\phi_g ((dL_g)_e X_e) f =
+X_g (f \circ \phi).\)</span></p>
+<p>So, <span class="math inline">\(d\phi(X) f \circ \phi = X (f \circ
+\phi)\)</span>, meaning <span class="math inline">\(X\)</span> is <span
+class="math inline">\(\phi\)</span>-related to <span
+class="math inline">\(d\phi(X)\)</span>.</p>
+<p>Step 2: Lie Bracket Preservation</p>
+<p>If <span class="math inline">\(X, Y \in \mathfrak{g}\)</span> are
+<span class="math inline">\(\phi\)</span>-related to <span
+class="math inline">\(d\phi(X), d\phi(Y) \in \mathfrak{h}\)</span>, then
+<span class="math inline">\([X, Y]\)</span> is <span
+class="math inline">\(\phi\)</span>-related to <span
+class="math inline">\([d\phi(X), d\phi(Y)]\)</span>.</p>
+<p>At <span class="math inline">\(g = e\)</span>: <span
+class="math inline">\([d\phi(X), d\phi(Y)]_{e_H} = d\phi_e ([X,
+Y]_e).\)</span> Since both are left-invariant, <span
+class="math inline">\([d\phi(X), d\phi(Y)] = d\phi([X, Y])\)</span>.
+Linearity of <span class="math inline">\(d\phi\)</span> follows from
+<span class="math inline">\(d\phi_e\)</span>.</p>
+<p>Thus, <span class="math inline">\(d\phi\)</span> is a Lie algebra
+homomorphism.</p>
+<h4 id="adjoint-map">Adjoint Map</h4>
+<p>Since every element <span class="math inline">\(g\in G\)</span> gives
+a isomorphism on Lie group: <span class="math display">\[
+\begin{align*}
+C_g: G&amp;\to G \\
+x&amp;\mapsto gxg^{-1}
+\end{align*}
+\]</span> Such map induces a isomorphism on Lie algebra: <span
+class="math display">\[
+\text{Ad}_g = d C_g\big|_e: \mathfrak{g}\to\mathfrak{g}
+\]</span></p>
+<p>So this yields a new mapping <span class="math display">\[
+\begin{align*}
+\text{Ad}: G&amp;\to \text{GL}(\mathfrak g)\\
+g&amp;\mapsto \text{Ad}_g
+\end{align*}
+\]</span> as a group homomorphism between <span
+class="math inline">\(G\)</span> and <span
+class="math inline">\(\text{GL}(\mathfrak g)\)</span>, which is called
+the <strong>adjoint representation</strong> of <span
+class="math inline">\(G\)</span>.</p>
+<p>Again, take the induced mapping of <span
+class="math inline">\(\text{Ad}\)</span>, we get <span
+class="math display">\[
+\begin{align*}
+\text{ad}: \mathfrak{g} &amp;\to \text{End}(\mathfrak{g}) \\
+X &amp;\mapsto d \text{Ad} \big|_e (X)
+\end{align*}
+\]</span></p>
+<p>We shall see that <span class="math inline">\(\text{ad}(X)(Y) =
+[X,Y]\)</span>.</p>
+<h3 id="exponential-map">Exponential Map</h3>
+<p>Recall that Lie algebra can be viewed as the tangent space of <span
+class="math inline">\(T_eG\)</span> of some Lie group <span
+class="math inline">\(G\)</span>. For now, we put whether such <span
+class="math inline">\(G\)</span> can always be found aside. And a
+tangent vector <span class="math inline">\(X\in T_eG\)</span> induced a
+left-invariant vector field <span class="math inline">\(X\)</span> by
+the left multiplication <span class="math inline">\(L_g\)</span> on
+<span class="math inline">\(G\)</span>. Such vector fields could induce
+a flow <span class="math inline">\(\Phi^X\)</span> on <span
+class="math inline">\(G\)</span>, i.e. we can build a connection between
+the Lie algebra and the induced flow on the group.</p>
+<p>We shall ask the following question:</p>
+<ul>
+<li>Is <span class="math inline">\(\Phi^X\)</span> complete?</li>
+<li>How does <span class="math inline">\(\Phi^X\)</span> change
+regarding different choices of <span
+class="math inline">\(X\)</span>?</li>
+</ul>
+<p>The answer to the first question is yes.</p>
+<p>Although <span class="math inline">\(G\)</span> is not necessarily
+compact, but if <span class="math inline">\(U\in e\)</span> we locally
+have <span class="math inline">\(\Gamma: (-\epsilon, \epsilon) \times U
+\to G\)</span> as the fundamental theorem states, then we can apply
+<span class="math inline">\(L_g\)</span> to transform the local maps to
+anywhere <span class="math inline">\(g\)</span>, thus the integral curve
+can be extended to the whole manifold.</p>
+<p>Note <span class="math display">\[
+\phi^X_t(g) = g \phi_t^X(e)
+\]</span> where <span class="math inline">\(\phi^X_t\)</span> are the
+diffeomorphism induced by the flow <span
+class="math inline">\(\Phi^X\)</span> at time <span
+class="math inline">\(t\)</span>.</p>
+<p><strong>Exercise</strong>: Prove it.</p>
+<blockquote>
+<p>Hint: First assume <span class="math inline">\(g\in U\)</span>, and
+show that any <span class="math inline">\(g&#39;\in G\)</span> can be
+written as finite product of <span class="math inline">\(g_i\in
+U\)</span></p>
+</blockquote>
+<p>So <span class="math display">\[
+\phi_t^X = R_{\phi_{t}^X(e)}
+\]</span> And <span class="math display">\[
+g\phi_{s+t}^X(e) = \phi_{t}^X(\phi_{s}^X(g)) =
+\phi_{t}^X(g\phi_{s}^X(e)) = g\phi_{s}^X(e)\phi_{t}^X(e)
+\]</span> for all <span class="math inline">\(g\in G\)</span></p>
+<p>Thus <span class="math display">\[
+\phi_{s+t}^X(e) = \phi_{s}^X(e)\phi_{t}^X(e)
+\]</span></p>
+<p>So the mapping <span class="math display">\[
+\begin{align*}
+\rho^X: \mathbb{R} &amp;\to G \\
+t &amp;\mapsto \phi^X_t(e)
+\end{align*}
+\]</span> is a smooth group homomorphism.</p>
+<p><strong>Exercise</strong>: &gt; Prove it is smooth.</p>
+<p>So <span class="math inline">\(\rho^X\)</span> is called the
+<strong>one-parameter subgroup</strong> of <span
+class="math inline">\(G\)</span>.</p>
+<p>And every <span class="math inline">\(X\in\mathfrak{g}\)</span> gives
+rise to a one-parameter subgroup <span
+class="math inline">\(\rho^X\)</span> of <span
+class="math inline">\(G\)</span>.</p>
+<p>Conversely, let <span class="math inline">\(\rho\)</span> be a
+one-parameter subgroup of <span class="math inline">\(G\)</span>. Then
+<span class="math display">\[
+X_g := \frac{d}{dt}\bigg|_{t=0} R_{\rho(t)}g
+\]</span> is a left-invariant vector field on <span
+class="math inline">\(G\)</span>.</p>
+<p><strong>Proof</strong>: <span class="math display">\[
+\begin{align*}
+dL_h(X_g) &amp;= dL_h (\frac{d}{dt}\bigg|_{t=0} R_{\rho(t)}g)\\
+&amp;= \frac{d}{dt}\bigg|_{t=0}(L_hR_{\rho(t)}g) \\
+&amp;= \frac{d}{dt}\bigg|_{t=0}(R_{\rho(t)}hg) \\
+&amp;= X_{hg}
+\end{align*}
+\]</span></p>
+<p>So <span class="math inline">\(\rho^X\)</span> has a bijection with
+<span class="math inline">\(X\in \mathfrak{g}\)</span>, which is the
+third interpretation of the Lie algebra—the infinitesimal generator of
+all the one-parameter subgroup of <span
+class="math inline">\(G\)</span>.</p>
+<p><strong>Exercise</strong> &gt; Now, prove <span
+class="math inline">\(\text{ad}(X)(Y)=[X,Y]\)</span>.</p>
+<p>To study the second problem, we define the exponential map <span
+class="math display">\[
+\begin{align*}
+\exp: \mathfrak{g} &amp;\to G \\
+X &amp;\mapsto \phi^X_1(e)
+\end{align*}
+\]</span> Note <span class="math inline">\(\exp(tX) = \phi_{1}^{tX}(e) =
+\phi_{t}^{X}(e)\)</span>.</p>
+<p>The exponential map has the following properties: 1.
+<strong>Differentiable</strong>: The exponential map is a smooth
+(infinitely differentiable) map.</p>
+<ol start="2" type="1">
+<li><p><strong>Local Diffeomorphism</strong>: The exponential map is a
+local diffeomorphism around the zero vector in the Lie algebra <span
+class="math inline">\(\mathfrak{g}\)</span>. This means that for small
+enough <span class="math inline">\(X \in \mathfrak{g}\)</span>, the map
+<span class="math inline">\(\exp\)</span> is invertible in a
+neighborhood of <span class="math inline">\(0 \in
+\mathfrak{g}\)</span>.</p></li>
+<li><p><span class="math inline">\(\exp(tX)\cdot \exp(sX) =
+\exp((t+s)X)\)</span></p></li>
+</ol>
+<p><strong>Examples</strong></p>
+<p>(1). <span class="math inline">\(G=\mathbb R^*\)</span>, <span
+class="math inline">\(\mathfrak{g}=T_1 G= \{c\cdot
+\frac{d}{dx}\big|_{1}\}\cong \mathbb R\)</span>.</p>
+<p>To calculate <span
+class="math inline">\(\exp(X)=\phi_{1}^X(1)\)</span>, write <span
+class="math inline">\(X= x\frac{d}{dx} \in \mathfrak{g}\)</span>.</p>
+<p>And <span class="math display">\[
+\dot \gamma(t) = X_{\gamma(t)}
+\]</span> Note <span class="math inline">\(X_{\gamma(t)} = \gamma(t) x
+\frac{d}{d x^0}\)</span> <span class="math display">\[
+\frac{d}{dt}\gamma(t) = \gamma(t) \cdot x
+\]</span> yields <span class="math inline">\(\gamma(t) =
+\exp(tx)\)</span>.</p>
+<p>(2). For <span class="math inline">\(G=(S^1,\cdot)\)</span>, <span
+class="math display">\[
+\begin{align*}
+\exp: i\mathbb R=T_e S^1&amp;\to S^1 \\
+\exp(ix) &amp;\mapsto e^{ix}
+\end{align*}
+\]</span> (3). For <span class="math inline">\(G=\text{GL}(n,\mathbb
+R)\)</span> <span class="math display">\[
+\begin{align*}
+\exp: \mathfrak{gl}(n,\mathbb R)&amp;\to \text{GL}(n,\mathbb R) \\
+A &amp;\mapsto e^{A}=\sum_{i=0}^{\infty} \frac{1}{i!}A^i
+\end{align*}
+\]</span> where <span class="math inline">\(A^0 = I\)</span>.</p>
+<p><span class="math inline">\(\exp:\mathfrak{g} \to G\)</span> is a
+smooth mapping, and its differential at <span
+class="math inline">\(e\)</span> is the identity map <span
+class="math display">\[
+(d \exp)_0 = Id_{\mathfrak g}: T_0\mathfrak{g}\simeq \mathfrak{g} \to
+\mathfrak{g} \simeq T_e G
+\]</span></p>
+<p><strong>Proof</strong> Consider a vector field <span
+class="math inline">\(\tilde X\)</span> manifold <span
+class="math inline">\(G\times \mathfrak{g}\)</span>, <span
+class="math inline">\(\tilde X_{(g,X)}=(X_g,0)\)</span></p>
+<p>The integral curve just be <span class="math inline">\(\gamma(t) = (g
+\cdot \exp(tX), X)\)</span></p>
+<p>The flow is smooth, thus <span class="math display">\[
+\begin{align*}
+\mathfrak{g}&amp;\to \mathbb{R}\times G\times \mathfrak g &amp;&amp;\to
+G\times \mathfrak g &amp;&amp;\to G\\
+X &amp;\mapsto (1,e,X) &amp;&amp;\mapsto (\exp(X),X) &amp;&amp;\mapsto
+\exp(X)
+\end{align*}
+\]</span> is smooth.</p>
+<p>The identity property is given by the following: <span
+class="math display">\[
+d(exp)_0 X = \frac{d}{dt}\bigg|_{t=0} \exp(tX) =
+\frac{d}{dt}\bigg|_{t=0} \phi_t^X(e) = X_e
+\]</span></p>
+<p>Particularly, <span class="math inline">\(\exp\)</span> is a
+diffeomorphism around <span class="math inline">\(0\)</span>. That is to
+say, locally around <span class="math inline">\(e\)</span>, the Lie
+group looks like the corresponding Lie algebra.</p>
+<h3 id="naturality">Naturality</h3>
+<p>Given any Lie group homomorphism <span class="math inline">\(\varphi:
+G\to H\)</span>, the diagram</p>
+<p><span class="math display">\[
+\begin{array}{ccc}
+\mathfrak{g} &amp; \xrightarrow{\quad\quad d\varphi\quad\quad} &amp;
+\mathfrak{h} \\[2em]
+\Big\downarrow{\exp_G} &amp; &amp; \Big\downarrow{\exp_H} \\[2em]
+G &amp; \xrightarrow{\quad\quad\varphi\quad\quad} &amp; H
+\end{array}
+\]</span></p>
+<p>commute.</p>
+<p><strong>Exercise</strong> Proof it &gt; Hint: For any <span
+class="math inline">\(X\in \mathfrak g\)</span>, <span
+class="math inline">\(\varphi \circ \exp_{G}(tX)\)</span> represents a
+one-parameter groups in <span class="math inline">\(H\)</span>, what is
+the infinitesimal generator?</p>
+<p>Particularly, for mapping <span class="math inline">\(C_g:G\to
+G\)</span> and <span class="math inline">\(\text{Ad}: G\to
+\text{GL}(\mathfrak g)\)</span>, we have: 1. <span
+class="math inline">\(g(\exp(tX))g^{-1} = \exp(t\text{Ad}_g(X))\)</span>
+2. <span class="math inline">\(\text{Ad}(\exp(tX)) =
+\exp(t\text{ad}(X))\)</span></p>
+<h3 id="baker-campbell-hausdorff-formula">Baker-Campbell-Hausdorff
+Formula</h3>
+<p>TODO.</p>
+<h2 id="exterior-algebra-differential-forms">Exterior Algebra,
+Differential Forms</h2>
+<p><strong>Note</strong>: we discuss multilinear functions over <span
+class="math inline">\(\mathbb{R}\)</span>-vector spaces, but the theory
+can be generalized to <span
+class="math inline">\(\mathbb{C}\)</span>-vector spaces or other vector
+spaces over a field.</p>
+<h3 id="dual-space">Dual Space</h3>
+<p>Let <span class="math inline">\(V,W\)</span> be a <span
+class="math inline">\(\mathbb{R}\)</span>-vector space, we denote all of
+the mapping from <span class="math inline">\(V\)</span> to <span
+class="math inline">\(W\)</span> as <span
+class="math inline">\(\text{Hom}(V,W)\)</span>.</p>
+<p>The <strong>dual space</strong> of <span
+class="math inline">\(V\)</span>, denoted as <span
+class="math inline">\(V^{\vee}\)</span> or <span
+class="math inline">\(V^*\)</span>, is the vector space of all linear
+maps from <span class="math inline">\(V\)</span> to <span
+class="math inline">\(\mathbb{R}\)</span>, i.e., <span
+class="math inline">\(V^* = \text{Hom}(V, \mathbb{R})\)</span>.</p>
+<p>The elements of the dual space <span
+class="math inline">\(V^*\)</span> are called <strong>covectors</strong>
+or <strong>dual vectors</strong>.</p>
+<p>The basis of the dual space <span class="math inline">\(V^*\)</span>
+is defined as the set of linear functionals that map each basis vector
+of <span class="math inline">\(V\)</span> to <span
+class="math inline">\(\mathbb{R}\)</span>, while mapping all other basis
+vectors to zero.</p>
+<p>To be specific, let <span class="math inline">\(V\)</span> be <span
+class="math inline">\(n\)</span>-dimensional vector space, if <span
+class="math inline">\(\{e_1, e_2, \ldots, e_n\}\)</span> is a basis of
+<span class="math inline">\(V\)</span>, then the dual basis <span
+class="math inline">\(\{\alpha^1, \alpha^2, \ldots, \alpha^n\}\)</span>
+of <span class="math inline">\(V^*\)</span> is defined by: <span
+class="math display">\[ \alpha^i(e_j) = \delta^i_j \]</span> where <span
+class="math inline">\(\delta^i_j\)</span> is the Kronecker delta.</p>
+<p>To show that <span class="math inline">\(\{\alpha^1, \alpha^2,
+\ldots, \alpha^n\}\)</span> is a basis of <span
+class="math inline">\(V^*\)</span>, we need to show that it is linearly
+independent and spans <span class="math inline">\(V^*\)</span>.</p>
+<p>Let <span class="math inline">\(f \in V^*\)</span> be a linear
+functional. We can express <span class="math inline">\(f\)</span> in
+terms of the dual basis as: <span class="math display">\[ f =
+\sum_{i=1}^n f(e_i) \alpha^i \]</span></p>
+<p>where <span class="math inline">\(f(e_i)\)</span> are the
+coefficients of the linear functional <span
+class="math inline">\(f\)</span> in the dual basis. This shows that
+<span class="math inline">\(\{\alpha^1, \alpha^2, \ldots,
+\alpha^n\}\)</span> spans <span class="math inline">\(V^*\)</span>.</p>
+<p>If <span class="math inline">\(\sum_{i=1}^n c_i \alpha^i = 0\)</span>
+for some coefficients <span class="math inline">\(c_i\)</span>, then for
+any basis vector <span class="math inline">\(e_j \in V\)</span>, we
+have: <span class="math display">\[ \sum_{i=1}^n c_i \alpha^i(e_j) =
+\sum_{i=1}^n c_i \delta^i_j = c_j = 0 \]</span> for all <span
+class="math inline">\(j = 1, 2, \ldots, n\)</span>. This implies that
+all coefficients <span class="math inline">\(c_i = 0\)</span>, showing
+that the dual basis is linearly independent.</p>
+<h3 id="multilinear-function">Multilinear function</h3>
+<p>Let <span class="math inline">\(V^k\)</span> be the <span
+class="math inline">\(k\)</span>-fold Cartesian product of a vector
+space <span class="math inline">\(V\)</span>, i.e., <span
+class="math inline">\(V^k = \underbrace{V \times V \times \ldots \times
+V}_{k\text{ times}}\)</span> . A <strong>multilinear function</strong>
+or <strong><span class="math inline">\(k\)</span>-linear
+function</strong> is a function <span class="math inline">\(f: V^k \to
+\mathbb{R}\)</span> that is linear in each argument separately. It is a
+type <span class="math inline">\((0,k)\)</span> tensor.</p>
+<p>One can prove that all multilinear functions on <span
+class="math inline">\(V\)</span> forms a vector space, denoted as <span
+class="math inline">\(L_k(V)\)</span> or <span
+class="math inline">\(\text{Mult}(V^k; \mathbb{R})\)</span>.</p>
+<h4 id="examples">Examples</h4>
+<ol type="1">
+<li><p><strong>Dot Product</strong>: For a <span
+class="math inline">\(\mathbb{R}\)</span>-vector space <span
+class="math inline">\(V\)</span> with a standard basis <span
+class="math inline">\(\{e_1, e_2, \ldots, e_n\}\)</span>, the dot
+product is a bilinear function <span class="math inline">\(f: V^2 \to
+\mathbb{R}\)</span> defined as: <span class="math display">\[ f(x,y) =
+\sum_{i=1}^n x^i y^i \]</span> where <span class="math inline">\(x =
+\sum_{i=1}^n x^i e_i\)</span> and <span class="math inline">\(y =
+\sum_{i=1}^n y^i e_i\)</span> are vectors in <span
+class="math inline">\(V\)</span>.</p></li>
+<li><p><strong>Determinant</strong>: The determinant is a multilinear
+function <span class="math inline">\(f: V^n \to \mathbb{R}\)</span>
+defined on the space of <span class="math inline">\(n \times n\)</span>
+matrices. It is linear in each row (or column) of the matrix.</p></li>
+</ol>
+<p>Let <span class="math inline">\(\sigma\in S_k\)</span> be a
+permutation of the indices <span class="math inline">\(\{1, 2, \ldots,
+k\}\)</span>. The left action of <span
+class="math inline">\(\sigma\)</span> on a multilinear function <span
+class="math inline">\(f: V^k \to \mathbb{R}\)</span> is defined as:
+<span class="math display">\[ \sigma f(v_1, v_2, \ldots, v_k) =
+f(v_{\sigma(1)}, v_{\sigma(2)}, \ldots, v_{\sigma(k)}) \]</span></p>
+<p>A <strong>symmetric multilinear function</strong> is a multilinear
+function that is invariant under any permutation of its arguments.</p>
+<p>Formally, <span class="math inline">\(\sigma f = f\)</span> for any
+permutation <span class="math inline">\(\sigma\in S_k\)</span>.</p>
+<p>An <strong>alternating multilinear function</strong> is a multilinear
+function that changes sign when two of its arguments are swapped, or
+equivalently, changes by a factor of <span
+class="math inline">\(sgn(\sigma)\)</span> when permuted by <span
+class="math inline">\(\sigma\)</span>.</p>
+<p>Formally, <span class="math inline">\(\sigma f = \text{sgn}(\sigma)
+f\)</span> for any permutation <span class="math inline">\(\sigma\in
+S_k\)</span>, where <span
+class="math inline">\(\text{sgn}(\sigma)\)</span> is the sign of the
+permutation.</p>
+<p>All symmetric multilinear functions on <span
+class="math inline">\(V\)</span> forms a vector space, denoted as <span
+class="math inline">\(S_k(V)\)</span> or <span
+class="math inline">\(\text{Sym}(V^k; \mathbb{R})\)</span>. All
+alternating multilinear functions on <span
+class="math inline">\(V\)</span> forms a vector space, denoted as <span
+class="math inline">\(A_k(V)\)</span> or <span
+class="math inline">\(\text{Alt}(V^k; \mathbb{R})\)</span>.</p>
+<h4 id="symmetrizing-and-alternating-operators">Symmetrizing and
+Alternating Operators</h4>
+<p>Let <span class="math inline">\(V\)</span> be a vector space and
+<span class="math inline">\(f: V^k \to \mathbb{R}\)</span> be a
+multilinear function. We can define the <strong>symmetrizing
+operator</strong> and <strong>alternating operator</strong> on <span
+class="math inline">\(f\)</span>.</p>
+<p>The <strong>symmetrizing operator</strong> <span
+class="math inline">\(S: L_k(V) \to S_k(V)\)</span> is defined as: <span
+class="math display">\[ S(f)(v_1, v_2, \ldots, v_k) = \frac{1}{k!}
+\sum_{\sigma \in S_k} \sigma f \]</span></p>
+<p>The symmetrizing operator takes a multilinear function and produces a
+symmetric multilinear function by averaging over all permutations of its
+arguments.</p>
+<p>The <strong>alternating operator</strong> <span
+class="math inline">\(A: L_k(V) \to A_k(V)\)</span> is defined as: <span
+class="math display">\[
+A(f)(v_1, v_2, \ldots, v_k) = \frac{1}{k!} \sum_{\sigma \in S_k}
+\text{sgn}(\sigma) \sigma f
+\]</span></p>
+<p>The alternating operator takes a multilinear function and produces an
+alternating multilinear function by summing over all permutations of its
+arguments, weighted by the sign of the permutation.</p>
+<p>We shall only prove the alternating operator does produce an
+alternating multilinear function. The proof for the symmetrizing
+operator is trivial.</p>
+<p><strong>Proof</strong>: Let <span class="math inline">\(f\)</span> be
+a multilinear function and <span class="math inline">\(A(f)\)</span> be
+the result of the alternating operator. For any permutation <span
+class="math inline">\(\tau \in S_k\)</span>, we have:</p>
+<p><span class="math display">\[
+\begin{align*}
+\tau A(f) &amp;= \frac{1}{k!} \sum_{\sigma \in S_k} \text{sgn}(\sigma)
+\tau \circ\sigma f \\
+&amp;= \frac{1}{k!} \sum_{\sigma \in S_k} \text{sgn}(\tau)
+\text{sgn}(\tau \circ \sigma) \tau \circ\sigma f \\
+&amp;= \frac{1}{k!} \sum_{\sigma&#39; \in S_k} \text{sgn}(\sigma&#39;)
+\sigma&#39; f \\
+&amp;= \text{sgn}(\tau) A(f)
+\end{align*}
+\]</span></p>
+<p>The alternating operator <span class="math inline">\(A\)</span>
+satisfies the following properties: 1. <strong>Linearity</strong>: For
+<span class="math inline">\(f_1, f_2 \in L_k(V)\)</span> and <span
+class="math inline">\(r,s\in \mathbb{R}\)</span>, we have: <span
+class="math display">\[ A(r f_1 + s f_2) = r A(f_1) + s A(f_2) \]</span>
+2. <span class="math inline">\(A(f\otimes A(g)) = A(A(f)\otimes g) =
+A(f\otimes g)\)</span> 3. <span class="math inline">\(A\circ A =
+A\)</span></p>
+<h3 id="tensor-product">Tensor Product</h3>
+<p>Let <span class="math inline">\(f\in L_k(V)\)</span> and <span
+class="math inline">\(g\in L_l(V)\)</span> be two multilinear functions
+on <span class="math inline">\(V\)</span>. The <strong>tensor
+product</strong> of <span class="math inline">\(f\)</span> and <span
+class="math inline">\(g\)</span>, denoted as <span
+class="math inline">\(f \otimes g\)</span>, is a multilinear function on
+<span class="math inline">\(V^{k+l}\)</span> defined as: <span
+class="math display">\[ (f \otimes g)(v_1, v_2, \ldots, v_{k+l}) =
+f(v_1, v_2, \ldots, v_k) g(v_{k+1}, v_{k+2}, \ldots, v_{k+l})
+\]</span></p>
+<p>The tensor product satisfies associativity and bilinearity. Formally,
+we have: 1. <strong>Associativity</strong>: <span
+class="math inline">\((f \otimes g) \otimes h = f \otimes (g \otimes
+h)\)</span> for any multilinear function <span class="math inline">\(h
+\in L_m(V)\)</span>. 2. <strong>Bilinearity</strong>: For <span
+class="math inline">\(f,f_1,f_2 \in L_k(V)\)</span> and <span
+class="math inline">\(g,g_1,g_2 \in L_l(V)\)</span>; <span
+class="math inline">\(r,s\in \mathbb R\)</span>, we have: <span
+class="math display">\[ (r f_1 + s f_2) \otimes g = r (f_1 \otimes g) +
+s (f_2 \otimes g) \]</span> <span class="math display">\[ f \otimes (r
+g_1 + s g_2) = r (f \otimes g_1) + s (f \otimes g_2) \]</span></p>
+<p><strong>Example</strong>: Let <span
+class="math inline">\((e_1,\ldots,e_n)\)</span> be a basis of <span
+class="math inline">\(V\)</span>, <span
+class="math inline">\((\alpha^1,\ldots,\alpha^n)\)</span> be the dual
+basis of <span class="math inline">\(V^*\)</span>. Then the inner
+product is a bilinear function <span class="math inline">\(f: V\times V
+\to \mathbb{R}\)</span> defined as: <span class="math display">\[
+\langle x,y\rangle = \sum_{i=1}^n x^i y^i \]</span> where <span
+class="math inline">\(x = \sum_{i=1}^n x^i e_i\)</span> and <span
+class="math inline">\(y = \sum_{i=1}^n y^i e_i\)</span> are vectors in
+<span class="math inline">\(V\)</span>.</p>
+<p>Now, let <span class="math inline">\(g_{ij}=\langle
+e_i,e_j\rangle\)</span>, <span class="math inline">\(\langle x,y\rangle
+= \sum x^i y^j g_{ij} = \sum \alpha^i(x) \alpha^j(y) g_{ij} = \sum_{i,j}
+g_{ij} (\alpha^i \otimes \alpha^j)(x,y)\)</span>.</p>
+<p>So we can write the inner product as a tensor product of the dual
+basis: <span class="math display">\[ \langle x,y\rangle = \sum_{i,j}
+g_{ij} (\alpha^i \otimes \alpha^j)(x,y) \]</span></p>
+<h3 id="wedge-product">Wedge Product</h3>
+<p>The <strong>wedge product</strong> or <strong>exterior
+product</strong> is an operation on alternating multilinear functions
+that produces a new alternating multilinear function. It is denoted by
+<span class="math inline">\(\wedge\)</span> and is defined as
+follows:</p>
+<p>For all <span class="math inline">\(f \in A_k(V)\)</span> and <span
+class="math inline">\(g \in A_l(V)\)</span>, the wedge product <span
+class="math inline">\(f \wedge g \in A_{k+l}(V)\)</span> is defined by:
+<span class="math display">\[
+(f \wedge g) = \binom{k+l}{k} A(f\otimes g)
+\]</span> or equivalently, <span class="math display">\[
+(f \wedge g)(v_1, v_2, \ldots, v_{k+l}) = \frac{1}{k!l!} \sum_{\sigma
+\in S_{k+l}} \text{sgn}(\sigma) f(v_{\sigma(1)}, v_{\sigma(2)}, \ldots,
+v_{\sigma(k)}) g(v_{\sigma(k+1)}, v_{\sigma(k+2)}, \ldots,
+v_{\sigma(k+l)})
+\]</span></p>
+<p>To avoid division by factorials, we can define the wedge product as
+sum over sorted permutations: <span class="math display">\[
+\begin{equation*}
+(f \wedge g)(v_1, v_2, \ldots, v_{k+l}) =  \sum_{\substack{\sigma \in
+S_{k+l} \\ \sigma(1) &lt; \sigma(2) &lt; \ldots &lt; \sigma(k) \\
+\sigma(k+1) &lt; \sigma(k+2) &lt; \ldots &lt; \sigma(k+l)}}
+\text{sgn}(\sigma) f(v_{\sigma(1)}, v_{\sigma(2)}, \ldots,
+v_{\sigma(k)}) g(v_{\sigma(k+1)}, v_{\sigma(k+2)}, \ldots,
+v_{\sigma(k+l)})
+\end{equation*}
+\]</span></p>
+<p>Let <span class="math inline">\(f \in A_k(V)\)</span> and <span
+class="math inline">\(g \in A_l(V)\)</span> be alternating multilinear
+functions. The wedge product satisfies the following properties: 1.
+<strong>Bilinearity</strong>: It is bilinear on <span
+class="math inline">\(f\)</span> and <span
+class="math inline">\(g\)</span>. 2. <strong>Associativity</strong>: It
+is associative, i.e., <span class="math inline">\((f \wedge g) \wedge h
+= f \wedge (g \wedge h)\)</span> for any alternating multilinear
+function <span class="math inline">\(h\)</span>. 3.
+<strong>Anticommutativity</strong>: It is anticommutative, i.e., <span
+class="math inline">\(f \wedge g = (-1)^{kl} g \wedge f\)</span>.
+Particularly, <span class="math inline">\(f \wedge f = 0\)</span> when
+<span class="math inline">\(k\)</span> is odd. 4. <span
+class="math inline">\(c\wedge f=cf\)</span>, <span
+class="math inline">\(\forall c\in \mathbb R\)</span>.</p>
+<p>Let <span class="math inline">\(r\in N\)</span>, <span
+class="math inline">\(f_i\in A_{k_i}(V)\)</span> for <span
+class="math inline">\(i=1,2,\ldots,r\)</span>, the wedge product <span
+class="math inline">\(f_1 \wedge f_2 \wedge \ldots \wedge f_r\)</span>
+is <span class="math inline">\(\binom{k_1+\ldots+k_r}{k_1,\ldots,k_r}
+A(f_1\otimes f_2\otimes \ldots \otimes f_r)\)</span>, where <span
+class="math inline">\(\binom{k_1+\ldots+k_r}{k_1,\ldots,k_r}\)</span> is
+the multinomial coefficient.</p>
+<p>or equivalently, <span class="math display">\[ (f_1 \wedge f_2 \wedge
+\ldots \wedge f_r)(v_1, v_2, \ldots, v_{k_1+\ldots+k_r}) =
+\frac{1}{k_1!k_2!\ldots k_r!} \sum_{\sigma \in S_{k_1+\ldots+k_r}}
+\text{sgn}(\sigma) f_1(v_{\sigma(1)}, v_{\sigma(2)}, \ldots,
+v_{\sigma(k_1)}) f_2(v_{\sigma(k_1+1)}, v_{\sigma(k_1+2)}, \ldots,
+v_{\sigma(k_1+k_2)}) \ldots f_r(v_{\sigma(k_1+\ldots+k_{r-1}+1)},
+v_{\sigma(k_1+\ldots+k_{r-1}+2)}, \ldots, v_{\sigma(k_1+\ldots+k_r)})
+\]</span></p>
+<p>This shows the associativity directly.</p>
+<h4 id="relation-to-determinant">Relation to determinant</h4>
+<p>Let <span class="math inline">\(\alpha^1,\ldots,\alpha^n\in
+V^*\)</span>, <span class="math inline">\(v_1,\ldots,v_n\in V\)</span>,
+then: <span class="math display">\[ (\alpha^1 \wedge \alpha^2 \wedge
+\ldots \wedge \alpha^n)(v_1, v_2, \ldots, v_n) =
+\det[(\alpha^i(v_j))_{i,j}] \]</span></p>
+<p>This is the determinant of the matrix formed by evaluating the dual
+basis vectors on the vectors <span class="math inline">\(v_1, v_2,
+\ldots, v_n\)</span>.</p>
+<h3 id="graded-algebra-and-exterior-algebra">Graded Algebra and Exterior
+Algebra</h3>
+<h4 id="graded-algebra">Graded Algebra</h4>
+<p>Let <span class="math inline">\(\mathbb K\)</span> be a field, the
+<strong>graded algebra</strong> <span
+class="math inline">\((A,\times)\)</span> is a vector space <span
+class="math inline">\(A\)</span> over <span
+class="math inline">\(\mathbb K\)</span> equipped with a direct sum
+decomposition <span class="math inline">\(A = \bigoplus_{k=0}^{\infty}
+A_k\)</span>, where each <span class="math inline">\(A_k\)</span> is a
+vector space of degree <span class="math inline">\(k\)</span>. The
+multiplication operation <span class="math inline">\(\times: A \times A
+\to A\)</span> satisfies: <span class="math display">\[ \times: A_k
+\times A_l \to A_{k+l} \]</span></p>
+<p><span class="math inline">\((A,\times)\)</span> is called
+<strong>anticommutative</strong> if for all <span
+class="math inline">\(a \in A_k\)</span> and <span
+class="math inline">\(b \in A_l\)</span>, <span class="math inline">\(ab
+= (-1)^{kl} ba\)</span>.</p>
+<p>A homomorphism of graded algebra is an algebra homomorphism that
+preserves the degree.</p>
+<h4 id="exterior-algebra">Exterior Algebra</h4>
+<p>The <strong>exterior algebra</strong> or <strong>Grassmann
+algebra</strong> <span class="math inline">\((\bigwedge V,
+\wedge)\)</span> is a <strong>anticommutative graded algebra</strong>
+defined on a vector space <span class="math inline">\(V\)</span> with
+the wedge product <span class="math inline">\(\wedge\)</span>, where
+<span class="math inline">\(\bigwedge V = \bigoplus_{k=0}^{\infty}
+A_k(V)\)</span>. When <span class="math inline">\(V\)</span> is
+finite-dimensional, we can write <span class="math inline">\(\bigwedge V
+= \bigoplus_{k=0}^{\dim V} A_k(V)\)</span> or <span
+class="math inline">\(\bigwedge V = \bigoplus_{k=0}^{n} \bigwedge ^k
+V\)</span>, where <span class="math inline">\(n = \dim V\)</span>.</p>
+<p>This is because <span class="math inline">\(A_k(V) = 0\)</span> for
+<span class="math inline">\(k &gt; \dim V\)</span>, which we shall prove
+later.</p>
+<p><span class="math inline">\(\bigwedge^k V\)</span> is called the
+<strong><span class="math inline">\(k\)</span>-th exterior
+power</strong> of <span class="math inline">\(V\)</span>.</p>
+<h4 id="basis-of-l_k">Basis of <span
+class="math inline">\(L_k\)</span></h4>
+<p>Let <span class="math inline">\(I=(i_1,i_2,\ldots,i_k)\)</span> be a
+<span class="math inline">\(k\)</span>-indices, <span
+class="math inline">\(e_1,\ldots,e_n\)</span> and <span
+class="math inline">\(\alpha^1,\ldots,\alpha^n\)</span> are the basis of
+the vector space <span class="math inline">\(V\)</span> and its dual
+<span class="math inline">\(V^*\)</span> respectively. Denote <span
+class="math inline">\((e_{i_1}, e_{i_2}, \ldots, e_{i_k})\)</span> as
+<span class="math inline">\(e_I\)</span>, and <span
+class="math inline">\(\alpha^I = \alpha^{i_1} \wedge \alpha^{i_2} \wedge
+\ldots \wedge \alpha^{i_k}\)</span>. <span
+class="math inline">\(\alpha^I(e_J) = \delta^I_J\)</span>, where <span
+class="math inline">\(\delta^I_J\)</span> is the generalized Kronecker
+delta, which is <span class="math inline">\(1\)</span> if <span
+class="math inline">\(I=J\)</span> and <span
+class="math inline">\(0\)</span> otherwise.</p>
+<p>Let <span class="math inline">\(I=(1 \leq i_1 &lt; \cdots &lt; i_k
+\leq n)\)</span>, we claim that <span
+class="math inline">\(\{\alpha^I\}_{I}\)</span> is a basis of <span
+class="math inline">\(A_k(V)\)</span>.</p>
+<p>The proof is similar to the proof in the dual space section.</p>
+<p>Corollary 1: The dimension of <span
+class="math inline">\(A_k(V)\)</span> is <span
+class="math inline">\(\binom{n}{k}\)</span>, where <span
+class="math inline">\(n = \dim V\)</span>.</p>
+<p>Corollary 2: The dimension of <span class="math inline">\(\bigwedge
+V\)</span> is <span class="math inline">\(\sum_{k=0}^{n} \binom{n}{k} =
+2^n\)</span>, where <span class="math inline">\(n = \dim V\)</span>.</p>
+<p>Corollary 3: The dimension of <span
+class="math inline">\(A_k(V)\)</span> is <span
+class="math inline">\(0\)</span> for <span class="math inline">\(k &gt;
+\dim V\)</span>.</p>
+<p>Proof: For <span class="math inline">\(k &gt; \dim V\)</span>, the
+set of indices <span
+class="math inline">\(I=(i_1,i_2,\ldots,i_k)\)</span> cannot be chosen
+such that <span class="math inline">\(1 \leq i_1 &lt; i_2 &lt; \ldots
+&lt; i_k \leq n\)</span>, hence <span class="math inline">\(A_k(V) =
+0\)</span>.</p>
+<h3 id="interior-product">Interior Product</h3>
+<p>Let <span class="math inline">\(V\)</span> be a vector space, <span
+class="math inline">\(v\in V\)</span>, and <span
+class="math inline">\(\omega \in \bigwedge^k V\)</span>. The
+<strong>interior product</strong> of <span
+class="math inline">\(v\)</span> and <span
+class="math inline">\(\omega\)</span>, denoted as <span
+class="math inline">\(\iota_v \omega\)</span>, is a linear map <span
+class="math inline">\(\iota_v: \bigwedge^k V \to \bigwedge^{k-1}
+V\)</span> defined by: <span class="math display">\[ \iota_v(\omega) =
+\sum_{i=1}^k (-1)^{i-1} \alpha^i(v) \alpha^{1} \wedge \ldots \wedge
+\widehat{\alpha^i} \wedge \ldots \wedge \alpha^{k} \]</span></p>
+<p>where <span class="math inline">\(\widehat{\alpha^i}\)</span> means
+that the <span class="math inline">\(i\)</span>-th term is omitted from
+the wedge product.</p>
+<p>Let <span class="math inline">\(\alpha \in \bigwedge^k V, \beta \in
+\bigwedge^l V\)</span>, the interior product satisfies the following
+properties: 1. <strong>Nilpotency</strong>: <span
+class="math inline">\(\iota_v \iota_v \alpha = 0\)</span> for any <span
+class="math inline">\(v \in V\)</span>. 2. <span
+class="math inline">\(\iota_v(\alpha \wedge \beta) = \iota_v(\alpha)
+\wedge \beta + (-1)^k \alpha \wedge \iota_v(\beta)\)</span>. 3.
+<strong>Linearity</strong>: <span class="math inline">\(\iota_{av +
+bw}(\alpha) = a \iota_v(\alpha) + b \iota_w(\alpha)\)</span> for any
+<span class="math inline">\(a,b \in \mathbb{R}\)</span> and <span
+class="math inline">\(v,w \in V\)</span>.</p>
+<p>The interior product <span class="math inline">\(\iota_v\)</span> is
+called the <strong>interior product</strong> or
+<strong>contraction</strong> with respect to the vector <span
+class="math inline">\(v\)</span>. It reduces the degree of the form by
+1.</p>
+<p>Observe the definition, we see that it just the evaluation of the
+first argument of the alternating multilinear function <span
+class="math inline">\(\omega\)</span> at the vector <span
+class="math inline">\(v\)</span>, and then take the wedge product of the
+remaining arguments.</p>
+<p><span class="math display">\[ \iota_v(\omega)(v_1, v_2, \ldots,
+v_{k-1}) = \omega(v, v_1, v_2, \ldots, v_{k-1}) \]</span></p>
+<h3 id="pullback">Pullback</h3>
+<p>Let <span class="math inline">\(L: W \to V\)</span> be a linear map
+between vector spaces <span class="math inline">\(W\)</span> and <span
+class="math inline">\(V\)</span>. The <strong>pullback</strong> of
+exterior forms under <span class="math inline">\(L\)</span>, denoted as
+<span class="math inline">\(L^*: \bigwedge^k V \to \bigwedge^k
+W\)</span>, is defined by: <span class="math display">\[
+L^*(\omega)(w_1, w_2, \ldots, w_k) = \omega(L(w_1), L(w_2), \ldots,
+L(w_k)) \]</span> for all <span class="math inline">\(w_1, w_2, \ldots,
+w_k \in W^*\)</span>.</p>
+<p>The pullback satisfies the following properties: 1. <span
+class="math inline">\(L^*(\alpha \wedge \beta) = L^*(\alpha) \wedge
+L^*(\beta)\)</span> 2. <span class="math inline">\(\iota_w(L^*(\alpha))
+= L^*(\iota_{L(w)}(\alpha))\)</span>.</p>
+<h3 id="differential-forms">Differential Forms</h3>
+<p>We have defined the exterior algebra <span
+class="math inline">\(\bigwedge V\)</span> and the wedge product <span
+class="math inline">\(\wedge\)</span> on an abstract vector space <span
+class="math inline">\(V\)</span>. Now we can define <strong>differential
+forms</strong> on a manifold <span class="math inline">\(M\)</span>,
+where <span class="math inline">\(V\)</span> is the tangent space <span
+class="math inline">\(T_pM\)</span> at a point <span
+class="math inline">\(p \in M\)</span>.</p>
+<h4 id="cotangent-space-and-cotangent-bundle">Cotangent Space and
+Cotangent Bundle</h4>
+<p>The <strong>cotangent space</strong> <span
+class="math inline">\(T^*_pM\)</span> at a point <span
+class="math inline">\(p \in M\)</span> is the dual space of the tangent
+space <span class="math inline">\(T_pM\)</span>. It consists of all
+linear functionals on <span class="math inline">\(T_pM\)</span>.
+Elements of the cotangent space are called <strong>covectors</strong> or
+<strong>differential 1-forms</strong>.</p>
+<p>The cotangent space <span class="math inline">\(T^*_pM\)</span> is a
+vector space of dimension <span class="math inline">\(n\)</span>, where
+<span class="math inline">\(n\)</span> is the dimension of the manifold
+<span class="math inline">\(M\)</span>.</p>
+<p>The <strong>cotangent bundle</strong> <span
+class="math inline">\(T^*M\)</span> is the disjoint union of all
+cotangent spaces at each point in <span
+class="math inline">\(M\)</span>: <span class="math display">\[ T^*M =
+\bigcup_{p \in M} T^*_pM = \{(p, \omega_p) : p \in M, \omega_p \in
+T^*_pM\} \]</span></p>
+<p>The cotangent bundle <span class="math inline">\(T^*M\)</span> is a
+manifold of dimension <span class="math inline">\(2n\)</span>.</p>
+<p>Local coordinates on the cotangent bundle can be defined as <span
+class="math inline">\((x^1, x^2, \ldots, x^n, \omega_1, \omega_2,
+\ldots, \omega_n)\)</span>, where <span class="math inline">\((x^1, x^2,
+\ldots, x^n)\)</span> are local coordinates on <span
+class="math inline">\(M\)</span> and <span
+class="math inline">\((\omega_1, \omega_2, \ldots, \omega_n)\)</span>
+are the components of a covector in the cotangent space with respect to
+the dual basis <span class="math inline">\(\{dx^1, dx^2, \ldots,
+dx^n\}\)</span>.</p>
+<h4 id="differential-k-forms">Differential <span
+class="math inline">\(k\)</span>-Forms</h4>
+<p>Let <span class="math inline">\(M\)</span> be a smooth manifold of
+dimension <span class="math inline">\(n\)</span>. A <strong>differential
+<span class="math inline">\(k\)</span>-form</strong> on <span
+class="math inline">\(M\)</span> is a smooth section of the <span
+class="math inline">\(k\)</span>-th exterior power of the cotangent
+bundle, denoted as <span class="math inline">\(\bigwedge^k
+T^*M\)</span>.</p>
+<p>In other words, a differential <span
+class="math inline">\(k\)</span>-form on a open subset <span
+class="math inline">\(U \subseteq M\)</span> is a mapping <span
+class="math display">\[
+\omega: U \to \bigwedge^k T^*M
+\]</span> that assigns to each point <span class="math inline">\(p \in
+U\)</span> an alternating multilinear function <span
+class="math inline">\(\omega(p): T_pM^k \to \mathbb{R}\)</span> and
+<span class="math inline">\(\omega \in A_k(T_pM)\)</span> for all <span
+class="math inline">\(p \in U\)</span>.</p>
+<p>Let <span class="math inline">\(\{e_1 =
+\left.\frac{\partial}{\partial x^1}\right|_p, e_2 =
+\left.\frac{\partial}{\partial x^2}\right|_p, \ldots, e_n =
+\left.\frac{\partial}{\partial x^n}\right|_p\}\)</span> be a basis of
+<span class="math inline">\(T_pM\)</span>. The corresponding dual basis
+of <span class="math inline">\(T^*_pM\)</span> is <span
+class="math inline">\(\{dx^1, dx^2, \ldots, dx^n\}\)</span>, where <span
+class="math inline">\(dx^i(e_j) = \delta^i_j\)</span>.</p>
+<p>A basis of <span class="math inline">\(A_k(T_pM)\)</span> is then
+given by <span class="math inline">\(\{dx^I\}_{I}\)</span>, where <span
+class="math inline">\(I = (i_1, i_2, \ldots, i_k)\)</span> is a <span
+class="math inline">\(k\)</span>-tuple of indices with <span
+class="math inline">\(1 \leq i_1 &lt; i_2 &lt; \ldots &lt; i_k \leq
+n\)</span>, and <span class="math inline">\(dx^I\)</span> denotes the
+wedge product <span class="math inline">\(dx^{i_1} \wedge dx^{i_2}
+\wedge \ldots \wedge dx^{i_k}\)</span>.</p>
+<p>Therefore, a differential <span class="math inline">\(k\)</span>-form
+<span class="math inline">\(\omega\)</span> can be expressed in local
+coordinates as: <span class="math display">\[ \omega = \sum_{I} f_I dx^I
+\]</span> where <span class="math inline">\(f_I: U \to
+\mathbb{R}\)</span> are functions on <span
+class="math inline">\(U\)</span>.</p>
+<p>A differential <span class="math inline">\(k\)</span>-form <span
+class="math inline">\(\omega\)</span> is called <strong>smooth</strong>
+if all the functions <span class="math inline">\(f_I\)</span> are smooth
+functions on <span class="math inline">\(U\)</span>.</p>
+<p>Let <span
+class="math inline">\(\Omega^k(M)=\Gamma^{\infty}(\bigwedge^k
+T^*M)\)</span> be the space of all smooth differential <span
+class="math inline">\(k\)</span>-forms on a manifold <span
+class="math inline">\(M\)</span>. It is a vector space over <span
+class="math inline">\(\mathbb{R}\)</span>.</p>
+<p>The wedge product of two differential forms <span
+class="math inline">\(\omega_1 \in \Omega^k(M)\)</span> and <span
+class="math inline">\(\omega_2 \in \Omega^l(M)\)</span> is pointwise
+defined as: <span class="math display">\[ (\omega_1 \wedge \omega_2)(p)
+= \omega_1(p) \wedge \omega_2(p) = \sum_{I,J} f_I(p) g_J(p) dx^I \wedge
+dx^J \]</span> where <span class="math inline">\(f_I\)</span> and <span
+class="math inline">\(g_J\)</span> are the coefficients of <span
+class="math inline">\(\omega_1\)</span> and <span
+class="math inline">\(\omega_2\)</span> in local coordinates,
+respectively. Note that if <span class="math inline">\(I\)</span> and
+<span class="math inline">\(J\)</span> are such that <span
+class="math inline">\(I \cap J \neq \emptyset\)</span>, then <span
+class="math inline">\(dx^I \wedge dx^J = 0\)</span> due to the
+anticommutativity of the wedge product. The wedge product of
+differential forms is bilinear and associative, and it satisfies the
+anticommutativity property: <span class="math display">\[ \omega_1
+\wedge \omega_2 = (-1)^{kl} \omega_2 \wedge \omega_1 \]</span></p>
+<p>Let <span class="math inline">\(\Omega^*(M) = \bigoplus_{k=0}^n
+\Omega^k(M)\)</span> be the space of all smooth differential forms on
+<span class="math inline">\(M\)</span>. It is a graded algebra with
+respect to the wedge product <span
+class="math inline">\(\wedge\)</span>.</p>
+<h4 id="coordinate-functions-and-their-differentials">Coordinate
+Functions and Their Differentials</h4>
+<p>Let <span class="math inline">\((U, x) = (U, x^1, \ldots,
+x^n)\)</span> be a coordinate chart on a smooth manifold <span
+class="math inline">\(M\)</span> of dimension <span
+class="math inline">\(n\)</span>. The coordinate functions <span
+class="math inline">\(x^i: U \to \mathbb{R}\)</span> are smooth
+functions that assign to each point <span class="math inline">\(p \in
+U\)</span> its <span class="math inline">\(i\)</span>-th coordinate
+<span class="math inline">\(x^i(p)\)</span>.</p>
+<p>The <strong>coordinate 1-forms</strong> <span
+class="math inline">\(dx^i\)</span> are smooth sections of the cotangent
+bundle, each <span class="math inline">\(dx^i: U \to T^*M\)</span>
+satisfies <span class="math display">\[
+\pi \circ dx^i = \text{id}_U
+\]</span> where <span class="math inline">\(\pi: T^*M \to M\)</span> is
+the bundle projection.</p>
+<p>We have <span class="math inline">\(dx^i|_p: T_pM \to
+\mathbb{R}\)</span> defined by <span class="math inline">\(dx^i|_p(v) =
+v(x^i(p))\)</span> for any tangent vector <span class="math inline">\(v
+\in T_pM\)</span>. The coordinate 1-forms satisfy the dual basis
+property: <span class="math display">\[
+\left.dx^i\right|_p\left(\left.\frac{\partial}{\partial
+x^j}\right|_p\right) = \delta^i_j
+\]</span> making <span class="math inline">\(\{dx^1|_p, \ldots,
+dx^n|_p\}\)</span> the dual basis of <span
+class="math inline">\(T_p^*M\)</span> corresponding to the coordinate
+basis <span class="math inline">\(\{\frac{\partial}{\partial x^1}|_p,
+\ldots, \frac{\partial}{\partial x^n}|_p\}\)</span> of <span
+class="math inline">\(T_pM\)</span>.</p>
+<p>Any differential <span class="math inline">\(k\)</span>-form on <span
+class="math inline">\(U\)</span> can be uniquely expressed as <span
+class="math inline">\(\omega = \sum_{|I|=k} f_I \, dx^I\)</span>, where
+<span class="math inline">\(I = (i_1, \ldots, i_k)\)</span> with <span
+class="math inline">\(1 \leq i_1 &lt; \cdots &lt; i_k \leq n\)</span>,
+<span class="math inline">\(dx^I = dx^{i_1} \wedge \cdots \wedge
+dx^{i_k}\)</span>, and <span class="math inline">\(f_I: U \to
+\mathbb{R}\)</span> are smooth functions.</p>
+<h3 id="pullback-of-differential-forms">Pullback of Differential
+Forms</h3>
+<p>Let <span class="math inline">\(F: M \to N\)</span> be a smooth map
+between manifolds, and let <span class="math inline">\(\omega \in
+\Omega^k(N)\)</span> be a differential <span
+class="math inline">\(k\)</span>-form on <span
+class="math inline">\(N\)</span>. The <strong>pullback</strong> of <span
+class="math inline">\(\omega\)</span> by <span
+class="math inline">\(F\)</span>, denoted as <span
+class="math inline">\(F^*\omega\)</span>, is a differential <span
+class="math inline">\(k\)</span>-form on <span
+class="math inline">\(M\)</span> defined by: <span
+class="math display">\[ (F^*\omega)(p)(v_1, v_2, \ldots, v_k) =
+\omega(F(p))(dF_p(v_1), dF_p(v_2), \ldots, dF_p(v_k)) \]</span> where
+<span class="math inline">\(dF_p: T_pM \to T_{F(p)}N\)</span> is the
+differential of <span class="math inline">\(F\)</span> at the point
+<span class="math inline">\(p\)</span>.</p>
+<h4 id="local-coordinate-expression">Local Coordinate Expression</h4>
+<p>Let <span class="math inline">\((U, x^1, \ldots, x^m)\)</span> and
+<span class="math inline">\((V, y^1, \ldots, y^n)\)</span> be coordinate
+charts on <span class="math inline">\(M\)</span> and <span
+class="math inline">\(N\)</span> respectively, with <span
+class="math inline">\(F(U) \subseteq V\)</span>.</p>
+<p>Let <span class="math inline">\(F: M \to N\)</span> have local
+coordinate representation <span class="math inline">\(F^i = y^i \circ F
+\circ x^{-1}\)</span>, where <span class="math inline">\((x^1, \ldots,
+x^m)\)</span> are coordinates on <span class="math inline">\(M\)</span>
+and <span class="math inline">\((y^1, \ldots, y^n)\)</span> are
+coordinates on <span class="math inline">\(N\)</span>.</p>
+<p>If <span class="math inline">\(\omega\)</span> has the local
+expression: <span class="math display">\[ \omega = \sum_{|I|=k} f_I \,
+dy^I \]</span> where <span class="math inline">\(f_I: V \to
+\mathbb{R}\)</span> are smooth functions.</p>
+<p>Then the pullback <span class="math inline">\(F^*\omega\)</span> has
+the expression: <span class="math display">\[
+\begin{align*}
+F^*\omega &amp;= \sum_{|I|=k} (f_I \circ F) \, F^*(dy^I) \\
+&amp;= \sum_{|I|=k} (f_I \circ F) \, d(y^{i_1} \circ F) \wedge \cdots
+\wedge d(y^{i_k} \circ F)
+\end{align*}
+\]</span></p>
+<p>Note: <span class="math display">\[ d(y^{i_j} \circ F) = d(F^{i_j}
+\circ x) = \sum_{l=1}^m \frac{\partial F^{i_j}}{\partial x^l} dx^l
+\]</span></p>
+<p>Therefore: <span class="math display">\[ F^*\omega = \sum_{|I|=k}
+(f_I \circ F) \, \left(\sum_{l_1=1}^m \frac{\partial F^{i_1}}{\partial
+x^{l_1}} dx^{l_1}\right) \wedge \cdots \wedge \left(\sum_{l_k=1}^m
+\frac{\partial F^{i_k}}{\partial x^{l_k}} dx^{l_k}\right) \]</span></p>
+<h4 id="properties-of-pullback">Properties of Pullback</h4>
+<p>The pullback operation satisfies the following important
+properties:</p>
+<ol type="1">
+<li><p><strong>Linearity</strong>: <span
+class="math inline">\(F^*(a\omega_1 + b\omega_2) = aF^*\omega_1 +
+bF^*\omega_2\)</span> for <span class="math inline">\(a,b \in
+\mathbb{R}\)</span></p></li>
+<li><p><strong>Preservation of wedge product</strong>: <span
+class="math display">\[ F^*(\omega_1 \wedge \omega_2) = F^*\omega_1
+\wedge F^*\omega_2 \]</span></p></li>
+<li><p><strong>Functoriality</strong>: If <span class="math inline">\(G:
+L \to M\)</span> and <span class="math inline">\(F: M \to N\)</span> are
+smooth maps, then: <span class="math display">\[ (F \circ G)^* = G^*
+\circ F^* \]</span></p></li>
+<li><p><strong>Identity</strong>: <span
+class="math inline">\((\text{id}_M)^* =
+\text{id}_{\Omega^*(M)}\)</span></p></li>
+</ol>
+<h3 id="exterior-derivative">Exterior Derivative</h3>
+<p>The <strong>Exterior Derivative</strong> is an operator <span
+class="math inline">\(d: \Omega^k(M) \to \Omega^{k+1}(M)\)</span> that
+generalizes the concept of differentiation to differential forms. It is
+defined as follows: <span class="math display">\[
+d\omega = \sum_{|I|=k} \left( \sum_{j=1}^n \frac{\partial f_I}{\partial
+x^j} \right) dx^j \wedge dx^I
+\]</span> where <span class="math inline">\(\omega = \sum_{|I|=k} f_I \,
+dx^I\)</span> is a differential <span
+class="math inline">\(k\)</span>-form on <span
+class="math inline">\(M\)</span>, and <span class="math inline">\(dx^I =
+dx^{i_1} \wedge \cdots \wedge dx^{i_k}\)</span> for <span
+class="math inline">\(I = (i_1, \ldots, i_k)\)</span>.</p>
+<p>It can be naturally extended to the exterior algebra <span
+class="math inline">\(\bigwedge^*(M)\)</span> as follows: <span
+class="math display">\[ d(\omega) = \sum_{k=0}^{n} d\omega_k
+\]</span></p>
+<p>where <span class="math inline">\(\omega = \sum_{k=0}^{n}
+\omega_k\)</span> and <span class="math inline">\(\omega_k \in
+\Omega^k(M)\)</span>.</p>
+<p>The exterior derivative satisfies the following properties: 1.
+<strong>Linearity</strong>: <span class="math inline">\(d(a\omega_1 +
+b\omega_2) = a d\omega_1 + b d\omega_2\)</span> for <span
+class="math inline">\(a,b \in \mathbb{R}\)</span>. 2.
+<strong>Nilpotency</strong>: <span class="math inline">\(d^2 =
+0\)</span>, i.e., <span class="math inline">\(d(d\omega) = 0\)</span>
+for any differential form <span class="math inline">\(\omega\)</span>.
+3. <strong>Antiderivation Property</strong>: <span
+class="math inline">\(d(\omega_1 \wedge \omega_2) = d\omega_1 \wedge
+\omega_2 + (-1)^k \omega_1 \wedge d\omega_2\)</span> for <span
+class="math inline">\(\omega_1 \in \Omega^k(M)\)</span> and <span
+class="math inline">\(\omega_2 \in \Omega^l(M)\)</span>. 4.
+<strong>Pullback Compatibility</strong>: For any smooth map <span
+class="math inline">\(F: M \to N\)</span>, we have <span
+class="math inline">\(F^*(d\omega) = d(F^*\omega)\)</span>. One can
+verify this property using local coordinates and chain rules. 5.
+<strong>Vanishing of Top Forms</strong>: <span
+class="math inline">\(d\omega = 0\)</span> if <span
+class="math inline">\(\omega\in \Omega^n(M)\)</span>, where <span
+class="math inline">\(n = \dim M\)</span>.</p>
+<p>We only prove the nilpotency here:</p>
+<p>Proof:</p>
+<p>Only to prove <span class="math inline">\(\omega\in
+\Omega^k(M)\)</span>, <span class="math inline">\(\omega = \sum_{|I|=k}
+\alpha^{I} dx^{I}\)</span> $$ <span
+class="math display">\[\begin{align*}
+
+d \omega &amp;= \sum_{|I|=k}\sum_{i\in[n]}\frac{\partial
+\alpha^I}{\partial x^i}d x^i \wedge dx^I\\
+
+d(d\omega) &amp;= \sum_{i,j\in [n]}\sum_{|I|=k} \frac{\partial^2
+\alpha^I}{\partial x^i\partial x^j} d x^i \wedge d x^j \wedge d x^I \\
+&amp;= \sum_{1\leq i&lt;j\leq n} \sum_{|I|=k}\left ( \frac{\partial^2
+\alpha^I}{\partial x^i\partial x^j} - \frac{\partial^2
+\alpha^I}{\partial x^j\partial x^i} \right ) d x^i \wedge d x^j \wedge d
+x^I \\
+&amp;= 0
+\end{align*}\]</span> $$ since mixed partial derivatives commute for
+smooth functions.</p>
+<h3 id="lie-derivative-on-differential-forms">Lie Derivative on
+Differential Forms</h3>
+<p>The <strong>Lie derivative</strong> of a differential form <span
+class="math inline">\(\omega \in \Omega^k(M)\)</span> with respect to a
+vector field <span class="math inline">\(X\)</span> is defined as: <span
+class="math display">\[ \mathcal{L}_X \omega = \frac{d}{dt} \bigg|_{t=0}
+\phi_t^* \omega \]</span> where <span
+class="math inline">\(\phi_t\)</span> is the flow of the vector field
+<span class="math inline">\(X\)</span> at time <span
+class="math inline">\(t\)</span>.</p>
+<p>The Lie derivative satisfy the following property: 1. <span
+class="math inline">\(d\mathcal L_X \omega=\mathcal L_X d\omega\)</span>
+2. <span class="math inline">\(\mathcal L_X(\omega \wedge \eta)=\mathcal
+L_X \omega \wedge \eta + \omega \wedge \mathcal L_X\eta\)</span> 3.
+<span class="math inline">\(\mathcal L_{[X_1,X_2]} \omega = \mathcal
+L_{X_1}\mathcal L_{X_2}\omega - \mathcal L_{X_2}\mathcal
+L_{X_1}\omega\)</span> 4. <span class="math inline">\((\mathcal
+L_X{\omega})(X_1,\cdots,X_k)=\mathcal
+L_X(\omega(X_1,\cdots,X_k))-\sum_i\omega(X_1,\cdots,\mathcal L_X
+X_i,\cdots,X_k)\)</span> 5. <strong>Cartan’s Magic Formula</strong>
+<span class="math display">\[
+L_{X}\omega=d\iota_X\omega + \iota_Xd\omega
+\]</span></p>
+<p><strong>Proof</strong></p>
+<ol type="1">
+<li><span class="math inline">\(d\mathcal L_X \omega =
+d\left(\frac{d}{dt} \bigg|_{t=0} \phi_t^* \omega \right)= \frac{d}{dt}
+\bigg|_{t=0} d(\phi_t^* \omega) = \frac{d}{dt} \bigg|_{t=0} \phi_t^*
+(d\omega) = \mathcal L_X d\omega\)</span></li>
+<li><span class="math inline">\(\mathcal L_X(\omega \wedge \eta) =
+\frac{d}{dt} \bigg|_{t=0} \phi_t^* (\omega \wedge \eta) = \frac{d}{dt}
+\bigg|_{t=0} (\phi_t^* \omega \wedge \phi_t^* \eta) =
+\frac{d}{dt}\bigg|_{t=0} (\phi_t^*\omega)\wedge
+\eta+\omega\wedge\frac{d}{dt}\bigg|_{t=0}(\phi_t^*\eta) = \mathcal L_X
+\omega \wedge \eta + \omega \wedge \mathcal L_X\eta\)</span></li>
+<li>Use (5).</li>
+<li>Do induction as (5).</li>
+<li>For the <span class="math inline">\(0\)</span>-form and <span
+class="math inline">\(1\)</span>-form, it is trivial proved to be true.
+Then inductively prove by decomposing it on local coordinates. Let <span
+class="math inline">\(\omega\)</span> be a <span
+class="math inline">\(k\)</span>-form. Locally, we have: <span
+class="math display">\[
+\omega=f dx^1\wedge \cdots \wedge dx^n=dx^1\wedge \omega_1
+\]</span></li>
+</ol>
+<p><span class="math display">\[
+\begin{align*}
+\mathcal L_X \omega &amp;= \mathcal L_X (dx^1) \wedge \omega_1 + dx^1
+\wedge \mathcal L_X\omega_1\\
+&amp;=[\iota_X d(dx^1)+d(\iota_X dx^1)]\wedge \omega_1+dx^1\wedge
+[\iota_X d\omega_1+ d(\iota_X \omega_1)]
+\end{align*}
+\]</span> <span class="math display">\[
+\begin{align*}
+d\iota_X \omega + \iota_X d\omega &amp;= d\iota_X(dx^1\wedge \omega_1) +
+\iota_X (-dx^1\wedge d\omega_1)\\
+&amp;=d((\iota_Xdx^1)\wedge \omega_1-dx^1\wedge \iota_X \omega_1)
+-(\iota_X dx^1)\wedge d\omega_1 + dx^1\wedge\iota_X d\omega_1\\
+&amp;=d(\iota_X dx^1)\wedge \omega_1+(\iota_Xdx^1)\wedge
+d\omega_1+dx^1\wedge d(\iota_X\omega_1) -(\iota_X dx^1)\wedge d\omega_1
++ dx^1\wedge\iota_X d\omega_1\\
+&amp;=d(\iota_X dx^1)\wedge \omega_1+dx^1\wedge d(\iota_X\omega_1) +
+dx^1\wedge\iota_X d\omega_1\\
+&amp;=d(\iota_X dx^1)\wedge \omega_1+dx^1\wedge [\iota_X
+d\omega_1+d(\iota_X \omega_1)]\\
+&amp;=\mathcal L_X \omega
+\end{align*}
+\]</span></p>
+<h3 id="integration-of-differential-forms">Integration of Differential
+Forms</h3>
+<h4 id="highest-degree-forms">Highest Degree Forms</h4>
+<p>Let <span class="math inline">\(M\)</span> be a smooth manifold of
+dimension <span class="math inline">\(n\)</span>. The <strong>highest
+degree differential form</strong> on <span
+class="math inline">\(M\)</span> is a differential <span
+class="math inline">\(n\)</span>-form, denoted as <span
+class="math inline">\(\omega \in \Omega^n(M)\)</span>. It can be
+expressed in local coordinates <span
+class="math inline">\((U,x)\)</span> as: <span class="math display">\[
+\omega = f \, dx^1 \wedge dx^2 \wedge \ldots \wedge dx^n \]</span> where
+<span class="math inline">\(f: M \to \mathbb{R}\)</span> is a smooth
+function and <span class="math inline">\(\{dx^1, dx^2, \ldots,
+dx^n\}\)</span> is the basis of the cotangent space at each point in
+<span class="math inline">\(M\)</span>.</p>
+<p>If we change the local coordinates to <span
+class="math inline">\((y^1, y^2, \ldots, y^n)\)</span> by the pullback
+map <span class="math inline">\(\phi: V \to U\)</span>, <span
+class="math inline">\(y=\phi^*x = x\circ \phi\)</span>, then the highest
+degree form transforms as: <span class="math display">\[ \phi^*(dx^1
+\wedge dx^2 \wedge \ldots \wedge dx^n) = \det\left(\frac{\partial
+y^i}{\partial x^j}\right) dy^1 \wedge dy^2 \wedge \ldots \wedge dy^n
+\]</span></p>
+<p>We can define the integral of a highest degree form over <span
+class="math inline">\(U\)</span> as: <span class="math display">\[
+\int_U \omega = \int_U f \, dx^1 \wedge dx^2 \wedge \ldots \wedge dx^n=
+\int_U f dx^1 dx^2 \cdots dx^n \]</span> where the integral is taken
+over the open set <span class="math inline">\(U \subseteq
+M\)</span>.</p>
+<p>To make integral is well-defined and does not depend on the choice of
+local coordinates, we need to ensure that the integral is invariant
+under coordinate changes.</p>
+<p>But according to the change of variables formula on integral over
+<span class="math inline">\(\mathbb{R}^n\)</span>, we only have: <span
+class="math display">\[
+\int_U f dx^1dx^2 \cdots dx^n = \int_V f \left|\det\left(\frac{\partial
+y^i}{\partial x^j}\right)\right| dy^1 dy^2 \cdots dy^n
+\]</span></p>
+<p>So to make the integral well-defined, we need to restrict the
+transformation to be orientation-preserving, i.e., <span
+class="math inline">\(\det\left(\frac{\partial y^i}{\partial x^j}\right)
+&gt; 0\)</span>.</p>
+<p>We call the two charts <span class="math inline">\((U,x)\)</span> and
+<span class="math inline">\((V,y)\)</span>
+<strong>orientation-compactible</strong> if the Jacobian determinant
+<span class="math inline">\(\det\left(\frac{\partial y^i}{\partial
+x^j}\right)\)</span> is positive for all points in <span
+class="math inline">\(U \cap V\)</span>.</p>
+<p>For a manifold, if all of the transition maps between charts are
+orientation-preserving, we say that the manifold is
+<strong>oriented</strong>. And if such a choice of orientation can be
+made, we call the manifold <strong>orientable</strong>. And we call such
+atlas <span class="math inline">\(\mathcal{A}\)</span> an
+<strong>oriented atlas</strong> or <strong>orientation</strong> of the
+manifold <span class="math inline">\(M\)</span>.</p>
+<h4 id="integration-on-manifolds">Integration on Manifolds</h4>
+<p>Let <span class="math inline">\(M\)</span> be a smooth oriented
+manifold of dimension <span class="math inline">\(n\)</span>. And let
+<span class="math inline">\((\rho, U)\)</span> be a smooth partition of
+unity subordinate to an open cover <span
+class="math inline">\(\{U_i\}_{i \in I}\)</span> of <span
+class="math inline">\(M\)</span>, where <span
+class="math inline">\(\rho_i: M \to [0,1]\)</span> are smooth functions
+such that <span class="math inline">\(\sum_{i \in I} \rho_i = 1\)</span>
+on <span class="math inline">\(M\)</span> and <span
+class="math inline">\(\text{supp}(\rho_i) \subseteq U_i\)</span>. The
+integral of a differential <span class="math inline">\(n\)</span>-form
+<span class="math inline">\(\omega \in \Omega^n(M)\)</span> over the
+manifold <span class="math inline">\(M\)</span> is defined as: <span
+class="math display">\[
+\int_M \omega = \sum_{i \in I} \int_{U_i} \rho_i \omega
+\]</span> where <span class="math inline">\(\rho_i \omega\)</span> is a
+highest degree form on <span class="math inline">\(U_i\)</span> and the
+integral is taken over the open set <span
+class="math inline">\(U_i\)</span>.</p>
+<p>Note <span class="math inline">\(\rho_i \omega\)</span> is compactly
+supported in <span class="math inline">\(U_i\)</span> and is a smooth
+differential <span class="math inline">\(n\)</span>-form on <span
+class="math inline">\(U_i\)</span>. So the integral <span
+class="math inline">\(\int_{U_i} \rho_i \omega\)</span> is well-defined
+and finite. The integral <span class="math inline">\(\int_M
+\omega\)</span> is independent of the choice of partition of unity and
+the open cover <span class="math inline">\(\{U_i\}_{i \in
+I}\)</span>.</p>
+<h4 id="change-of-variables">Change of Variables</h4>
+<p>Let <span class="math inline">\(\phi: M \to N\)</span> be a smooth
+map between oriented manifolds <span class="math inline">\(M\)</span>
+and <span class="math inline">\(N\)</span> of dimension <span
+class="math inline">\(n\)</span>, with orientation <span
+class="math inline">\(\mathcal{A,B}\)</span> respectively. We say that
+<span class="math inline">\(\phi\)</span> is
+<strong>orientation-preserving</strong> if for every chart <span
+class="math inline">\((\psi, V)\in \mathcal{B}\)</span>, the chart <span
+class="math inline">\((\psi \circ \phi, \phi^{-1}(V))\)</span> is
+orientation-compactible with <span
+class="math inline">\(\mathcal{A}\)</span>. We say that <span
+class="math inline">\(\phi\)</span> is
+<strong>orientation-reversing</strong> if for every chart <span
+class="math inline">\((\psi, V)\in \mathcal{B}\)</span>, the chart <span
+class="math inline">\((\psi \circ \phi, \phi^{-1}(V))\)</span> is not
+orientation-compactible with <span
+class="math inline">\(\mathcal{A}\)</span>.</p>
+<p>Actually, mapping <span class="math inline">\(\phi\)</span> is either
+orientation-preserving or orientation-reversing if <span
+class="math inline">\(M\)</span> and <span
+class="math inline">\(N\)</span> are connected. Otherwise, it either
+preserves or reverses the orientation on each connected component of
+<span class="math inline">\(M\)</span> and <span
+class="math inline">\(N\)</span>.</p>
+<p>The <strong>change of variables formula</strong> for the integral of
+a differential <span class="math inline">\(n\)</span>-form <span
+class="math inline">\(\omega \in \Omega^n(M)\)</span> under the map
+<span class="math inline">\(\phi\)</span> is given by:</p>
+<p>if <span class="math inline">\(\phi\)</span> is an
+orientation-preserving map, then: <span class="math display">\[
+\int_N \phi^* \omega = \int_M \omega
+\]</span> if <span class="math inline">\(\phi\)</span> is an
+orientation-reversing map, then: <span class="math display">\[
+\int_N \phi^* \omega = -\int_M \omega
+\]</span></p>
+<p>The relation of the orientability and the differential forms is given
+by the following theorem:</p>
+<p><strong>Theorem</strong>: A smooth manifold <span
+class="math inline">\(M\)</span> is orientable if and only if there
+exists a nowhere vanishing differential <span
+class="math inline">\(n\)</span>-form <span class="math inline">\(\omega
+\in \Omega^n(M)\)</span>.</p>
+<p>And we call such <span class="math inline">\(n\)</span>-form <span
+class="math inline">\(\omega\)</span> a <strong>volume form</strong> on
+<span class="math inline">\(M\)</span>.</p>
+<h3 id="stokes-theorem">Stokes Theorem</h3>
+<h4 id="induced-orientation-on-the-boundary">Induced Orientation on the
+Boundary</h4>
+<p>Let <span class="math inline">\(M^n\)</span> be an oriented smooth
+manifold with boundary <span class="math inline">\(\partial M\)</span>.
+The boundary <span class="math inline">\(\partial M\)</span> is a smooth
+manifold of dimension <span class="math inline">\(n-1\)</span>. And
+<span class="math inline">\(\mu\)</span> is a volume form on <span
+class="math inline">\(M\)</span> that defines the orientation of <span
+class="math inline">\(M\)</span>.</p>
+<p>We can define an orientation on <span class="math inline">\(\partial
+M\)</span> induced by the orientation of <span
+class="math inline">\(M\)</span> as follows: At each point <span
+class="math inline">\(p \in \partial M\)</span>, we can choose a local
+chart <span class="math inline">\((U_{\alpha}, x^1, x^2, \ldots,
+x^n)\)</span> around <span class="math inline">\(p\)</span> such that
+<span class="math inline">\(x^n \geq 0\)</span> on <span
+class="math inline">\(U_{\alpha}\)</span> and <span
+class="math inline">\(x^n = 0\)</span> on <span class="math inline">\(U
+\cap \partial M\)</span>. The orientation on <span
+class="math inline">\(\partial M\)</span> is defined by the volume form:
+<span class="math display">\[ \eta_{\alpha}=\iota_{e_n} \mu =
+\iota_{-\frac{\partial}{\partial x^n}} \mu \]</span> where <span
+class="math inline">\(e_n = -\frac{\partial}{\partial x^n}\)</span> is
+the outward-pointing normal vector field on <span
+class="math inline">\(\partial M\)</span>.</p>
+<p>Or explicitly, <span class="math display">\[
+\eta_{\alpha} = (-1)^{n} f_{\alpha} dx^1 \wedge dx^2 \wedge \ldots
+\wedge dx^{n-1}
+\]</span> if <span class="math inline">\(\mu = f_{\alpha} dx^1 \wedge
+dx^2 \wedge \ldots \wedge dx^n\)</span> on <span
+class="math inline">\(U_{\alpha}\)</span>.</p>
+<p>And <span class="math inline">\(\eta\)</span> gives a nowhere
+vanishing <span class="math inline">\(n-1\)</span> form on <span
+class="math inline">\(\partial M\)</span>.</p>
+<p>To integrate a <span class="math inline">\(n-1\)</span>-form <span
+class="math inline">\(\omega\)</span> on <span
+class="math inline">\(\partial M\)</span>, we locally write <span
+class="math display">\[
+\omega =  (-1)^n f\ dx^1\wedge \cdots \wedge dx^{n-1}
+\]</span> Then <span class="math display">\[
+\int_U \omega=\int_V f\ dx^1\cdots dx^{n-1}
+\]</span></p>
+<p>The <strong>Stokes Theorem</strong> state that, for any <span
+class="math inline">\(\omega \in \Omega^{n-1}(M)\)</span> <span
+class="math display">\[
+\int_{\partial M} \iota_{\partial M}^* \omega = \int_{M} d\omega
+\]</span></p>
+<p><strong>Proof</strong></p>
+<p>If <span class="math inline">\(\omega\)</span> is compactly support
+in coordinate chart <span class="math inline">\((U,x)\)</span></p>
+<p><span class="math display">\[
+\omega = \sum_{i}(-1)^{i-1}f_i
+dx^1\wedge\cdots\wedge\widehat{dx^i}\wedge\cdots\wedge dx^n\\
+\]</span> If <span class="math inline">\(U\simeq \mathbb R^{n}\)</span>,
+<span class="math inline">\(\omega\)</span> is <span
+class="math inline">\(0\)</span> on <span class="math inline">\(\partial
+M\)</span>, then: <span class="math display">\[
+\begin{align*}
+\int_U d\omega &amp;= \int_{\mathbb R^n}\sum_i \frac{\partial
+f_i}{\partial x^i} dx^1 \cdots dx^n\\
+&amp;= \sum_{i=1}^n \int_{\mathbb
+R^{n-1}}\left(\int_{-\infty}^{\infty}\frac{\partial f_i}{\partial
+x^i}dx^i\right) dx^1\cdots\widehat{dx^i}\cdots dx^n\\
+&amp;=0=\int_M \iota_{\partial M}^*\omega
+\end{align*}
+\]</span></p>
+<p>If <span class="math inline">\(U\simeq \mathbb R^n_+\)</span>, then:
+<span class="math display">\[
+\begin{align*}
+\int_U d\omega &amp;= \int_{\mathbb R^n_+}\sum_i \frac{\partial
+f_i}{\partial x^i} dx^1\cdots  dx^n\\
+&amp;= \sum_{i=1}^{n-1} \int_{\mathbb
+R^{n-1}}\left(\int_{-\infty}^{\infty}\frac{\partial f_i}{\partial
+x^i}dx^i\right) dx^1\cdots\widehat{dx^i}\cdots dx^n + \int_{\mathbb
+R^{n-1}}\left(\int_{0}^{\infty}\frac{\partial f_n}{\partial
+x^n}dx^n\right) dx^1\cdots dx^{n-1}\\
+&amp;= \int_{\mathbb R^{n-1}} f_n( x^1,\cdots,x^{n-1},0) dx^1\cdots
+dx^{n-1}\\
+&amp;=\int_{\partial M} \iota_{\partial M}^*\omega
+\end{align*}
+\]</span> The last step is because <span
+class="math inline">\(\iota_{\partial M}^*(dx^i)=dx^i\)</span> for <span
+class="math inline">\(i=1,\cdots,n-1\)</span> and <span
+class="math inline">\(\iota_{\partial M}^*(dx^n)=0\)</span>.</p>
+<p>For general <span class="math inline">\(\omega\)</span>, we can use
+partition of unity to prove it.</p>
+<h2 id="de-rham-theory">de Rham Theory</h2>
+<p>Let <span class="math inline">\(M\)</span> be a smooth manifold,
+<span class="math inline">\(\omega \in \Omega^k(M)\)</span> be a smooth
+differential <span class="math inline">\(k\)</span>-form. We call <span
+class="math inline">\(\omega\)</span> a <strong>closed form</strong> if
+<span class="math inline">\(d\omega = 0\)</span>, and we call <span
+class="math inline">\(\omega\)</span> an <strong>exact form</strong> if
+there exists a differential <span
+class="math inline">\((k-1)\)</span>-form <span
+class="math inline">\(\eta \in \Omega^{k-1}(M)\)</span> such that <span
+class="math inline">\(\omega = d\eta\)</span>.</p>
+<p>We denote the space of closed <span
+class="math inline">\(k\)</span>-forms on <span
+class="math inline">\(M\)</span> as <span class="math inline">\(Z^k(M) =
+\{\omega \in \Omega^k(M) : d\omega = 0\}\)</span> and the space of exact
+<span class="math inline">\(k\)</span>-forms as <span
+class="math inline">\(B^k(M) = \{d\eta : \eta \in
+\Omega^{k-1}(M)\}\)</span>.</p>
+<p>Let <span class="math inline">\(\dim M = n\)</span>, we have the
+following result:</p>
+<ul>
+<li><span class="math inline">\(B^k(M) = Z^k(M) = \{0\}\)</span> if
+<span class="math inline">\(k &gt; n\)</span>.</li>
+<li><span class="math inline">\(B^0(M) = \{0\}\)</span>, <span
+class="math inline">\(Z^0(M) = \{f\in C^{\infty}(M) | df=0\}\simeq
+\mathbb{R}^{K}\)</span>, where <span class="math inline">\(K\)</span> is
+the number of connected components of <span
+class="math inline">\(M\)</span>.</li>
+<li><span class="math inline">\(Z^n(M) = \Omega^n(M)\)</span></li>
+</ul>
+<p>By definition, <span class="math display">\[
+Z^k(M) = \ker (d: \Omega^k(M) \to \Omega^{k+1}(M))
+\]</span> <span class="math display">\[
+B^k(M) = \text{im} (d: \Omega^{k-1}(M) \to \Omega^k(M))
+\]</span></p>
+<p>Since <span class="math inline">\(d^2 = 0\)</span>, we have the
+following property: <span class="math display">\[
+B^k(M) \subseteq Z^k(M) \subseteq \Omega^k(M)
+\]</span></p>
+<p>We define the <strong>de Rham cohomology</strong> of <span
+class="math inline">\(M\)</span> as: <span class="math display">\[
+H^k_{dR}(M) = Z^k(M) / B^k(M) \]</span> and <span
+class="math inline">\([\omega]\)</span> is the equivalence class of
+<span class="math inline">\(\omega \in Z^k(M)\)</span> in <span
+class="math inline">\(H^k_{dR}(M)\)</span>, called the <strong>de Rham
+cohomology class</strong> of <span
+class="math inline">\(\omega\)</span>.</p>
+<p><span class="math inline">\(H^k_{dR}(M)\)</span> is a vector space
+over <span class="math inline">\(\mathbb{R}\)</span> and we shall see
+that it is linear with respect to the cup product.</p>
+<p>Example:</p>
+<p>For <span class="math inline">\(M = \mathbb{R}\)</span>, <span
+class="math inline">\(Z^0(\mathbb{R}) = \Omega^0(\mathbb{R}) = \mathbb
+R\)</span>, <span class="math inline">\(B^0(\mathbb{R}) =
+\{0\}\)</span>, hence <span class="math inline">\(H^0_{dR}(\mathbb{R})
+\simeq \mathbb{R}\)</span>, and <span
+class="math inline">\(H^k_{dR}(\mathbb{R}) \simeq \{0\}\)</span> for
+<span class="math inline">\(k &gt; 0\)</span>.</p>
+<p>For <span class="math inline">\(M = \mathbb{S^1}\)</span>, we know
+<span class="math inline">\(H^0_{dR}(\mathbb{S^1}) \simeq
+\mathbb{R}\)</span> and <span
+class="math inline">\(H^k_{dR}(\mathbb{S^1}) \simeq \{0\}\)</span> for
+<span class="math inline">\(k &gt; 1\)</span>. So we only need to
+compute <span class="math inline">\(H^1_{dR}(\mathbb{S^1})\)</span>.</p>
+<p><span class="math display">\[
+\begin{align*}
+Z^1(\mathbb{S^1}) = \Omega^1(\mathbb{S^1}) &amp;= \{fd\theta|f\in
+C^{\infty}(\mathbb{S^1})\}\\
+&amp; = \{fd\theta | f\in C^{\infty}(\mathbb R), f \text{ periodic with
+period } 2\pi\}\\
+\end{align*}
+\]</span></p>
+<p>Now, consider <span class="math inline">\(\omega \in
+B^1(\mathbb{S^1})\)</span>, we have <span class="math inline">\(\omega =
+d\eta\)</span> for some <span class="math inline">\(\eta \in
+\Omega^0(\mathbb{S^1})\)</span>. Since <span
+class="math inline">\(\eta\)</span> is a smooth function on <span
+class="math inline">\(\mathbb{S^1}\)</span>, it can be expressed as
+<span class="math inline">\(f(\theta)\)</span> for some periodic
+function <span class="math inline">\(f\)</span> with period <span
+class="math inline">\(2\pi\)</span>. Thus, we have: <span
+class="math display">\[
+\omega = d\eta = df(\theta) = g(\theta)d\theta
+\]</span> where <span class="math inline">\(g\)</span> is a periodic
+function with period <span class="math inline">\(2\pi\)</span> and <span
+class="math inline">\(\int_0^{2\pi} g(\theta) d\theta = 0\)</span>.
+Thus, <span class="math inline">\(H^1_{dR}(\mathbb{S^1}) \simeq
+\mathbb{R}\)</span>, which is the first de Rham cohomology group of the
+circle since the cohomology class is represented by the integral value
+of the 1-form over the circle.</p>
+<p>Let <span class="math inline">\(\dim M = n\)</span>, we have the
+following results: - <span class="math inline">\(H^k_{dR}(M) =
+\{0\}\)</span> for <span class="math inline">\(k &gt; n\)</span>. -
+<span class="math inline">\(H^0_{dR}(M) \simeq \mathbb{R}^{K}\)</span>,
+where <span class="math inline">\(K\)</span> is the number of connected
+components of <span class="math inline">\(M\)</span>.</p>
+<h3 id="betti-numbers-and-euler-characteristic">Betti Numbers and Euler
+Characteristic</h3>
+<p>If <span class="math inline">\(\dim H^k_{dR}(M) &lt; \infty\)</span>
+for any <span class="math inline">\(k\)</span>, we define the
+<strong>Betti number</strong> <span class="math display">\[b_k(M) = \dim
+H^k_{dR}(M)\]</span> which is called the <span
+class="math inline">\(k\)</span>-th Betti number of the manifold <span
+class="math inline">\(M\)</span>.</p>
+<p>The <strong>Euler characteristic</strong> of <span
+class="math inline">\(M\)</span> is defined as: <span
+class="math display">\[ \chi(M) = \sum_{k=0}^{\dim M} (-1)^k b_k(M)
+\]</span></p>
+<p>From the above result, we know <span
+class="math inline">\(\chi(\mathbb R) = 1 - 0 = 1\)</span>, and <span
+class="math inline">\(\chi(\mathbb{S^1}) = 1 - 1 = 0\)</span>.</p>
+<h3 id="pullback-1">Pullback</h3>
+<p>Let <span class="math inline">\(F: M \to N\)</span> be a smooth map
+between manifolds, the pullback of the de Rham cohomology is defined as:
+<span class="math display">\[ F^*: H^k_{dR}(N) \to H^k_{dR}(M) \]</span>
+by <span class="math inline">\(F^*([\omega]) = [F^*\omega]\)</span> for
+<span class="math inline">\(\omega \in Z^k(N)\)</span>.</p>
+<p>Since <span class="math inline">\(dF^*= F^*d\)</span>, <span
+class="math inline">\(F^*\)</span> maps closed forms to closed forms and
+exact forms to exact forms. <span class="math display">\[ F^*(B^k(N))
+\subseteq B^k(M) \quad \text{and} \quad F^*(Z^k(N)) \subseteq Z^k(M)
+\]</span></p>
+<p>Hence <span class="math inline">\(F^*\)</span> induces a well-defined
+map on cohomology.</p>
+<p>Note that the pullback of de Rham cohomology satisfies the
+contravariant functoriality: 1. <span class="math inline">\((F \circ
+G)^* = G^* \circ F^*\)</span> for smooth maps <span
+class="math inline">\(G: L \to M\)</span> and <span
+class="math inline">\(F: M \to N\)</span>. 2. <span
+class="math inline">\((\text{id}_M)^* =
+\text{id}_{H^*_{dR}(M)}\)</span>.</p>
+<p>Thus, the de Rham cohomology is a contravariant functor from the
+category of smooth manifolds to the category of graded algebras over a
+field. So a diffeomorphism <span class="math inline">\(F: M \to
+N\)</span> induces an isomorphism <span class="math inline">\(F^*:
+H^*_{dR}(N) \to H^*_{dR}(M)\)</span>.</p>
+<p>Particularly, <span class="math inline">\(b_k(M)\)</span> and <span
+class="math inline">\(\chi(M)\)</span> are diffeomorphism
+invariants.</p>
+<h3 id="cup-product">Cup Product</h3>
+<p>Note that the wedge product <span
+class="math inline">\(\wedge\)</span> on differential forms induces a
+operation on de Rham cohomology, called the <strong>cup
+product</strong>. <span class="math display">\[ \cup: H^k_{dR}(M) \times
+H^l_{dR}(M) \to H^{k+l}_{dR}(M) \]</span> defined by <span
+class="math display">\[ [\omega_1] \cup [\omega_2] = [\omega_1 \wedge
+\omega_2] \]</span> for <span class="math inline">\(\omega_1 \in
+Z^k(M)\)</span> and <span class="math inline">\(\omega_2 \in
+Z^l(M)\)</span>.</p>
+<p>Assume <span class="math inline">\(\omega_1 = d\eta_1\)</span> and
+<span class="math inline">\(\omega_2 = d\eta_2\)</span>, <span
+class="math inline">\(\omega,\zeta\)</span> are closed forms, to prove
+cup product is well-defined, we calculate <span class="math display">\[
+\begin{align*}
+(\omega + d\eta_1) \wedge (\zeta + d\eta_2) &amp;= \omega \wedge \zeta +
+\omega \wedge d\eta_2 + d\eta_1 \wedge \zeta + d\eta_1 \wedge d\eta_2\\
+&amp;= \omega \wedge \zeta + \omega \wedge d\eta_2 + (-1)^{k} d\omega
+\wedge \eta_2 - (-1)^{k} d\omega \wedge d\eta_2 \\
+&amp;+ d\eta_1 \wedge \zeta + d\eta_1 \wedge d\eta_2\\
+&amp;= \omega \wedge \zeta + d((-1)^{k} \omega \wedge \eta_2) + d\eta_1
+\wedge \zeta + d\eta_1 \wedge d\eta_2 \\
+&amp;= \omega \wedge \zeta + d((-1)^{k} \omega \wedge \eta_2) + d(\eta_1
+\wedge \zeta) + d(\eta_1 \wedge d\eta_2)\\
+&amp;= \omega \wedge \zeta + d\left ((-1)^{k} \omega \wedge \eta_2 +
+\eta_1 \wedge \zeta + \eta_1 \wedge d\eta_2\right)
+\end{align*}
+\]</span> Therefore, we have <span class="math display">\[
+[\omega + d\eta_1] \cup [\zeta + d\eta_2]  = [\omega \wedge \zeta]
+\]</span> so the cup product is well-defined.</p>
+<p>The cup product is bilinear, associative, and commutative up to a
+sign: <span class="math display">\[ [\omega_1] \cup [\omega_2] =
+[\omega_1 \wedge \omega_2] = [(-1)^{kl} \omega_2 \wedge \omega_1] =
+(-1)^{kl} [\omega_2] \cup [\omega_1] \]</span></p>
+<p>The cup product induces a graded algebra structure on the de Rham
+cohomology: <span class="math display">\[ H^*_{dR}(M) =
+\bigoplus_{k=0}^{\dim M} H^k_{dR}(M) \]</span> with the cup product
+<span class="math inline">\(\cup\)</span> as the multiplication
+operation.</p>
+<p>And <span class="math inline">\((H^*_{dR}(M), +, \cup)\)</span>
+becomes a graded commutative ring with identity, called the <strong>de
+Rham cohomology ring</strong> of <span
+class="math inline">\(M\)</span>.</p>
+<h3 id="homotopy-invariance">Homotopy Invariance</h3>
+<p>We say <span class="math inline">\(M\)</span> and <span
+class="math inline">\(N\)</span> are homotopy equivalent if there exist
+continuous maps <span class="math inline">\(f: M \to N\)</span> and
+<span class="math inline">\(g: N \to M\)</span> such that <span
+class="math inline">\(g \circ f\)</span> is homotopic to the identity
+map on <span class="math inline">\(M\)</span> and <span
+class="math inline">\(f \circ g\)</span> is homotopic to the identity
+map on <span class="math inline">\(N\)</span>.</p>
+<p>If <span class="math inline">\(M\)</span> and <span
+class="math inline">\(N\)</span> are homotopy equivalent, then <span
+class="math inline">\(H^k_{dR}(M) \simeq H^k_{dR}(N)\)</span> for all
+<span class="math inline">\(k\)</span>. This is stronger than the fact
+that <span class="math inline">\(H^k_{dR}(M)\)</span> is a
+diffeomorphism invariant, as homotopy equivalence does not even require
+the manifolds to have the same dimension, e.g. <span
+class="math inline">\(\mathbb R^n\setminus \{0\}\)</span> and <span
+class="math inline">\(\mathbb S^{n-1}\)</span>.</p>
+<p>Note: This shows that the de Rham cohomology is determined by the
+topological structure of the manifold, not relevant to the smooth
+structure.</p>
+<h4 id="poincaré-lemma">Poincaré Lemma</h4>
+<p>The <strong>Poincaré Lemma</strong> states that if <span
+class="math inline">\(U\)</span> is a star-shape area in <span
+class="math inline">\(\mathbb R^n\)</span>, then <span
+class="math inline">\(H^k_{dR}(U)=0\)</span> for <span
+class="math inline">\(k&gt;1\)</span>. Particularly, <span
+class="math inline">\(H^k_{DR}(\mathbb R^n) = 0\)</span>.</p>
+<p>This is trivial since the star shape area can always contract to a
+point.</p>
+<p>Moreover, since for any point in a manifold has a neighborhood that
+is diffeomorphic to a star shape area in <span
+class="math inline">\(\mathbb R^n\)</span>, we have the following
+collary:</p>
+<p>For any <span class="math inline">\(k\)</span>-th closed form <span
+class="math inline">\(\omega \in Z^k(M)\)</span> and any <span
+class="math inline">\(p\in M\)</span>, there is a neighborhood <span
+class="math inline">\(U\ni p\)</span> and <span
+class="math inline">\((k-1)\)</span>-form <span
+class="math inline">\(\eta\in \Omega^k(U)\)</span> such that <span
+class="math inline">\(\omega = d \eta\)</span> on <span
+class="math inline">\(U\)</span>.</p>
+<h4 id="proof-of-homotopy-invariance">Proof of Homotopy Invariance</h4>
+<p>It suffices to prove that functor <span
+class="math inline">\(f\rightsquigarrow  f^*\)</span> is homotopic
+invariant:</p>
+<blockquote>
+<p>If two smooth maps <span class="math inline">\(f,g: M \to N\)</span>
+are homotopic, then <span class="math inline">\(f^* = g^*: H^k_{dR}(N)
+\to H^k_{dR}(M)\)</span>.</p>
+</blockquote>
+<p>Because assume this holds, if <span class="math inline">\(M\)</span>
+and <span class="math inline">\(N\)</span> are homotopy equivalent, we
+can use smooth approximations of the continuous maps to get smooth maps
+<span class="math inline">\(f: M \to N\)</span> and <span
+class="math inline">\(g: N \to M\)</span> such that <span
+class="math inline">\(g \circ f\)</span> and <span
+class="math inline">\(f \circ g\)</span> are homotopic to the identity
+maps on <span class="math inline">\(M\)</span> and <span
+class="math inline">\(N\)</span>, respectively. Then we have <span
+class="math display">\[ (g \circ f)^* = f^* \circ g^* =
+\text{id}_{H^*_{dR}(M)} \]</span> <span class="math display">\[ (f \circ
+g)^* = g^* \circ f^* = \text{id}_{H^*_{dR}(N)} \]</span> which implies
+that <span class="math inline">\(f^*\)</span> and <span
+class="math inline">\(g^*\)</span> are isomorphisms.</p>
+<p>Now we prove the claim that if <span class="math inline">\(f,g: M \to
+N\)</span> are homotopic, then <span class="math inline">\(f^* =
+g^*\)</span>.</p>
+<p>We define the <strong>cochain homotopy</strong> as follows: &gt; if
+<span class="math inline">\(f,g\in C^{\infty}(M,N)\)</span> are
+homotopic. If there is a sequence of mapping <span
+class="math inline">\(h_k:\Omega^k(M) \to \Omega^{k-1}(M)\)</span>
+satisfying: <span class="math display">\[ g^*-f^* =
+d_{M}h_k+h_{k+1}d_{N}.\]</span> we say the sequence <span
+class="math inline">\(h=(h_k)\)</span> is a cochain homotopy between
+<span class="math inline">\(f^*\)</span> and <span
+class="math inline">\(g^*\)</span>.</p>
+<p>If there exists such a cochain homotopy <span
+class="math inline">\(h\)</span>, for any <span
+class="math inline">\(\omega \in Z^k_{dR}(N)\)</span></p>
+<p><span class="math display">\[
+g^*\omega - f^* \omega = (dh_{k}+h_{k+1}d)\omega = d(h_k\omega)
++h_{k+1}(d\omega) = d(h_k\omega) \in B^k(M)
+\]</span></p>
+<p>So <span class="math inline">\(f^*([\omega])=[f^*\omega] = [g^*
+\omega] = g^*([\omega])\)</span>.</p>
+<p>Now we prove the existence of the cochain homotopy:</p>
+<p>First, we prove a lemma</p>
+<hr />
+<p>Let <span class="math inline">\(X\)</span> be a complete vector field
+on <span class="math inline">\(M\)</span>, <span
+class="math inline">\(\phi_t\)</span> be the flow generated by <span
+class="math inline">\(X\)</span>. Then there exists a linear operator
+<span class="math inline">\(Q_k:\Omega^k(M)\to\Omega^{k-1}(M)\)</span>
+s.t. : <span class="math display">\[
+\phi_1^*\omega-\omega= d Q_k(\omega)+ Q_{k+1}(d\omega)
+\]</span> <strong>Proof</strong> <span class="math display">\[
+\frac{d}{dt}\phi^*_t\omega=\left.\frac{d}{ds}\right|_{s=0}\phi^*_{s+t}=\left.\frac{d}{ds}\right|_{s=0}\phi^*_{s}\phi^*_{t}\omega=\mathcal{L}_X(\phi_t^*\omega)=d\iota_X(\phi^*_t\omega)+\iota_X
+d(\phi^*_t\omega)
+\]</span> Therefore, denote <span
+class="math inline">\(Q_k(\omega)=\int_{0}^{1}\iota_X(\phi_t^*\omega)dt\)</span>
+<span class="math display">\[
+\phi_1^*\omega-\omega = \int_{0}^{1}\left
+(\frac{d}{dt}\phi^*_t\omega\right ) = dQ_k(\omega) + Q_{k+1}(d\omega)
+\]</span></p>
+<hr />
+<p>Now we can construct the cochain homotopy between <span
+class="math inline">\(f^*\)</span> and <span
+class="math inline">\(g^*\)</span> as follows: Let <span
+class="math inline">\(W=M\times R\)</span>, then <span
+class="math inline">\(X=\frac{\partial}{\partial t}\)</span> is a
+complete vector field on <span class="math inline">\(W\)</span>. Let
+<span class="math inline">\(\phi_t: W \to W\)</span> be the flow
+generated by <span class="math inline">\(X\)</span>, then <span
+class="math inline">\(\phi_t(x,s)=(x,s+t)\)</span> is a smooth map.</p>
+<p>By the Lemma, we have a linear operator <span
+class="math inline">\(Q_k: \Omega^k(W) \to \Omega^{k-1}(W)\)</span> such
+that: <span class="math display">\[
+\phi_1^*\omega - \omega = d Q_k(\omega) + Q_{k+1}(d\omega)
+\]</span></p>
+<p>By the Whitney Approximation theorem, we can find a smooth homotopy
+<span class="math inline">\(H: M \times [0,1] \to N\)</span> such that
+<span class="math inline">\(H(x,0) = f(x)\)</span> and <span
+class="math inline">\(H(x,1) = g(x)\)</span> for all <span
+class="math inline">\(x \in M\)</span>.</p>
+<p>Let <span class="math inline">\(\iota:M \hookrightarrow W\)</span> be
+the inclusion map, <span class="math inline">\(\iota(x) =
+(x,0)\)</span>, then <span class="math display">\[
+f = H \circ \iota, \quad g = H \circ \phi_1 \circ \iota
+\]</span> Then we have: <span class="math display">\[
+g^*\omega - f^*\omega = \iota^* \phi_1^* H^* \omega - \iota^* H^* \omega
+= \iota^* (dQ_k+Q_{k+1}d)H^* \omega = (d \iota^* Q_k H^* + \iota^*
+Q_{k+1} H^* d)\omega
+\]</span></p>
+<p>So <span class="math inline">\(h_k = \iota^* Q_k H^*\)</span> and
+<span class="math inline">\(h_{k+1} = \iota^* Q_{k+1} H^*\)</span> is a
+cochain homotopy between <span class="math inline">\(f^*\)</span> and
+<span class="math inline">\(g^*\)</span>.</p>
+<h3 id="de-rham-theorem">de Rham Theorem</h3>
+<p>The famous <strong>de Rham theorem</strong> states that the de Rham
+cohomology is isomorphic to the singular cohomology with real
+coefficients, i.e., for any smooth manifold <span
+class="math inline">\(M\)</span>, <span class="math display">\[
+H^k_{dR}(M) \simeq H^k_{sing}(M; \mathbb{R}) \]</span></p>
+<p>which we shall not prove here.</p>
+<p>This theorem reveals the duality between the topological structure
+and the algebraic structure (differential forms) on a manifold.</p>
+<h3 id="chain-complex">Chain Complex</h3>
+<p>The <strong>chain complex</strong> is a sequence of abelian groups
+(or modules) <span class="math inline">\(\cdots A_0, A_1,
+A_2\cdots\)</span> connected by homomorphisms <span
+class="math inline">\(d_n: A_n\to A_{n-1}\)</span>, such that the image
+of one homomorphism is contained in the kernel of the next. The
+composition of any two consecutive maps shall be the zero maps, <span
+class="math inline">\(d_n \circ d_{n+1} = 0\)</span> or <span
+class="math inline">\(d^2=0\)</span> for short. <span
+class="math display">\[ \cdots \xleftarrow{d_0} A_0 \xleftarrow{d_1} A_1
+\xleftarrow{d_2} A_2 \xleftarrow{d_3} \cdots\]</span></p>
+<p>The <strong>cochain complex</strong> is the dual notion to the chain
+complex.</p>
+<p><span class="math display">\[ \cdots \xrightarrow{d^0} A^0
+\xrightarrow{d^1} A^1 \xrightarrow{d^2} A^2 \xrightarrow{d^3}
+\cdots\]</span> where <span class="math inline">\(d^{n}\circ d^{n+1} =
+0\)</span>.</p>
+<p>The elements in the kernel of <span class="math inline">\(d\)</span>
+are called <strong>(co)cycles</strong> (or <strong>closed</strong>
+elements), and the elements in the image of <span
+class="math inline">\(d\)</span> are called
+<strong>(co)boundaries</strong> (or <strong>exact</strong> elements).
+Right from the definition of the differential, all boundaries are
+cycles. The <span class="math inline">\(n\)</span>-th
+<strong>(co)homology</strong> group <span
+class="math inline">\(H_n(H^n)\)</span> is the group of (co)cycles
+modulo (co)boundaries in degree <span class="math inline">\(n\)</span>,
+that is,</p>
+<p><span class="math display">\[ H_n = \ker d_n/\text{im } d_{n+1} \left
+( H^n = \ker d^n/\text{im } d^{n-1}\right)\]</span></p>
+<p>A <strong>exact sequence</strong> is a (co)chain complex whose
+(co)homology groups are all zero, which means all closed elements are
+exact. A short exact sequence is a bounded exact sequence in which only
+the groups <span class="math inline">\(A_k\)</span>, <span
+class="math inline">\(A_{k+1}\)</span>, <span
+class="math inline">\(A_{k+2}\)</span> may be nonzero. For example, the
+following chain complex is a short exact sequence.</p>
+<p><span class="math display">\[ \cdots \rightarrow 0 \rightarrow Z
+\xrightarrow {\times p} Z \twoheadrightarrow Z/p \rightarrow 0
+\rightarrow \cdots \]</span></p>
+<h3 id="de-rham-complex">de Rham Complex</h3>
+<p>The <strong>de Rham complex</strong> is the sequence of differential
+forms: <span class="math display">\[ 0 \to \Omega^0(M) \xrightarrow{d}
+\Omega^1(M) \xrightarrow{d} \Omega^2(M) \xrightarrow{d} \ldots
+\xrightarrow{d} \Omega^n(M) \to 0 \]</span></p>
+<h4 id="the-zig-zag-lemma">The Zig-Zag Lemma</h4>
+<p>TODO.</p>
+<h3 id="mayer-vietoris-sequence">Mayer-Vietoris Sequence</h3>
+<p>TODO.</p>
+<h2 id="poincaré-duality">Poincaré Duality</h2>
+<h3 id="singular-homology">Singular Homology</h3>
+<p>TODO.</p>
+<h3 id="poincaré-duality-theorem">Poincaré Duality Theorem</h3>
+<p>TODO.</p>
+<h2 id="hodge-theory">Hodge Theory</h2>
+<p>TODO.</p>
+<h2 id="sheaf-theory">Sheaf Theory</h2>
+<p>TODO.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Mathematics/" class="category-chain-item">Mathematics</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Differential-Geometry/" class="print-no-link">#Differential Geometry</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Differential Geometry</div>
+      <div>https://notdesigned.github.io/2025/07/30/Differential-Geometry/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Luocheng Liang</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>July 30, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - Share-alike">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/07/30/Topology/" title="Topology">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Topology</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/07/22/GAN-and-Wasserstein-GAN/" title="GAN and Wasserstein GAN">
+                        <span class="hidden-mobile">GAN and Wasserstein GAN</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"Ov23lisUTr0Y3YpBngo1","clientSecret":"4068f2efc1d2d6015f3c8089a4e0ad4c1aeb8ed2","repo":"gitalkcomment","owner":"NotDesigned","admin":["NotDesigned"],"language":"en","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://autumn-recipe-17e3.theadscn.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '644e6d7214c05f62930574895c687829'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

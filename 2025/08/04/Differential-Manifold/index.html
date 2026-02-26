@@ -1,0 +1,1431 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Luocheng Liang">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="References  John Lee, Introduction to Smooth Manifolds Loring Tu, An Introduction to Manifolds Victor Guillemin and Alan Pollack, Differential Topology  For Chinese reader, you can refer to the websit">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Differential Manifold">
+<meta property="og:url" content="https://notdesigned.github.io/2025/08/04/Differential-Manifold/index.html">
+<meta property="og:site_name" content="Adscn&#39;s Blog">
+<meta property="og:description" content="References  John Lee, Introduction to Smooth Manifolds Loring Tu, An Introduction to Manifolds Victor Guillemin and Alan Pollack, Differential Topology  For Chinese reader, you can refer to the websit">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-08-04T10:28:20.000Z">
+<meta property="article:modified_time" content="2026-02-26T12:57:24.804Z">
+<meta property="article:author" content="Luocheng Liang">
+<meta property="article:tag" content="Differential Geometry">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Differential Manifold - Adscn&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"notdesigned.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Adscn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Blog</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Differential Manifold"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-04 10:28" pubdate>
+          August 4, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Differential Manifold</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="references">References</h2>
+<ul>
+<li><p>John Lee, Introduction to Smooth Manifolds</p></li>
+<li><p>Loring Tu, An Introduction to Manifolds</p></li>
+<li><p>Victor Guillemin and Alan Pollack, Differential Topology</p></li>
+</ul>
+<p>For Chinese reader, you can refer to the website
+http://staff.ustc.edu.cn/~wangzuoq/Courses/23F-Manifolds/#notes for
+Chinese course note in USTC.</p>
+<h2 id="manifolds-and-smooth-maps">Manifolds and Smooth maps</h2>
+<h3 id="topological-manifolds">Topological Manifolds</h3>
+<p>Let <span class="math inline">\(M\)</span> be a
+<strong>Hausdorff</strong> and <strong>second countable</strong>
+topological space that is locally homeomorphic to Euclidean space <span
+class="math inline">\(\mathbb{R}^n\)</span>. We say that <span
+class="math inline">\(M\)</span> is a <strong>manifold of dimension
+<span class="math inline">\(n\)</span></strong> if <span
+class="math inline">\(\forall p \in M, \exists U \subseteq M,\exists
+\phi: U \to \mathbb{R}^n\)</span> such that <span
+class="math inline">\(\phi\)</span> is a homeomorphism onto its image
+and <span class="math inline">\(\phi(U)\)</span> is an open subset of
+<span class="math inline">\(\mathbb{R}^n\)</span>. Sometime we denote it
+as <span class="math inline">\(M^n\)</span>.</p>
+<p>We denote <span class="math inline">\((U,\phi)\)</span> as a
+coordinate chart, <span class="math inline">\(\phi\)</span> as a
+coordinate map, and <span class="math inline">\(\phi^{-1}\)</span> as a
+parameterization of <span class="math inline">\(U\)</span>.</p>
+<h3 id="atlas-and-ck-structure">Atlas and <span
+class="math inline">\(C^{k}\)</span>-structure</h3>
+<p>An <strong>atlas</strong> on a topological manifold <span
+class="math inline">\(M\)</span> is a collection of coordinate charts
+<span class="math inline">\(\mathcal{A} = \{(U_\alpha,
+\phi_\alpha)\}_{\alpha \in I}\)</span> where <span
+class="math inline">\(\bigcup_{\alpha \in I} U_\alpha = M\)</span>.</p>
+<p>Let <span class="math inline">\((U,\phi)\)</span> and <span
+class="math inline">\((V, \psi)\)</span> be two coordinate charts in the
+atlas <span class="math inline">\(\mathcal{A}\)</span>. The
+<strong>transition map</strong> from <span class="math inline">\((U,
+\phi)\)</span> to <span class="math inline">\((V, \psi)\)</span> is
+defined as <span class="math inline">\(\psi \circ \phi^{-1}: \phi(U \cap
+V) \to \psi(U \cap V)\)</span>.</p>
+<p>We call the transition map <strong><span
+class="math inline">\(C^{k}\)</span> compatible</strong> if it is a
+<span class="math inline">\(C^{k}\)</span> function. And we say that the
+atlas <span class="math inline">\(\mathcal{A}\)</span> is a
+<strong><span class="math inline">\(C^{k}\)</span>-atlas</strong> if
+<span class="math inline">\(\forall (U, \phi), (V, \psi) \in
+\mathcal{A}, U\cap V \neq \emptyset\)</span>, the transition map <span
+class="math inline">\(\psi \circ \phi^{-1}\in C^{k}(\phi(U \cap V)\cap
+\psi(U \cap V))\)</span>.</p>
+<p>We say <span class="math inline">\((U, \phi)\)</span> are
+<strong><span class="math inline">\(C^{k}\)</span>-compatible with <span
+class="math inline">\(\mathcal{A}\)</span></strong> if it is <span
+class="math inline">\(C^{k}\)</span> compatible with every chart in
+<span class="math inline">\(\mathcal{A}\)</span>.</p>
+<p>Let <span class="math inline">\(\mathcal{A}\)</span> be a <span
+class="math inline">\(C^{k}\)</span>-atlas on a topological manifold
+<span class="math inline">\(M\)</span>. Maximal extension of <span
+class="math inline">\(\mathcal{A}\)</span>: <span
+class="math inline">\(\overline{\mathcal{A}} = \{(U, \phi) : (U, \phi)
+\text{ is } C^{k} \text{-compatible with } \mathcal{A}\}\)</span>. It is
+unique by definition and is a <span
+class="math inline">\(C^{k}\)</span>-atlas on <span
+class="math inline">\(M\)</span>.</p>
+<p>And it is not hard to prove that if <span
+class="math inline">\(\overline{\mathcal{A}} =
+\overline{\mathcal{B}}\)</span> for another <span
+class="math inline">\(C^{k}\)</span>-atlas <span
+class="math inline">\(\mathcal{B}\)</span>, then <span
+class="math inline">\(\mathcal{A} \cup \mathcal{B}\)</span> is also a
+<span class="math inline">\(C^{k}\)</span>-atlas on <span
+class="math inline">\(M\)</span>.</p>
+<p>Actually, Let <span class="math inline">\(\mathcal{F}\)</span> be the
+collection of all <span class="math inline">\(C^{k}\)</span>-compatible
+coordinate charts on <span class="math inline">\(M\)</span>. Then <span
+class="math inline">\((\mathcal{F}, \subseteq)\)</span> is a directed
+set. And <span class="math inline">\(\overline{\mathcal{A}}\)</span> is
+the maximal element of <span
+class="math inline">\(\mathcal{F}\)</span>.</p>
+<p>We call <span class="math inline">\(\overline{\mathcal{A}}\)</span> a
+maximal <span class="math inline">\(C^{k}\)</span>-atlas or a
+<strong><span class="math inline">\(C^{k}\)</span>-structure</strong> on
+<span class="math inline">\(M\)</span>. A manifold with a <span
+class="math inline">\(C^{k}\)</span>-structure is called a <strong><span
+class="math inline">\(C^{k}\)</span>-manifold</strong>.</p>
+<h3 id="smooth-manifolds">Smooth Manifolds</h3>
+<p>A <strong>smooth manifold</strong> is a <span
+class="math inline">\(C^{\infty}\)</span>-manifold.</p>
+<h3 id="coordinate-functions">Coordinate Functions</h3>
+<p>Let <span class="math inline">\((U, \phi)\)</span> be a coordinate
+chart on a <span class="math inline">\(n\)</span>-manifold <span
+class="math inline">\(M\)</span>. The <strong>coordinate
+functions</strong> are the components of the coordinate map <span
+class="math inline">\(\phi: U \to \mathbb{R}^n\)</span>, denoted as
+<span class="math inline">\(\phi = (\phi^1, \phi^2, \ldots,
+\phi^n)\)</span>. We call the coordinate functions <span
+class="math inline">\(\phi^i: U \to \mathbb{R}\)</span> the
+<strong><span class="math inline">\(i\)</span>-th coordinate
+function</strong>.</p>
+<p>For <span class="math inline">\(p\in U\)</span>, we write <span
+class="math inline">\(\phi(p) = (x^1, x^2, \ldots, x^n)\)</span>, where
+<span class="math inline">\(x^i = \phi^i(p)\)</span>.</p>
+<p>And we call <span class="math inline">\((x^1, x^2, \ldots,
+x^n)\)</span> the local coordinates of <span
+class="math inline">\(p\)</span> in the chart <span
+class="math inline">\((U, \phi)\)</span>.</p>
+<h3 id="tangent-vectors-and-tangent-spaces">Tangent Vectors and Tangent
+Spaces</h3>
+<h4 id="germs-of-functions">Germs of functions</h4>
+<p>A <strong>germ of a function</strong> at a point <span
+class="math inline">\(p \in M\)</span> is an equivalence class of
+functions defined on a neighborhood of <span
+class="math inline">\(p\)</span>. Two functions <span
+class="math inline">\(f\)</span> and <span
+class="math inline">\(g\)</span> are equivalent if they agree on some
+neighborhood of <span class="math inline">\(p\)</span>.</p>
+<p>Formally, let <span class="math inline">\((f,U)\)</span> and <span
+class="math inline">\((g,V)\)</span> be two functions defined on
+neighborhoods <span class="math inline">\(U\)</span> and <span
+class="math inline">\(V\)</span> of <span
+class="math inline">\(p\)</span>. If there exists a neighborhood <span
+class="math inline">\(W \subseteq U \cap V\)</span> such that <span
+class="math inline">\(f|_W = g|_W\)</span>, then we say that the germ of
+<span class="math inline">\(f\)</span> at <span
+class="math inline">\(p\)</span> is equal to the germ of <span
+class="math inline">\(g\)</span> at <span
+class="math inline">\(p\)</span>, denoted as <span
+class="math inline">\((f,U) \sim (g,V)\)</span>.</p>
+<p>A germ of a function at <span class="math inline">\(p\)</span> is
+denoted as <span class="math inline">\([f]_p\)</span>, <span
+class="math inline">\([f]\)</span> or <span
+class="math inline">\(f\)</span> if the context is clear.</p>
+<p>We denote <span class="math inline">\(C^{\infty}_p(M)\)</span> or
+<span class="math inline">\(C^{\infty}_p\)</span> as the set of germs of
+smooth functions at <span class="math inline">\(p \in M\)</span>.
+Formally, <span class="math inline">\(C^{\infty}_p(M) = \{ [f]_p : f \in
+C^{\infty}(U), U \text{ is a neighborhood of } p \}\)</span>.</p>
+<p>If we write <span class="math inline">\(f \in
+C^{\infty}_p(M)\)</span>, it means that <span
+class="math inline">\([f]_p\in C^{\infty}_p(M)\)</span>.</p>
+<h4 id="definition">Definition</h4>
+<p>There is three common definitions of tangent vectors on a manifold
+<span class="math inline">\(M\)</span>: 1. <strong>Tangent Vector as
+Derivation</strong>: A tangent vector at a point <span
+class="math inline">\(p \in M\)</span> is a linear map <span
+class="math inline">\(v: C^{\infty}_p(M) \to \mathbb{R}\)</span> that
+satisfies the Leibniz rule: <span class="math inline">\(v(fg) = v(f)g(p)
++ f(p)v(g)\)</span> for all <span class="math inline">\(f, g \in
+C^{\infty}_p(M)\)</span>. 2. <strong>Tangent Vector as Equivalence Class
+of Curves</strong>: A tangent vector at a point <span
+class="math inline">\(p \in M\)</span> is an equivalence class of curves
+<span class="math inline">\(\gamma: (-\epsilon, \epsilon) \to M\)</span>
+such that <span class="math inline">\(\gamma(0) = p\)</span>. 3.
+<strong>Tangent Vector as Derivative of Coordinate Functions</strong>: A
+tangent vector at a point <span class="math inline">\(p \in M\)</span>
+is a vector in the tangent space <span
+class="math inline">\(T_pM\)</span> defined as the set of all
+derivations at <span class="math inline">\(p\)</span> or equivalence
+classes of curves through <span class="math inline">\(p\)</span>.</p>
+<p>The <strong>tangent space</strong> at a point <span
+class="math inline">\(p \in M\)</span>, denoted as <span
+class="math inline">\(T_pM\)</span>, is the set of all tangent vectors
+at <span class="math inline">\(p\)</span>. It is a vector space over
+<span class="math inline">\(\mathbb{R}\)</span> of dimension <span
+class="math inline">\(n\)</span>, same as the dimension of the manifold
+<span class="math inline">\(M\)</span>.</p>
+<p>We shall mainly focus on the first definition of tangent vectors as
+derivations, which is the most general and abstract definition.</p>
+<p>The tangent space is equipped with a natural <span
+class="math inline">\(\mathbb{R}\)</span>-vector space structure.</p>
+<h5 id="coordinate-expression">Coordinate Expression</h5>
+<p>Let <span class="math inline">\((U,x)=(U,x^1,\ldots,x^n)\)</span> be
+a coordinate chart containing <span
+class="math inline">\(p\)</span>.</p>
+<p>Consider <span class="math inline">\(\left.\frac{\partial}{\partial
+x^i}\right|_p: C^{\infty}_p(M)\to \mathbb{R}\)</span> act on <span
+class="math inline">\(f:U\to \mathbb R\)</span> defined as <span
+class="math display">\[\left.\frac{\partial}{\partial
+x^i}\right|_p([f])=\left.\frac{\partial(f\circ x^{-1})}{\partial
+x^i}\right |_{x(p)}\]</span></p>
+<p>We know that <span class="math inline">\(\left
+\{\left.\frac{\partial}{\partial
+x^{1}}\right|_p,\ldots,\left.\frac{\partial}{\partial
+x^n}\right|_p\right \}\)</span> forms a basis of <span
+class="math inline">\(T_p M\)</span>, $T_pM = M=n $.</p>
+<p>By definition, we can prove the Kronecker delta property: <span
+class="math display">\[ \left.\frac{\partial}{\partial
+x^i}\right|_p(x^j) = \frac{\partial x^j\circ x^{-1}}{\partial x^i}
+\bigg|_{x(p)} = \delta^j_i \]</span> where <span
+class="math inline">\(\delta^i_j\)</span> is the Kronecker delta, which
+is <span class="math inline">\(1\)</span> if <span
+class="math inline">\(i=j\)</span> and <span
+class="math inline">\(0\)</span> otherwise.</p>
+<p>So every <span class="math inline">\(X_p \in T_pM\)</span> can be
+expressed as a linear combination of the basis vectors: <span
+class="math inline">\(X_p = \sum_{i=1}^n X_p^i
+\left.\frac{\partial}{\partial x^i}\right|_p\)</span>, where <span
+class="math inline">\(X_p^i =X_p(x^i)\in \mathbb{R}\)</span>.</p>
+<p>The coordinate expression of a tangent vector <span
+class="math inline">\(X_p\)</span> at <span
+class="math inline">\(p\)</span> in the chart <span
+class="math inline">\((U,x)\)</span> is given by the tuple <span
+class="math inline">\((a_1, a_2, \ldots, a_n)\)</span>, where <span
+class="math inline">\(a_i\)</span> are the coefficients in the linear
+combination.</p>
+<h3 id="fiber-bundles">Fiber Bundles</h3>
+<h4 id="definition-of-fiber-bundle">Definition of Fiber Bundle</h4>
+<p>A <strong>fiber bundle</strong> is a structure <span
+class="math inline">\((E, M, \pi, F)\)</span> consisting of:</p>
+<ul>
+<li><strong>Total space</strong>: <span class="math inline">\(E\)</span>
+(a manifold)</li>
+<li><strong>Base space</strong>: <span class="math inline">\(M\)</span>
+(a manifold)</li>
+<li><strong>Bundle projection</strong>: <span class="math inline">\(\pi:
+E \to M\)</span> (a smooth surjective map)</li>
+<li><strong>Typical fiber</strong>: <span
+class="math inline">\(F\)</span> (a manifold)</li>
+</ul>
+<p>such that the <strong>local triviality condition</strong> holds: for
+each point <span class="math inline">\(p \in M\)</span>, there exists an
+open neighborhood <span class="math inline">\(U\)</span> of <span
+class="math inline">\(p\)</span> and a diffeomorphism <span
+class="math inline">\(\phi: \pi^{-1}(U) \to U \times F\)</span>
+satisfying: <span class="math display">\[ \text{pr}_1 \circ \phi =
+\pi|_{\pi^{-1}(U)} \]</span> where <span
+class="math inline">\(\text{pr}_1: U \times F \to U\)</span> is the
+projection onto the first factor.</p>
+<p>The pair <span class="math inline">\((U, \phi)\)</span> is called a
+<strong>local trivialization</strong> or <strong>bundle
+chart</strong>.</p>
+<p>For each <span class="math inline">\(p \in M\)</span>, the
+<strong>fiber</strong> over <span class="math inline">\(p\)</span> is
+defined as <span class="math inline">\(F_p = \pi^{-1}(p)\)</span>. The
+local triviality ensures that each fiber <span
+class="math inline">\(F_p\)</span> is diffeomorphic to the typical fiber
+<span class="math inline">\(F\)</span>.</p>
+<p>Intuitively, a fiber bundle describes a space that ‘locally looks
+like a product’ but may have global twisting, like the Möbius strip over
+a circle.</p>
+<h4 id="vector-bundles">Vector Bundles</h4>
+<p>A <strong>vector bundle</strong> is a fiber bundle <span
+class="math inline">\((E, M, \pi, \mathbb{R}^k)\)</span> where:</p>
+<ol type="1">
+<li>Each fiber <span class="math inline">\(F_p = \pi^{-1}(p)\)</span>
+has the structure of a <span
+class="math inline">\(k\)</span>-dimensional real vector space.</li>
+<li>The local trivializations <span class="math inline">\(\phi:
+\pi^{-1}(U) \to U \times \mathbb{R}^k\)</span> are
+<strong>linear</strong> on each fiber, meaning that for each <span
+class="math inline">\(p \in U\)</span>, the restriction <span
+class="math inline">\(\phi|_{F_p}: F_p \to \{p\} \times \mathbb{R}^k
+\cong \mathbb{R}^k\)</span> is a vector space isomorphism.</li>
+</ol>
+<p>The integer <span class="math inline">\(k\)</span> is called the
+<strong>rank</strong> of the vector bundle.</p>
+<h3 id="tangent-bundle">Tangent Bundle</h3>
+<p>The <strong>tangent bundle</strong> of a manifold <span
+class="math inline">\(M\)</span>, denoted as <span
+class="math inline">\(TM\)</span>, is the vector bundle whose total
+space is the disjoint union of all tangent spaces: <span
+class="math display">\[ TM = \bigcup_{p \in M} T_pM = \{(p, X_p) : p \in
+M, X_p \in T_pM\}\]</span></p>
+<p>The <strong>bundle projection</strong> <span
+class="math inline">\(\pi: TM \to M\)</span> is defined by <span
+class="math inline">\(\pi(p, X_p) = p\)</span>.</p>
+<p><strong>Local Trivialization</strong>: Let <span
+class="math inline">\((U, x = (x^1, \ldots, x^n))\)</span> be a
+coordinate chart on <span class="math inline">\(M\)</span>. The tangent
+bundle can be locally trivialized over <span
+class="math inline">\(U\)</span> by the map: <span
+class="math display">\[ \Phi: \pi^{-1}(U) \to U \times \mathbb{R}^n
+\]</span> <span class="math display">\[ \Phi(p, X_p) = \left(p, (X_p^1,
+\ldots, X_p^n)\right) \]</span> where <span class="math inline">\(X_p =
+\sum_{i=1}^n X_p^i \left.\frac{\partial}{\partial x^i}\right|_p\)</span>
+is the coordinate representation of the tangent vector <span
+class="math inline">\(X_p\)</span>.</p>
+<p><strong>Manifold Structure</strong>: The tangent bundle <span
+class="math inline">\(TM\)</span> is a smooth manifold of dimension
+<span class="math inline">\(2n\)</span>, where <span
+class="math inline">\(n\)</span> is the dimension of <span
+class="math inline">\(M\)</span>. The coordinate charts on <span
+class="math inline">\(TM\)</span> are given by <span
+class="math inline">\((U \times \mathbb{R}^n, \Phi^{-1})\)</span> where
+<span class="math inline">\((U, x)\)</span> ranges over all coordinate
+charts on <span class="math inline">\(M\)</span>.</p>
+<p><strong>Transition Maps</strong>: If <span class="math inline">\((U,
+x)\)</span> and <span class="math inline">\((V, y)\)</span> are two
+overlapping coordinate charts on <span class="math inline">\(M\)</span>,
+the transition map between the corresponding bundle charts is: <span
+class="math display">\[ \Phi_V \circ \Phi_U^{-1}: (U \cap V) \times
+\mathbb{R}^n \to (U \cap V) \times \mathbb{R}^n \]</span> <span
+class="math display">\[ (p, (v^1, \ldots, v^n)) \mapsto \left(p,
+\left(\sum_{i=1}^n v^i \frac{\partial y^j}{\partial
+x^i}\bigg|_p\right)_{j=1}^n\right) \]</span></p>
+<p>This map is smooth, confirming that <span
+class="math inline">\(TM\)</span> has a smooth manifold structure.</p>
+<h3 id="sections-of-fiber-bundles">Sections of Fiber Bundles</h3>
+<h4 id="definition-of-sections">Definition of Sections</h4>
+<p>Let <span class="math inline">\(\pi: E \to M\)</span> be a fiber
+bundle projection. A <strong>section</strong> of <span
+class="math inline">\(E\)</span> is a map <span class="math inline">\(s:
+M \to E\)</span> such that <span class="math inline">\(\pi \circ s =
+\text{id}_M\)</span>. In other words, for each point <span
+class="math inline">\(p \in M\)</span>, we have <span
+class="math inline">\(s(p) \in E_p\)</span> (the fiber over <span
+class="math inline">\(p\)</span>).</p>
+<p>A section <span class="math inline">\(s\)</span> is called
+<strong>smooth</strong> if <span class="math inline">\(s: M \to
+E\)</span> is a smooth map between manifolds.</p>
+<h4 id="local-expression-of-smoothness">Local Expression of
+Smoothness</h4>
+<p>Let <span class="math inline">\((U, \phi)\)</span> be a local
+trivialization of <span class="math inline">\(E\)</span> over an open
+set <span class="math inline">\(U \subseteq M\)</span>, where <span
+class="math inline">\(\phi: \pi^{-1}(U) \to U \times F\)</span> for some
+typical fiber <span class="math inline">\(F\)</span>. Any section <span
+class="math inline">\(s\)</span> over <span
+class="math inline">\(U\)</span> can be written as: <span
+class="math display">\[ \phi \circ s|_U: U \to U \times F \]</span>
+which has the form <span class="math inline">\(p \mapsto (p,
+f(p))\)</span> for some function <span class="math inline">\(f: U \to
+F\)</span>.</p>
+<p>Sometimes we just say <span class="math inline">\(f\)</span> is a
+section of <span class="math inline">\(E\)</span> over <span
+class="math inline">\(U\)</span>.</p>
+<h4 id="space-of-sections">Space of Sections</h4>
+<p>We denote by <span class="math inline">\(\Gamma(E)\)</span> or <span
+class="math inline">\(\Gamma(M, E)\)</span> the space of all smooth
+sections of the fiber bundle <span class="math inline">\(E \to
+M\)</span>.</p>
+<p><strong>For General Fiber Bundles</strong>: The space <span
+class="math inline">\(\Gamma(E)\)</span> has the structure of a set with
+pointwise operations (when they make sense on the typical fiber).</p>
+<p><strong>For Vector Bundles</strong>: When <span
+class="math inline">\(E \to M\)</span> is a vector bundle with typical
+fiber <span class="math inline">\(\mathbb{R}^k\)</span>, the space <span
+class="math inline">\(\Gamma(E)\)</span> has additional algebraic
+structures:</p>
+<ol type="1">
+<li><p><strong>Vector space structure</strong>: For sections <span
+class="math inline">\(s_1, s_2 \in \Gamma(E)\)</span> and scalars <span
+class="math inline">\(a, b \in \mathbb{R}\)</span>: <span
+class="math display">\[ (as_1 + bs_2)(p) = as_1(p) + bs_2(p) \in E_p
+\]</span></p></li>
+<li><p><strong><span class="math inline">\(C^\infty(M)\)</span>-module
+structure</strong>: For a smooth function <span class="math inline">\(f
+\in C^\infty(M)\)</span> and a section <span class="math inline">\(s \in
+\Gamma(E)\)</span>: <span class="math display">\[ (fs)(p) = f(p) \cdot
+s(p) \in E_p \]</span></p></li>
+</ol>
+<p>These structures exist because each fiber <span
+class="math inline">\(E_p\)</span> is a vector space, allowing us to
+perform linear operations.</p>
+<h3 id="differential">Differential</h3>
+<p>Let <span class="math inline">\(F: M^m \to N^n\)</span> be a smooth
+map between manifolds <span class="math inline">\(M\)</span> and <span
+class="math inline">\(N\)</span>. The <strong>differential</strong> of
+<span class="math inline">\(F\)</span> at a point <span
+class="math inline">\(p \in M\)</span>, denoted as <span
+class="math inline">\(dF_p: T_pM \to T_{F(p)}N\)</span>, is a linear map
+between tangent spaces induced by the pushforward of <span
+class="math inline">\(F\)</span>.</p>
+<p>It is defined as follows: for any tangent vector <span
+class="math inline">\(X_p \in T_pM\)</span> and any smooth function
+<span class="math inline">\(f \in C^{\infty}_{F(p)}(N)\)</span>, <span
+class="math display">\[ dF_p(X_p)f = X_p(f \circ F) \]</span></p>
+<p><strong>Local Coordinate Expression</strong>: Let <span
+class="math inline">\((U, x)\)</span> and <span
+class="math inline">\((V, y)\)</span> be coordinate charts around <span
+class="math inline">\(p\)</span> and <span
+class="math inline">\(F(p)\)</span> respectively, and let <span
+class="math inline">\(\tilde F = y \circ F \circ x^{-1}\)</span> be the
+local representation of <span class="math inline">\(F\)</span>. Then:
+<span class="math display">\[
+\begin{align*}
+dF_p(X_p) &amp;= \sum_{j=1}^n X_p(y^j\circ F) \frac{\partial}{\partial
+y^j} \bigg|_{F(p)}\\
+&amp;= \sum_{j=1}^n \sum_{i=1}^m X_p^i \frac{\partial \tilde
+F^j}{\partial x^i} \bigg|_{x(p)} \frac{\partial}{\partial y^j}
+\bigg|_{F(p)}\\
+&amp;= \sum_{j=1}^n \left(\sum_{i=1}^m X_p^i \frac{\partial \tilde
+F^j}{\partial x^i} \bigg|_{x(p)}\right) \frac{\partial}{\partial y^j}
+\bigg|_{F(p)}
+\end{align*}
+\]</span></p>
+<p>In matrix form, if <span class="math inline">\(J_F(p) =
+\left(\frac{\partial \tilde F^j}{\partial x^i}
+\bigg|_{x(p)}\right)\)</span> is the Jacobian matrix of <span
+class="math inline">\(F\)</span> at <span
+class="math inline">\(p\)</span>, then: <span class="math display">\[
+dF_p(X_p) = J_F(p) X_p \]</span> where <span
+class="math inline">\(X_p\)</span> is considered as a column vector in
+local coordinates.</p>
+<h3 id="vector-fields">Vector Fields</h3>
+<p>A <strong>vector field</strong> on a manifold <span
+class="math inline">\(M\)</span> is a smooth section of the tangent
+bundle <span class="math inline">\(TM\)</span>. That is, a vector field
+<span class="math inline">\(X\)</span> is a smooth map <span
+class="math inline">\(X: M \to TM\)</span> such that <span
+class="math inline">\(\pi \circ X = \text{id}_M\)</span>, where <span
+class="math inline">\(\pi: TM \to M\)</span> is the bundle
+projection.</p>
+<p>Equivalently, a vector field assigns to each point <span
+class="math inline">\(p \in M\)</span> a tangent vector <span
+class="math inline">\(X_p \in T_pM\)</span> in a smooth manner.</p>
+<p><strong>Local Coordinate Expression</strong>:</p>
+<p>The partial derivative operator <span
+class="math inline">\(\frac{\partial}{\partial x^i}\)</span> can be
+viewed as a vector field on <span class="math inline">\(M\)</span> in
+the coordinate chart <span class="math inline">\((U, x)\)</span>, where
+it acts on smooth functions <span class="math inline">\(f \in
+C^\infty(U)\)</span> by: <span class="math display">\[ \frac{\partial
+f}{\partial x^i} = \left.\frac{\partial(f\circ x^{-1})}{\partial
+x^i}\right|_{x(p)} \]</span></p>
+<p>where <span class="math inline">\(x^i\)</span> is the <span
+class="math inline">\(i\)</span>-th coordinate function in the chart
+<span class="math inline">\((U, x)\)</span>.</p>
+<p>In a coordinate chart <span class="math inline">\((U, x = (x^1,
+\ldots, x^n))\)</span>, a vector field <span
+class="math inline">\(X\)</span> can be expressed as: <span
+class="math display">\[ X = \sum_{i=1}^n X^i \frac{\partial}{\partial
+x^i} \]</span> where <span class="math inline">\(X^i: U \to
+\mathbb{R}\)</span> are smooth functions called the
+<strong>components</strong> of the vector field <span
+class="math inline">\(X\)</span> with respect to the coordinate chart
+<span class="math inline">\((U, x)\)</span>.</p>
+<p>The smoothness of the vector field <span
+class="math inline">\(X\)</span> is equivalent to the smoothness of all
+its component functions <span class="math inline">\(X^i\)</span>.</p>
+<p><strong>Space of Vector Fields</strong>: We denote by <span
+class="math inline">\(\mathfrak{X}(M)\)</span> or <span
+class="math inline">\(\Gamma^{\infty}(TM)\)</span> the space of all
+smooth vector fields on <span class="math inline">\(M\)</span>. This
+space is both a vector space over <span
+class="math inline">\(\mathbb{R}\)</span> and a module over the ring
+<span class="math inline">\(C^\infty(M)\)</span> of smooth functions on
+<span class="math inline">\(M\)</span>.</p>
+<h3 id="partition-of-unity">Partition of Unity</h3>
+<p>Partitions of unity are one of the most powerful tools in the theory
+of smooth manifolds. They provide a way to smoothly “glue together”
+local constructions into global ones. For example, if we can define an
+object (like a function, a metric, or a differential form) on each chart
+of an atlas, a partition of unity allows us to combine these local
+objects into a single, globally defined smooth object on the entire
+manifold. The fundamental building blocks for partitions of unity are
+smooth bump functions.</p>
+<h4 id="bump-functions">Bump Functions</h4>
+<p>A <strong>bump function</strong> on a manifold <span
+class="math inline">\(M\)</span> is a smooth function <span
+class="math inline">\(\lambda: M \to \mathbb{R}\)</span> that is equal
+to 1 on some specified compact set and is zero outside of a slightly
+larger open set containing it. The existence of such functions is a
+cornerstone of analysis on manifolds, distinguishing smooth manifolds
+from, for example, analytic manifolds where such functions do not
+exist.</p>
+<p>First, let’s establish their existence on <span
+class="math inline">\(\mathbb{R}^n\)</span>. Consider the function <span
+class="math inline">\(\psi: \mathbb{R} \to \mathbb{R}\)</span> defined
+by: <span class="math display">\[
+\psi(t) = \begin{cases}
+e^{-1/t} &amp; \text{if } t &gt; 0 \\
+0 &amp; \text{if } t \le 0
+\end{cases}
+\]</span> This function is famously <span
+class="math inline">\(C^\infty\)</span> on all of <span
+class="math inline">\(\mathbb{R}\)</span>, including at <span
+class="math inline">\(t=0\)</span> where all its derivatives are zero.
+Using this, we can construct a smooth function on <span
+class="math inline">\(\mathbb{R}^n\)</span> that is positive on an open
+ball and zero elsewhere. For example, the function <span
+class="math inline">\(\Psi: \mathbb{R}^n \to \mathbb{R}\)</span> defined
+by <span class="math display">\[
+\Psi(x) = \begin{cases}
+e^{-1/(1-\|x\|^2)} &amp; \text{if } \|x\| &lt; 1 \\
+0 &amp; \text{if } \|x\| \ge 1
+\end{cases}
+\]</span> is a smooth function that is positive on the open unit ball
+<span class="math inline">\(B(0,1)\)</span> and has its support
+contained in the closed unit ball <span
+class="math inline">\(\overline{B(0,1)}\)</span>.</p>
+<p>By scaling and translating this function, we can create a bump
+function for any ball. More generally, we have the following crucial
+existence theorem for bump functions on manifolds:</p>
+<p><strong>Theorem (Existence of Bump Functions):</strong> Let <span
+class="math inline">\(M\)</span> be a smooth manifold, <span
+class="math inline">\(K \subset M\)</span> be a compact set, and <span
+class="math inline">\(U \subset M\)</span> be an open set containing
+<span class="math inline">\(K\)</span>. Then there exists a smooth
+function <span class="math inline">\(\lambda: M \to [0, 1]\)</span> such
+that: 1. <span class="math inline">\(\lambda(p) = 1\)</span> for all
+<span class="math inline">\(p \in K\)</span>. 2. <span
+class="math inline">\(\text{supp}(\lambda) \subset U\)</span>.</p>
+<p>Here, the <strong>support</strong> of a function <span
+class="math inline">\(f: M \to \mathbb{R}\)</span>, denoted <span
+class="math inline">\(\text{supp}(f)\)</span>, is the closure of the set
+of points where <span class="math inline">\(f\)</span> is non-zero:
+<span class="math display">\[\text{supp}(f) = \overline{\{p \in M \mid
+f(p) \neq 0\}}\]</span> A function with compact support is a function
+whose support is a compact set.</p>
+<h4 id="definition-of-a-partition-of-unity">Definition of a Partition of
+Unity</h4>
+<p>Let <span class="math inline">\(M\)</span> be a smooth manifold and
+let <span class="math inline">\(\mathcal{U} = \{U_\alpha\}_{\alpha \in
+A}\)</span> be an open cover of <span class="math inline">\(M\)</span>.
+A family of smooth functions <span class="math inline">\(\{\rho_\alpha:
+M \to [0,1]\}_{\alpha \in A}\)</span> indexed by the same set <span
+class="math inline">\(A\)</span> is called a <strong>partition of unity
+subordinate to the cover <span
+class="math inline">\(\mathcal{U}\)</span></strong> if it satisfies the
+following conditions:</p>
+<ol type="1">
+<li><strong>Subordination:</strong> For each <span
+class="math inline">\(\alpha \in A\)</span>, the support of <span
+class="math inline">\(\rho_\alpha\)</span> is contained in <span
+class="math inline">\(U_\alpha\)</span>. That is, <span
+class="math inline">\(\text{supp}(\rho_\alpha) \subset
+U_\alpha\)</span>.</li>
+<li><strong>Local Finiteness:</strong> The cover of supports <span
+class="math inline">\(\{\text{supp}(\rho_\alpha)\}_{\alpha \in
+A}\)</span> is locally finite. This means that for every point <span
+class="math inline">\(p \in M\)</span>, there exists a neighborhood
+<span class="math inline">\(V\)</span> of <span
+class="math inline">\(p\)</span> that intersects only a finite number of
+the sets <span
+class="math inline">\(\text{supp}(\rho_\alpha)\)</span>.</li>
+<li><strong>Sum to Unity:</strong> For every point <span
+class="math inline">\(p \in M\)</span>, the sum of the function values
+at that point is 1. <span class="math display">\[\sum_{\alpha \in A}
+\rho_\alpha(p) = 1\]</span> (The local finiteness condition ensures that
+for any <span class="math inline">\(p\)</span>, this is a finite sum in
+a neighborhood of <span class="math inline">\(p\)</span>, and thus the
+total sum is a well-defined smooth function.)</li>
+</ol>
+<h4 id="existence-of-partitions-of-unity">Existence of Partitions of
+Unity</h4>
+<p>The main theorem guarantees that such partitions of unity always
+exist on manifolds that satisfy the standard topological
+assumptions.</p>
+<p><strong>Theorem (Existence of Partitions of Unity):</strong> Let
+<span class="math inline">\(M\)</span> be a smooth manifold (which is
+Hausdorff and second-countable by our definition). For any open cover
+<span class="math inline">\(\mathcal{U}\)</span> of <span
+class="math inline">\(M\)</span>, there exists a smooth partition of
+unity subordinate to <span
+class="math inline">\(\mathcal{U}\)</span>.</p>
+<p><strong>Sketch of Proof:</strong> The proof relies on the topological
+property of paracompactness, which is guaranteed for Hausdorff,
+second-countable manifolds.</p>
+<ol type="1">
+<li><strong>Find a good refinement:</strong> Since <span
+class="math inline">\(M\)</span> is second-countable and locally
+compact, we can find a countable, locally finite open refinement <span
+class="math inline">\(\mathcal{V} = \{V_j\}_{j=1}^\infty\)</span> of the
+original cover <span class="math inline">\(\mathcal{U}\)</span> such
+that each <span class="math inline">\(\overline{V_j}\)</span> is compact
+and for each <span class="math inline">\(j\)</span>, there is some <span
+class="math inline">\(\alpha_j\)</span> with <span
+class="math inline">\(\overline{V_j} \subset U_{\alpha_j}\)</span>.</li>
+<li><strong>Find another refinement:</strong> We can construct another
+open cover <span class="math inline">\(\mathcal{W} =
+\{W_j\}_{j=1}^\infty\)</span> such that for each <span
+class="math inline">\(j\)</span>, <span
+class="math inline">\(\overline{W_j}\)</span> is compact and <span
+class="math inline">\(\overline{W_j} \subset V_j\)</span>.</li>
+<li><strong>Construct bump functions:</strong> For each <span
+class="math inline">\(j\)</span>, since <span
+class="math inline">\(\overline{W_j}\)</span> is a compact set contained
+in the open set <span class="math inline">\(V_j\)</span>, we can use the
+bump function existence theorem to find a smooth function <span
+class="math inline">\(\psi_j: M \to [0,1]\)</span> such that <span
+class="math inline">\(\psi_j \equiv 1\)</span> on <span
+class="math inline">\(\overline{W_j}\)</span> and <span
+class="math inline">\(\text{supp}(\psi_j) \subset V_j\)</span>.</li>
+<li><strong>Sum the bump functions:</strong> Define a function <span
+class="math inline">\(\Psi: M \to \mathbb{R}\)</span> by <span
+class="math inline">\(\Psi(p) = \sum_{j=1}^\infty \psi_j(p)\)</span>.
+Since the cover <span class="math inline">\(\{V_j\}\)</span> (and thus
+the supports of the <span class="math inline">\(\psi_j\)</span>) is
+locally finite, this sum is finite in a neighborhood of any point, so
+<span class="math inline">\(\Psi\)</span> is a smooth function. Since
+<span class="math inline">\(\{W_j\}\)</span> is a cover, for any <span
+class="math inline">\(p \in M\)</span>, <span class="math inline">\(p
+\in W_j\)</span> for some <span class="math inline">\(j\)</span>, which
+means <span class="math inline">\(\psi_j(p) = 1\)</span>. Therefore,
+<span class="math inline">\(\Psi(p) &gt; 0\)</span> for all <span
+class="math inline">\(p \in M\)</span>.</li>
+<li><strong>Normalize:</strong> For each <span
+class="math inline">\(j\)</span>, define <span
+class="math inline">\(\rho_j(p) = \frac{\psi_j(p)}{\Psi(p)}\)</span>.
+This family <span class="math inline">\(\{\rho_j\}_{j=1}^\infty\)</span>
+is a partition of unity subordinate to the cover <span
+class="math inline">\(\mathcal{V}\)</span>, and therefore also
+subordinate to the original cover <span
+class="math inline">\(\mathcal{U}\)</span>.</li>
+</ol>
+<h4 id="applications-of-partitions-of-unity">Applications of Partitions
+of Unity</h4>
+<p>Partitions of unity are essential for extending local properties to
+global ones. Here are two classic applications:</p>
+<ul>
+<li><p><strong>Integration on Manifolds:</strong> To define the integral
+of a function <span class="math inline">\(f\)</span> on a manifold <span
+class="math inline">\(M\)</span>, one can use a partition of unity <span
+class="math inline">\(\{\rho_\alpha\}\)</span> subordinate to a cover of
+coordinate charts <span class="math inline">\(\{U_\alpha\}\)</span>. The
+integral is then defined as a sum of integrals over Euclidean space:
+<span class="math display">\[\int_M f \, dV = \sum_\alpha
+\int_{U_\alpha} (\rho_\alpha f) \, dV = \sum_\alpha
+\int_{\phi_\alpha(U_\alpha)} (\rho_\alpha f) \circ \phi_\alpha^{-1} \,
+dx^1 \cdots dx^n\]</span> The partition of unity ensures that each piece
+<span class="math inline">\((\rho_\alpha f)\)</span> is compactly
+supported within a single chart, making the integral well-defined, and
+that the sum captures the “whole” of <span
+class="math inline">\(f\)</span>.</p></li>
+<li><p><strong>Existence of Riemannian Metrics:</strong> Any smooth
+manifold admits a Riemannian metric. To prove this, one can define a
+Euclidean metric on each coordinate chart <span
+class="math inline">\((U_\alpha, \phi_\alpha)\)</span>. Using a
+partition of unity <span class="math inline">\(\{\rho_\alpha\}\)</span>
+subordinate to the chart cover, one can patch these local metrics
+together into a global metric <span class="math inline">\(g\)</span> via
+a weighted sum: <span class="math display">\[g = \sum_\alpha \rho_\alpha
+g_\alpha\]</span> where <span class="math inline">\(g_\alpha\)</span> is
+the pullback of the Euclidean metric from <span
+class="math inline">\(\mathbb{R}^n\)</span> to <span
+class="math inline">\(U_\alpha\)</span>. The result is a smoothly
+varying inner product on each tangent space, i.e., a Riemannian
+metric.</p></li>
+</ul>
+<h3
+id="local-behavior-of-smooth-maps-submersion-immersion-embedding">Local
+Behavior of Smooth Maps (Submersion, Immersion, Embedding)</h3>
+<h3 id="homotopy">Homotopy</h3>
+<h3 id="sards-theorem">Sard’s theorem</h3>
+<h3 id="submanifold">Submanifold</h3>
+<h3 id="whitney-embedding-theorem">Whitney Embedding Theorem</h3>
+<h3 id="tubular-neighborhood-theorem">Tubular Neighborhood Theorem</h3>
+<h3 id="manifold-with-boundary">Manifold with Boundary</h3>
+<p>First, we denote <span class="math inline">\(\mathbb R^n_+ = \{(x^1,
+\ldots, x^n) \in \mathbb R^n : x^n \geq 0\}\)</span> as the half-space
+in <span class="math inline">\(\mathbb R^n\)</span>.</p>
+<p>A <strong>manifold with boundary</strong> is a topological space
+<span class="math inline">\(M\)</span> that is
+<strong>Hausdorff</strong>, <strong>second countable</strong> and <span
+class="math inline">\(\forall p\in M\)</span>, there exists a
+neighborhood <span class="math inline">\(U\)</span> of <span
+class="math inline">\(p\)</span> that is homeomorphic to an open subset
+of <span class="math inline">\(\mathbb R^n_+\)</span>.</p>
+<p>or equivalently, a <strong>Hausdorff</strong>, <strong>second
+countable</strong> topological space <span
+class="math inline">\(M\)</span> is a manifold with boundary if it is
+locally homeomorphic to <span class="math inline">\(\mathbb
+R^n_+\)</span> or <span class="math inline">\(\mathbb R^n\)</span>.</p>
+<p>Let <span class="math inline">\(M\)</span> be a manifold with
+boundary. The <strong>boundary</strong> of <span
+class="math inline">\(M\)</span>, denoted as <span
+class="math inline">\(\partial M\)</span>, is defined as the set of
+points in <span class="math inline">\(M\)</span> that is not locally
+homeomorphic to <span class="math inline">\(\mathbb R^n\)</span> i.e.,
+<span class="math display">\[ \partial M = \{ p \in M : \text{there is
+no neighborhood } U \cong \mathbb R^n \text{ around } p \} \]</span> and
+<span class="math inline">\(\text{int}(M) = M \setminus \partial
+M\)</span> is the interior of <span
+class="math inline">\(M\)</span>.</p>
+<p>In other words, <span class="math inline">\(p\in \partial M\)</span>
+if and only if there exists a local coordinate chart <span
+class="math inline">\((U,\phi)\)</span> around <span
+class="math inline">\(p\)</span> such that <span
+class="math inline">\(\phi(U) \subseteq \mathbb R^n_+\)</span> and <span
+class="math inline">\(\phi(p) \in \partial \mathbb R^n_+= \{(x^1,
+\ldots, x^{n-1}, 0) : x^1, \ldots, x^{n-1} \in \mathbb R\}\)</span>.</p>
+<p>We may denote <span class="math inline">\((M,\partial M)\)</span> for
+a manifold with boundary and <span class="math inline">\(M\)</span> can
+be called as manifold without boundary. Sometime <span
+class="math inline">\(M\)</span> can be either situation depending on
+the context.</p>
+<p>Properties: - <span class="math inline">\(\partial M\)</span> is a
+manifold without boundary with dimension <span
+class="math inline">\(n-1\)</span>.</p>
+<ul>
+<li><p>The result of atlas on manifold with boundary is
+similar.</p></li>
+<li><p>For the tangent space of <span class="math inline">\((M,\partial
+M)\)</span> remains a full space of <span class="math inline">\(\mathbb
+R^n\)</span> at any point <span class="math inline">\(p\in
+M\)</span>.</p></li>
+</ul>
+<h2 id="transversality-and-intersection-theory">Transversality and
+Intersection Theory</h2>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Mathematics/" class="category-chain-item">Mathematics</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Differential-Geometry/" class="print-no-link">#Differential Geometry</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Differential Manifold</div>
+      <div>https://notdesigned.github.io/2025/08/04/Differential-Manifold/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Luocheng Liang</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>August 4, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - Share-alike">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/08/09/Flow-Matching/" title="Flow Matching">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Flow Matching</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/07/30/Topology/" title="Topology">
+                        <span class="hidden-mobile">Topology</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"Ov23lisUTr0Y3YpBngo1","clientSecret":"4068f2efc1d2d6015f3c8089a4e0ad4c1aeb8ed2","repo":"gitalkcomment","owner":"NotDesigned","admin":["NotDesigned"],"language":"en","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://autumn-recipe-17e3.theadscn.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '08579330b90f0c305cfe744e00e71552'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

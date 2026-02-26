@@ -1,0 +1,900 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Luocheng Liang">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本文介绍 google deepmind 团队提出的 Unified Latents 架构，在扩散模型的架构下统一了生成和表示压缩，并且给出了优雅的信息界。 生成与编码的权衡 在生成模型设定中（详细见此文 ） ，首先我们有一个在高维空间中的分布 \[ x\sim \mu,\ p(x):&#x3D;\mathrm{Law}(\mu) : \mathbb R^n \to [0,\infty) \] 历史上， 变">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unified Latents: 扩散模型的框架下，令生成与编码相互配合">
+<meta property="og:url" content="https://notdesigned.github.io/2026/02/26/Unified-Latents-%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B%E4%B8%8B%E7%9A%84%E7%94%9F%E6%88%90%E4%B8%8E%E7%BC%96%E7%A0%81%E9%85%8D%E5%90%88/index.html">
+<meta property="og:site_name" content="Adscn&#39;s Blog">
+<meta property="og:description" content="本文介绍 google deepmind 团队提出的 Unified Latents 架构，在扩散模型的架构下统一了生成和表示压缩，并且给出了优雅的信息界。 生成与编码的权衡 在生成模型设定中（详细见此文 ） ，首先我们有一个在高维空间中的分布 \[ x\sim \mu,\ p(x):&#x3D;\mathrm{Law}(\mu) : \mathbb R^n \to [0,\infty) \] 历史上， 变">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://notdesigned.github.io/2026/02/26/Unified-Latents-%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B%E4%B8%8B%E7%9A%84%E7%94%9F%E6%88%90%E4%B8%8E%E7%BC%96%E7%A0%81%E9%85%8D%E5%90%88/Arch.png">
+<meta property="og:image" content="https://notdesigned.github.io/2026/02/26/Unified-Latents-%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B%E4%B8%8B%E7%9A%84%E7%94%9F%E6%88%90%E4%B8%8E%E7%BC%96%E7%A0%81%E9%85%8D%E5%90%88/pic.jpg">
+<meta property="article:published_time" content="2026-02-26T14:22:25.000Z">
+<meta property="article:modified_time" content="2026-02-26T12:57:24.808Z">
+<meta property="article:author" content="Luocheng Liang">
+<meta property="article:tag" content="Diffusion Models">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://notdesigned.github.io/2026/02/26/Unified-Latents-%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B%E4%B8%8B%E7%9A%84%E7%94%9F%E6%88%90%E4%B8%8E%E7%BC%96%E7%A0%81%E9%85%8D%E5%90%88/Arch.png">
+  
+  
+  
+  <title>Unified Latents: 扩散模型的框架下，令生成与编码相互配合 - Adscn&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"notdesigned.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Adscn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Blog</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Unified Latents: 扩散模型的框架下，令生成与编码相互配合"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-02-26 14:22" pubdate>
+          February 26, 2026 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.5k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          13 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Unified Latents: 扩散模型的框架下，令生成与编码相互配合</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>本文介绍 google deepmind 团队提出的 Unified Latents
+架构，在扩散模型的架构下统一了生成和表示压缩，并且给出了优雅的信息界。</p>
+<h2 id="生成与编码的权衡">生成与编码的权衡</h2>
+<p>在生成模型设定中（详细见<a
+href="https://notdesigned.github.io/2025/11/03/Reading-notes-of-The-Principle-of-Diffusion-Models/">此文</a>
+） ，首先我们有一个在高维空间中的分布</p>
+<p><span class="math display">\[
+x\sim \mu,\ p(x):=\mathrm{Law}(\mu) : \mathbb R^n \to [0,\infty)
+\]</span></p>
+<p>历史上， 变分自编码器（Variational Autoencoder, VAE）引入了一个潜变量
+<span class="math inline">\(z\)</span>，并且得出了一个关于 <span
+class="math inline">\(p(x)\)</span> 的下界。然后考虑真实的条件概率 <span
+class="math inline">\(p(z|x)\)</span> 与其变分近似 <span
+class="math inline">\(q(z|x)\)</span>: <span class="math display">\[
+\begin{aligned}
+\log p(x) &amp;= \mathbb E_{q(z|x)}
+\left[\log\frac{p(x,z)}{p(z|x)}\right] \\
+&amp;\geq \mathbb E_{q(z|x)}\left[\log \frac{p(x,z)}{q(z|x)}\right] \\
+&amp;= \underbrace{\mathbb E_{q(z|x)}\left[\log
+p(x|z)\right]}_{\text{Reconstruction Term}} - \underbrace
+{\mathrm{KL}(q(z|x) || p(z))}_{\text{Latent Encode Cost}}\\
+\end{aligned}
+\]</span></p>
+<p>即：先从原始数据中压缩出潜变量 <span
+class="math inline">\(z\)</span>，然后从潜变量 <span
+class="math inline">\(z\)</span> 中还原出 <span
+class="math inline">\(x\)</span>。并且让编码器 <span
+class="math inline">\(q(z|x)\)</span> 靠近标准正态分布 <span
+class="math inline">\(p(z)=\mathcal{N}(0,I)\)</span>
+以得到优良的潜空间性质。</p>
+<p>在这里，编码器 <span class="math inline">\(q(z|x)\)</span>
+从原始数据中提取出潜变量 <span
+class="math inline">\(z\)</span>，而生成器 <span
+class="math inline">\(p(x|z)\)</span> 从潜变量 <span
+class="math inline">\(z\)</span> 中还原出原始数据 <span
+class="math inline">\(x\)</span>。这个由信息瓶颈（Information
+Bottleneck）引入的潜变量 <span class="math inline">\(z\)</span>
+连接了生成和编码两个过程。</p>
+<h3 id="信息瓶颈">信息瓶颈</h3>
+<p>信息瓶颈描述了在编码过程中，如何在保留有用信息的同时压缩数据。具体来说，信息瓶颈试图找到一个潜变量
+<span
+class="math inline">\(z\)</span>，使得它能够最大程度地保留关于输入数据
+<span class="math inline">\(x\)</span> 的有用信息，同时尽可能地压缩
+<span class="math inline">\(z\)</span> 的表示。</p>
+<p>数学上，信息瓶颈可以通过以下优化问题来描述： <span
+class="math display">\[
+\min_{p(z|x)} I(X;Z) - \beta I(Z;Y)
+\]</span> 其中，<span class="math inline">\(I(X;Z) = \mathbb
+E_{p(x,z)}[\log\frac{p(x,z)}{p(x)p(z)}]\)</span> 是输入数据 <span
+class="math inline">\(X\)</span> 和潜变量 <span
+class="math inline">\(Z\)</span> 之间的互信息，<span
+class="math inline">\(I(Z;Y)\)</span> 是潜变量 <span
+class="math inline">\(Z\)</span> 和目标变量 <span
+class="math inline">\(Y\)</span> 之间的互信息，<span
+class="math inline">\(\beta\)</span> 是一个权衡参数。</p>
+<p>较大的 <span class="math inline">\(\beta\)</span>
+会使得模型更倾向于最小化 <span
+class="math inline">\(I(Z;Y)\)</span>，从而得到一个更保留输入数据 <span
+class="math inline">\(X\)</span> 的潜变量 <span
+class="math inline">\(Z\)</span>，而较小的 <span
+class="math inline">\(\beta\)</span> 则会使得模型更倾向于最小化 <span
+class="math inline">\(I(X;Z)\)</span>，从而得到一个更压缩的潜变量 <span
+class="math inline">\(Z\)</span>。</p>
+<p>变分自编码器通过调控 KL 散度项 <span
+class="math inline">\(\mathrm{KL}(q(z|x) || p(z))\)</span>
+来实现信息瓶颈的效果。较大的 KL 散度会使得潜变量 <span
+class="math inline">\(z\)</span> 更接近于标准正态分布，从而令 <span
+class="math inline">\(I(X;Z)\)</span> 较小，得到一个更压缩的潜变量 <span
+class="math inline">\(z\)</span>；反之亦然。</p>
+<p>问题在于，变分自编码器中，我们无法显式地控制 <span
+class="math inline">\(I(Z;X)\)</span>，或者说潜变量 <span
+class="math inline">\(z\)</span> 中保留了多少关于输入数据 <span
+class="math inline">\(x\)</span> 的信息，只能通过调节损失函数里面的 KL
+散度权重来间接控制。这就导致了复杂的调试过程，而且因模型而异。</p>
+<h2 id="unified-latents-架构">Unified Latents 架构</h2>
+<p>首先，Unified Latents 架构使用了一个确定性的编码器 <span
+class="math inline">\(E: \mathbb R^n \to \mathbb
+R^d\)</span>，将输入数据 <span class="math inline">\(x\)</span>
+映射到一个潜空间中的表示 <span class="math inline">\(z_{\text
+{clean}}=E(x)\)</span>。</p>
+<p>然后，对这个确定性的编码加噪得到带噪编码 <span
+class="math inline">\(z_t = \alpha_z(t) z_{\text{clean}} + \sigma_z^2
+\epsilon\)</span>，其中 <span class="math inline">\(\epsilon \sim
+\mathcal{N}(0, I)\)</span> 是标准高斯噪声。</p>
+<p>接下来，使用两个独立的扩散模型，一个先验扩散模型（diffusion
+prior）负责从加噪编码 <span class="math inline">\(z_t\)</span>
+生成原始编码。另一个从一个设定好的固定程度加噪（<span
+class="math inline">\(\lambda(0)=5\)</span>，见下文）编码 <span
+class="math inline">\(z_t\)</span> 作为条件生成数据 <span
+class="math inline">\(x\)</span>。</p>
+<figure>
+<img src="Arch.png" srcset="/img/loading.gif" lazyload alt="Unified Latents 架构" />
+<figcaption aria-hidden="true">Unified Latents 架构</figcaption>
+</figure>
+<p><span class="math display">\[
+z_t = \alpha_z(t) \cdot z_{\text {clean}} + \sigma_z(t) \cdot \epsilon,
+\quad \epsilon \sim \mathcal{N}(0, I)
+\]</span> 信噪比为 <span class="math display">\[
+\mathrm{SNR}(t) = \frac{\alpha_z(t)^2}{\sigma_z(t)^2}
+\]</span> 同时定义 <span class="math inline">\(\lambda(t) = \log
+\mathrm{SNR}(t)\)</span> ，<span class="math inline">\(\lambda\)</span>
+大意味着信号强、噪声弱（数据清晰）；<span
+class="math inline">\(\lambda\)</span> 小意味着噪声主导。</p>
+<p>好处是可以方便地表达信号和噪声的比例： <span class="math display">\[
+\alpha^2 = \text{sigmoid}(\lambda), \sigma^2 = \text{sigmoid}(-\lambda).
+\]</span></p>
+<blockquote>
+<p>注：<span class="math inline">\(\text{sigmoid}(t) = \frac{1}{1 +
+e^{-t}}\)</span></p>
+</blockquote>
+<figure>
+<img src="pic.jpg" srcset="/img/loading.gif" lazyload alt="手画的演示" />
+<figcaption aria-hidden="true">手画的演示</figcaption>
+</figure>
+<h3 id="损失函数推导-与-elbo-重加权">损失函数推导 与 ELBO 重加权</h3>
+<p>对于扩散模型，文中使用了以下的损失： <span class="math display">\[
+\mathbb E_{t\in
+\text{Uniform}(0,1)}\left[-\frac{d\lambda(t)}{dt}\frac{\exp\lambda(t)}{2}\omega(\lambda(t))\|x-\hat
+x(x_t,\theta)\|^2\right] + \mathrm{KL}\left(p(x_1|x) | p(x_1)\right)
+\]</span></p>
+<p>逻辑是，首先最小化负对数似然展开成 ELBO。 <span
+class="math display">\[
+-\log p_\theta(x) \leq \mathbb E_{q(z|x)}[-\log p(x|z)] +
+\mathrm{KL}(q(z|x) || p(z))
+\]</span></p>
+<p>在扩散模型的设定里，<span class="math inline">\(z\)</span>
+是标准高斯噪声 <span
+class="math inline">\(\mathcal{N}(0,I)\)</span>。</p>
+<p>但是不同于 VAE，扩散模型中的 <span class="math inline">\(z\)</span>
+代表的是一整个时间步的噪声过程，也即是路径空间 <span
+class="math inline">\(\Omega \times [0,1]\)</span>
+上的作为随机变量。然后这个路径由前向和后向过程 Itô SDE 定义。</p>
+<p>根据 Girsanov 定理，路径空间上的 KL 散度可以被重写为一个时间积分：
+<span class="math display">\[
+\text{KL}[\mathbb{Q}^{\leftarrow} \| \mathbb{P}_\theta] = \frac{1}{2}
+\int_0^1 g(t)^2 \, \mathbb{E}_{q(x_t)} \left[\left\| \nabla_{x_t} \log
+q_t(x_t) - s_\theta(x_t, t) \right\|^2 \right] dt
+\]</span> 其中 <span class="math inline">\(s_\theta(x_t, t)\)</span>
+是模型的得分函数，<span class="math inline">\(\nabla_{x_t} \log
+q_t(x_t)\)</span> 是真实的得分函数。</p>
+<p>而 <span class="math inline">\(x\)</span> 和 <span
+class="math inline">\(s\)</span> 的关系由扩散模型的定义给出： <span
+class="math display">\[
+s_\theta(x_t, t) = \frac{1}{\sigma(t)} (x_t - \alpha(t) \hat{x}(x_t, t))
+\]</span></p>
+<p>然后由 SDE 的对应关系给出，<span class="math inline">\(g(t)^2 =
+-\dot{\lambda} \sigma_t^2\)</span>。</p>
+<p>带入化简一下就可以得到文中使用的损失函数。</p>
+<p>而这里只降噪到 <span class="math inline">\(\lambda(0)=5\)</span>
+之类的 <span class="math inline">\(z_0\)</span>，所以实际上 time
+integral 的下界不是 0。然后还需要加上 <span
+class="math inline">\(z_1\)</span> 端点的 KL 散度： <span
+class="math display">\[
+\mathrm{KL}\left(p(z_1|x) | \mathcal{N}(0,I)\right)
+\]</span></p>
+<p>而 reweight 就是在路径空间上对不同时间步的损失进行加权，根据 Jensen’s
+inequality 可以证明，重加权后的损失函数仍然是 ELBO 的上界。</p>
+<blockquote>
+<p>TODO: 有时间写一个详细的推导过程。</p>
+</blockquote>
+<h2 id="双阶段训练">双阶段训练</h2>
+<p>TODO.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Machine-Learning/" class="category-chain-item">Machine Learning</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Diffusion-Models/" class="print-no-link">#Diffusion Models</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Unified Latents: 扩散模型的框架下，令生成与编码相互配合</div>
+      <div>https://notdesigned.github.io/2026/02/26/Unified-Latents-扩散模型下的生成与编码配合/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Luocheng Liang</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>February 26, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - Share-alike">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/01/10/nanochat-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="nanochat 学习笔记">
+                        <span class="hidden-mobile">nanochat 学习笔记</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"Ov23lisUTr0Y3YpBngo1","clientSecret":"4068f2efc1d2d6015f3c8089a4e0ad4c1aeb8ed2","repo":"gitalkcomment","owner":"NotDesigned","admin":["NotDesigned"],"language":"en","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://autumn-recipe-17e3.theadscn.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'fdb71d75878a83f7db84b22ee44cf90a'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

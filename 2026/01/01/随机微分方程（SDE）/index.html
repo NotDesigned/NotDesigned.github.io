@@ -1,0 +1,2361 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Luocheng Liang">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="参考文献 基本上参考 Bernt Øksendal 的《Stochastic Differential Equations: An Introduction with Applications》。 加上一些个人的理解，和测度论上的一些补充。也许会简单过一些习题。 这里主要是速通，不会太过深入某些定理的证明细节。 前置：基本的概率论，实分析，最好有测度论知识。 1. 测度概率论和随机过程基础 (Ch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="随机微分方程（SDE）">
+<meta property="og:url" content="https://notdesigned.github.io/2026/01/01/%E9%9A%8F%E6%9C%BA%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%EF%BC%88SDE%EF%BC%89/index.html">
+<meta property="og:site_name" content="Adscn&#39;s Blog">
+<meta property="og:description" content="参考文献 基本上参考 Bernt Øksendal 的《Stochastic Differential Equations: An Introduction with Applications》。 加上一些个人的理解，和测度论上的一些补充。也许会简单过一些习题。 这里主要是速通，不会太过深入某些定理的证明细节。 前置：基本的概率论，实分析，最好有测度论知识。 1. 测度概率论和随机过程基础 (Ch">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-01-01T21:01:50.000Z">
+<meta property="article:modified_time" content="2026-02-26T12:57:24.828Z">
+<meta property="article:author" content="Luocheng Liang">
+<meta property="article:tag" content="Ito Calculus">
+<meta property="article:tag" content="Stochastic Differential Equations">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>随机微分方程（SDE） - Adscn&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"notdesigned.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Adscn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Blog</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="随机微分方程（SDE）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-01-01 21:01" pubdate>
+          January 1, 2026 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          14k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          113 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">随机微分方程（SDE）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="参考文献">参考文献</h2>
+<p>基本上参考 Bernt Øksendal 的《Stochastic Differential Equations: An
+Introduction with Applications》。</p>
+<p>加上一些个人的理解，和测度论上的一些补充。也许会简单过一些习题。</p>
+<p>这里主要是速通，不会太过深入某些定理的证明细节。</p>
+<p>前置：基本的概率论，实分析，最好有测度论知识。</p>
+<h2 id="测度概率论和随机过程基础-chapter-2-of-øksendal">1.
+测度概率论和随机过程基础 (Chapter 2 of Øksendal)</h2>
+<p>在正式进入随机微分方程之前，先简单回顾一下测度论和概率论的基础知识。</p>
+<p>一个代数 <span class="math inline">\(\mathcal{A}\)</span>
+是定义在集合 <span class="math inline">\(\Omega\)</span>
+上的子集族，满足：</p>
+<ol type="1">
+<li><span class="math inline">\(\Omega \in \mathcal{A}\)</span>；</li>
+<li>如果 <span class="math inline">\(A \in \mathcal{A}\)</span>，则
+<span class="math inline">\(A^c \in \mathcal{A}\)</span>；</li>
+<li>如果 <span class="math inline">\(A_1, A_2, \ldots, A_n \in
+\mathcal{A}\)</span>，则 <span class="math inline">\(\bigcup_{i=1}^{n}
+A_i \in \mathcal{A}\)</span>。</li>
+</ol>
+<p>一个 <span class="math inline">\(\sigma\)</span>-代数 <span
+class="math inline">\(\mathcal{F}\)</span> 是定义在集合 <span
+class="math inline">\(\Omega\)</span> 上的子集族，满足： 1. <span
+class="math inline">\(\Omega \in \mathcal{F}\)</span>； 2. 如果 <span
+class="math inline">\(A \in \mathcal{F}\)</span>，则 <span
+class="math inline">\(A^c \in \mathcal{F}\)</span>； 3. 如果 <span
+class="math inline">\(A_1, A_2, \ldots \in \mathcal{F}\)</span>，则
+<span class="math inline">\(\bigcup_{i=1}^{\infty} A_i \in
+\mathcal{F}\)</span>。（补集一下自然也对可列交成立）</p>
+<p>一个测度是定义在 <span class="math inline">\(\sigma\)</span>-代数
+<span class="math inline">\(\mathcal{F}\)</span> 上的函数 <span
+class="math inline">\(\mu: \mathcal{F} \to [0, \infty]\)</span>，满足：
+1. <span class="math inline">\(\mu(\emptyset) = 0\)</span>； 2. 如果
+<span class="math inline">\(\{A_i\}_{i=1}^{\infty}\)</span> 是 <span
+class="math inline">\(\mathcal{F}\)</span> 中的可列不交集族，则 <span
+class="math inline">\(\mu\left(\bigcup_{i=1}^{\infty} A_i\right) =
+\sum_{i=1}^{\infty} \mu(A_i)\)</span>。</p>
+<p>我们可以证明测度满足以下几个有用的性质： 1. 单调性：如果 <span
+class="math inline">\(A, B \in \mathcal{F}\)</span> 且 <span
+class="math inline">\(A \subseteq B\)</span>，则 <span
+class="math inline">\(\mu(A) \leq \mu(B)\)</span>。 2. 次可加性：如果
+<span class="math inline">\(\{A_i\}_{i=1}^{\infty}\)</span> 是 <span
+class="math inline">\(\mathcal{F}\)</span> 中的任意集合族，则 <span
+class="math inline">\(\mu\left(\bigcup_{i=1}^{\infty} A_i\right) \leq
+\sum_{i=1}^{\infty} \mu(A_i)\)</span>。 3. 上连续性：如果 <span
+class="math inline">\(\{A_n\}_{n=1}^{\infty}\)</span> 是 <span
+class="math inline">\(\mathcal{F}\)</span> 中的递增集合族，即 <span
+class="math inline">\(A_1 \subseteq A_2 \subseteq \ldots\)</span>，则
+<span class="math inline">\(\mu\left(\bigcup_{n=1}^{\infty} A_n\right) =
+\lim_{n \to \infty} \mu(A_n)\)</span>。 4. 下连续性：如果 <span
+class="math inline">\(\{A_n\}_{n=1}^{\infty}\)</span> 是 <span
+class="math inline">\(\mathcal{F}\)</span> 中的递减集合族，即 <span
+class="math inline">\(A_1 \supseteq A_2 \supseteq \ldots\)</span>，且
+<span class="math inline">\(\mu(A_1) &lt; \infty\)</span>，则 <span
+class="math inline">\(\mu\left(\bigcap_{n=1}^{\infty} A_n\right) =
+\lim_{n \to \infty} \mu(A_n)\)</span>。</p>
+<p>给定一族子集 <span class="math inline">\(\mathcal{U} \subseteq
+\mathcal{P}(\Omega)\)</span>，存在唯一的最小 <span
+class="math inline">\(\sigma\)</span>-代数 <span
+class="math inline">\(\mathcal{H}_\mathcal{U}\)</span>，使得 <span
+class="math inline">\(\mathcal{U} \subseteq
+\mathcal{H}_\mathcal{U}\)</span>，称为由 <span
+class="math inline">\(\mathcal{U}\)</span> 生成的 <span
+class="math inline">\(\sigma\)</span>-代数。由此，我们可以定义 Borel
+<span class="math inline">\(\sigma\)</span>-代数 <span
+class="math inline">\(\mathcal{B}\)</span> 为 拓扑空间 <span
+class="math inline">\(\Omega\)</span> 的所有开集生成的 <span
+class="math inline">\(\sigma\)</span>-代数。</p>
+<p>一个概率空间是一个三元组 <span class="math inline">\((\Omega,
+\mathcal{F}, P)\)</span>，其中 <span
+class="math inline">\(\Omega\)</span> 是样本空间，<span
+class="math inline">\(\mathcal{F}\)</span> 是定义在 <span
+class="math inline">\(\Omega\)</span> 上的 <span
+class="math inline">\(\sigma\)</span>-代数，<span
+class="math inline">\(P\)</span> 是定义在 <span
+class="math inline">\(\mathcal{F}\)</span> 上的概率测度，满足 <span
+class="math inline">\(P(\Omega) = 1\)</span>。如果 <span
+class="math inline">\(\mathcal{F}\)</span> 包含所有<span
+class="math inline">\(P\)</span>-外测度零的子集 <span
+class="math inline">\(G \subseteq \Omega\)</span>，即 <span
+class="math inline">\(\inf{ P(A) : A \in \mathcal{F}, G \subseteq A } =
+0\)</span> ，则称概率空间 <span class="math inline">\((\Omega,
+\mathcal{F}, P)\)</span> 是完备的。</p>
+<p>给定一个概率空间 <span class="math inline">\((\Omega, \mathcal{F},
+P)\)</span>，一个函数是<span
+class="math inline">\(\mathcal{F}\)</span>-可测的，如果对于所有的 Borel
+集合 <span class="math inline">\(B \in
+\mathcal{B}(\mathbb{R})\)</span>，有 <span
+class="math inline">\(X^{-1}(B) \in
+\mathcal{F}\)</span>。随机变量是定义在概率空间 <span
+class="math inline">\((\Omega, \mathcal{F}, P)\)</span> 上的 <span
+class="math inline">\(\mathcal{F}\)</span>-可测函数，一般取值在 <span
+class="math inline">\(\mathbb{R}^n\)</span> 上。</p>
+<p>反过来，给定一个函数 <span class="math inline">\(X: \Omega \to
+\mathbb{R}^n\)</span>，定义由 <span
+class="math inline">\(\Omega\)</span> 生成的 <span
+class="math inline">\(\sigma\)</span>-代数为 <span
+class="math inline">\(\sigma(X) = \{X^{-1}(B) : B \in
+\mathcal{B}\}\)</span>。 其中 <span
+class="math inline">\(\mathcal{B}\)</span> 是 <span
+class="math inline">\(\mathbb{R}^n\)</span> 上的 Borel <span
+class="math inline">\(\sigma\)</span>-代数 （或写作 <span
+class="math inline">\(\mathcal{H}_X\)</span>）。同时还引导一个 <span
+class="math inline">\(\mathbb{R}^n\)</span> 上的测度 <span
+class="math inline">\(\mu_X\)</span>，定义为 <span
+class="math inline">\(\mu_X(B) = P(X^{-1}(B))\)</span>，称为 <span
+class="math inline">\(X\)</span> 的分布（或诱导测度），又写作 <span
+class="math inline">\(\mathrm{Law}(X)\)</span>。我们说随机变量 <span
+class="math inline">\(X\)</span> 服从分布 <span
+class="math inline">\(\mu_X\)</span>，记作 <span class="math inline">\(X
+\sim \mu_X\)</span>。</p>
+<h3 id="doob-dynkin-引理">Doob-Dynkin 引理</h3>
+<p>设 <span class="math inline">\(X: \Omega \to \mathbb{R}^n\)</span> 和
+<span class="math inline">\(Y: \Omega \to \mathbb{R}^n\)</span>
+是两个随机变量，则存在一个 Borel 可测函数 <span class="math inline">\(f:
+\mathbb{R}^n \to \mathbb{R}^n\)</span>，使得 <span
+class="math inline">\(Y = f(X)\)</span> 当且仅当 <span
+class="math inline">\(\sigma(Y) \subseteq \sigma(X)\)</span>（<span
+class="math inline">\(Y\)</span> 是 <span
+class="math inline">\(\mathcal{\mathcal{H}}_X\)</span>-可测的）。</p>
+<p>证明：</p>
+<p>(<span class="math inline">\(\Rightarrow\)</span>) 如果存在 Borel
+可测函数 <span class="math inline">\(f\)</span> 使得 <span
+class="math inline">\(Y = f(X)\)</span>，则对于任意的 Borel 集合 <span
+class="math inline">\(B \in \mathcal{B}\)</span>，<span
+class="math inline">\(Y^{-1}(B) = X^{-1}(f^{-1}(B)).\)</span> 由于 <span
+class="math inline">\(f\)</span> 是 Borel 可测的，<span
+class="math inline">\(f^{-1}(B)\)</span> 也是 Borel 集合，因此 <span
+class="math inline">\(Y^{-1}(B) \in \sigma(X)\)</span>，即 <span
+class="math inline">\(\sigma(Y) \subseteq \sigma(X)\)</span>。</p>
+<p>(<span class="math inline">\(\Leftarrow\)</span>) 如果 <span
+class="math inline">\(Y = \mathbf{1}_A\)</span> 是集合 <span
+class="math inline">\(A \in \sigma(X)\)</span> 的指示函数，则存在 Borel
+集合 <span class="math inline">\(B \in \mathcal{B}\)</span>，使得 <span
+class="math inline">\(A = X^{-1}(B)\)</span>。定义函数 <span
+class="math inline">\(f: \mathbb{R}^n \to \mathbb{R}\)</span> 为 <span
+class="math inline">\(f(x) = \mathbf{1}_B(x)\)</span>，则 <span
+class="math inline">\(Y(\omega) = f(X(\omega))\)</span> 对所有 <span
+class="math inline">\(\omega \in \Omega\)</span>
+成立。然后可以将该结论推广到简单函数 <span class="math inline">\(Y =
+\sum a_i \mathbf{1}_{A_i}\)</span>，其中 <span class="math inline">\(A_i
+\in \sigma(X)\)</span>，再通过测度论里的套路构造逐点极限收敛序列<span
+class="math inline">\(Y_k\)</span>，推广到非负的随机变量 <span
+class="math inline">\(Y\)</span>，最后正负分解推广到任意随机变量 <span
+class="math inline">\(Y\)</span>。</p>
+<p>这个引理的意义在于，它告诉 <span class="math inline">\(Y\)</span>
+是否可以通过 <span class="math inline">\(X\)</span> 来表示，取决于 <span
+class="math inline">\(Y\)</span> 的信息（引导的测度）是否包含在 <span
+class="math inline">\(X\)</span> 的信息中。</p>
+<h3 id="期望">期望</h3>
+<p>设 <span class="math inline">\((\Omega, \mathcal{F}, P)\)</span>
+是一个概率空间，<span class="math inline">\(X: \Omega \to
+\mathbb{R}^n\)</span> 是定义在该空间上的随机变量。<span
+class="math inline">\(X\)</span> 的期望值（或数学期望）定义为 <span
+class="math display">\[
+E[X] = \int_{\Omega} X(\omega) dP(\omega),
+\]</span> 前提是 <span class="math inline">\(\int_{\Omega} \|X(\omega)\|
+dP(\omega) &lt; \infty\)</span>，即绝对可积。</p>
+<p>一般地，如果 <span class="math inline">\(f: \mathbb{R}^n \to
+\mathbb{R}\)</span> 是一个 Borel 可测函数，且 <span
+class="math inline">\(E[|f(X)|] &lt; \infty\)</span>，则 <span
+class="math inline">\(f(X)\)</span> 的期望值定义为 <span
+class="math display">\[
+E[f(X)] = \int_{\Omega} f(X(\omega)) dP(\omega) = \int_{\mathbb{R}^n}
+f(x) d\mu_X(x),
+\]</span></p>
+<p>特别地，随机变量 <span class="math inline">\(X\)</span> 的 <span
+class="math inline">\(n\)</span> 阶矩定义为 <span
+class="math display">\[
+E[X^n] = \int_{\Omega} X(\omega)^n dP(\omega),
+\]</span></p>
+<h3 id="lp-空间"><span class="math inline">\(L^p\)</span> 空间</h3>
+<p>设 <span class="math inline">\((\Omega, \mathcal{F}, P)\)</span>
+是一个概率空间，<span class="math inline">\(p\in
+[1,\infty)\)</span>。我们定义随机变量 <span
+class="math inline">\(X:\Omega \to \mathbb{R}^n\)</span> 的 <span
+class="math inline">\(L^p\)</span> 范数为 <span class="math display">\[
+\|X\|_p = \|X\|_{L^{p}(P)}= \left( E[\|X\|^p] \right)^{1/p} = \left(
+\int_{\Omega} \|X(\omega)\|^p dP(\omega) \right)^{1/p},
+\]</span> 如果 <span class="math inline">\(p=\infty\)</span>，则定义为
+<span class="math display">\[
+\|X\|_\infty = \|X\|_{L^{\infty}(P)}= \inf \{ N \geq 0 :  \|X(\omega)\|
+\leq N \text{ a.s.} \}.
+\]</span> 我们定义 <span class="math inline">\(L^p\)</span> 空间为 <span
+class="math display">\[
+L^p(P) = L^p(\Omega) = \{ X: \Omega \to \mathbb{R}^n ; X \text{ 是 }
+\mathcal{F}\text{-可测的且 } \|X\|_p &lt; \infty \}.
+\]</span></p>
+<p><span class="math inline">\(L^p\)</span> 空间配备范数 <span
+class="math inline">\(\|\cdot\|_p\)</span> 后是一个 Banach 空间。当
+<span class="math inline">\(p=2\)</span> 时，<span
+class="math inline">\(L^2\)</span> 空间是一个 Hilbert 空间，内积定义为
+<span class="math display">\[
+\langle X, Y \rangle = E[X \cdot Y] = \int_{\Omega} X(\omega) \cdot
+Y(\omega) dP(\omega).
+\]</span></p>
+<h3 id="独立与条件期望">独立与条件期望</h3>
+<p>两个集合 <span class="math inline">\(A, B \in \mathcal{F}\)</span>
+称为独立的，如果 <span class="math inline">\(P(A \cap B) =
+P(A)P(B)\)</span>。一般的，一个集合族 <span
+class="math inline">\(\{A_i\}_{i \in I} \subseteq \mathcal{F}\)</span>
+称为相互独立的，如果对于任意有限子集 <span class="math inline">\(J
+\subseteq I\)</span>，有 <span class="math display">\[
+P\left( \bigcap_{j \in J} A_j \right) = \prod_{j \in J} P(A_j).
+\]</span> 随机变量 <span class="math inline">\(X: \Omega \to
+\mathbb{R}^n\)</span> 和 <span class="math inline">\(Y: \Omega \to
+\mathbb{R}^m\)</span> 称为独立的，如果它们引导的 <span
+class="math inline">\(\sigma\)</span>-代数 <span
+class="math inline">\(\sigma(X)\)</span> 和 <span
+class="math inline">\(\sigma(Y)\)</span>
+独立。我们也同时考虑一个随机变量 <span class="math inline">\(X\)</span>
+和一个 <span class="math inline">\(\sigma\)</span>-代数 <span
+class="math inline">\(\mathcal{G} \subseteq \mathcal{F}\)</span>
+的独立性，定义为 <span class="math inline">\(\sigma(X)\)</span> 和 <span
+class="math inline">\(\mathcal{G}\)</span> 独立。</p>
+<p>容易验证，若 <span class="math inline">\(X\)</span> 和 <span
+class="math inline">\(Y\)</span> 独立，则 <span
+class="math inline">\(E[XY] =
+E[X]E[Y]\)</span>。证明是考虑简单函数（随机变量）。</p>
+<p>设 <span class="math inline">\((\Omega, \mathcal{F}, P)\)</span>
+是一个概率空间，<span class="math inline">\(\mathcal{G} \subseteq
+\mathcal{F}\)</span> 是 <span
+class="math inline">\(\sigma\)</span>-代数，<span
+class="math inline">\(X: \Omega \to \mathbb{R}^n\)</span>
+是一个随机变量，且 <span class="math inline">\(E[\|X\|] &lt;
+\infty\)</span>。则条件期望 <span class="math inline">\(E[X |
+\mathcal{G}]\)</span> 定义为满足以下性质的 <span
+class="math inline">\(\mathcal{G}\)</span>-可测随机变量： 1. <span
+class="math inline">\(E[X | \mathcal{G}]\)</span> 是 <span
+class="math inline">\(\mathcal{G}\)</span>-可测的； 2. 对于所有 <span
+class="math inline">\(A \in \mathcal{G}\)</span>，有 <span
+class="math inline">\(E[X \mathbf{1}_A] = E[E[X | \mathcal{G}]
+\mathbf{1}_A]\)</span>。换言之， <span class="math display">\[
+\int_{A} X(\omega) dP(\omega) = \int_{A} E[X | \mathcal{G}](\omega)
+dP(\omega).
+\]</span> 条件期望的存在性和唯一性（几乎处处相等意义下）可以通过
+Radon-Nikodym 定理来证明。</p>
+<p>条件期望的一些重要性质包括： 1. 线性：对于任意的随机变量 <span
+class="math inline">\(X, Y\)</span> 和标量 <span
+class="math inline">\(a, b \in \mathbb{R}\)</span>，有 <span
+class="math display">\[
+E[aX + bY | \mathcal{G}] = aE[X | \mathcal{G}] + bE[Y | \mathcal{G}].
+\]</span> 2. 全期望公式：<span class="math inline">\(E[E[X |
+\mathcal{G}]] = E[X]\)</span>。 3. 如果 <span
+class="math inline">\(X\)</span> 是 <span
+class="math inline">\(\mathcal{G}\)</span>-可测的，则 <span
+class="math inline">\(E[X | \mathcal{G}] = X\)</span> 几乎处处成立。 4.
+如果 <span class="math inline">\(X\)</span> 独立于 <span
+class="math inline">\(\mathcal{G}\)</span>，则 <span
+class="math inline">\(E[X | \mathcal{G}] = E[X]\)</span>
+几乎处处成立。</p>
+<h3 id="随机过程">随机过程</h3>
+<p>一个随机过程是定义在概率空间 <span class="math inline">\((\Omega,
+\mathcal{F}, P)\)</span> 上的随机变量族 <span
+class="math inline">\(\{X_t : t \in T\}\)</span>，其中 <span
+class="math inline">\(T\)</span> 是一个索引集，通常取为时间参数（如
+<span class="math inline">\(T = [0, \infty)\)</span> 或 <span
+class="math inline">\(T = \mathbb{N}\)</span>）。对于每个固定的 <span
+class="math inline">\(\omega \in \Omega\)</span>，函数 <span
+class="math inline">\(t \mapsto X_t(\omega)\)</span>
+称为该随机过程的一个样本路径。一个随机过程也可以被视为一个映射 <span
+class="math inline">\(X: \Omega \times T \to
+\mathbb{R}^n\)</span>，满足对于每个固定的 <span class="math inline">\(t
+\in T\)</span>，<span class="math inline">\(X_t(\cdot)\)</span>
+是一个随机变量（<span
+class="math inline">\(\mathcal{F}\)</span>-可测的）。这样考虑是因为我们经常需要
+<span class="math inline">\(X\)</span> 是联合可测的，即 <span
+class="math inline">\(X\)</span> 作为 <span class="math inline">\(\Omega
+\times T\)</span> 上的函数是可测的。</p>
+<blockquote>
+<p>Q: 一个联合可测的随机过程，和一个只对 <span
+class="math inline">\(t\)</span>
+可测的随机过程，有什么区别？和一个只有<span
+class="math inline">\(X_t\)</span> 可测的随机过程，有什么区别？</p>
+<p>A: 对 <span class="math inline">\(t\)</span>
+可测的随机过程，意味着对于每个固定的 <span
+class="math inline">\(\omega\)</span>，函数 <span
+class="math inline">\(t \mapsto X_t(\omega)\)</span>
+是可测的。但是，对于联合可测的随机过程，我们可以应用 Fubini 定理，这说明
+<span class="math inline">\(I(\omega) = \int_{[0,r]} X_t(\omega)
+dt\)</span> 也是一个随机变量（<span
+class="math inline">\(\mathcal{F}\)</span>-可测的）。而仅仅对 <span
+class="math inline">\(t\)</span> 可测的随机过程，不能保证这一点。</p>
+</blockquote>
+<p>我们可以将 <span class="math inline">\(\omega\)</span> 视同于路径
+<span class="math inline">\(t \mapsto X_t(\omega)\)</span>，从而将 <span
+class="math inline">\(\Omega\)</span> 视作所有从 <span
+class="math inline">\(T\)</span> 到 <span class="math inline">\(\mathbb
+R^n\)</span> 的函数空间 <span class="math inline">\(\tilde \Omega =
+(\mathbb R^n)^T\)</span> 上的一个子集。</p>
+<p>定义在 <span class="math inline">\(\tilde \Omega\)</span> 上的自然
+<span class="math inline">\(\sigma\)</span>-代数为 <span
+class="math inline">\(\tilde{\mathcal{F}}\)</span>，由所有形如 <span
+class="math inline">\(\mathbb W=\{\tilde \omega \in \tilde \Omega :
+\tilde \omega(t_1) \in B_1, \ldots, \tilde \omega(t_k) \in
+B_k\}\)</span> 的集合生成，其中 <span class="math inline">\(t_i \in
+T\)</span>，<span class="math inline">\(B_i \in
+\mathcal{B}(\mathbb{R}^n)\)</span>。称为柱集（cylinder
+sets）。这个代数记作 <span class="math inline">\(\mathcal{B}(\mathbb
+W)\)</span>。（注意这个实际上包含了可数点，这里的有限 <span
+class="math inline">\(k\)</span> 可以加强为 <span
+class="math inline">\(1\)</span>，但是实际应用中有限比较方便）</p>
+<blockquote>
+<p>对于连续函数空间，这个 <span
+class="math inline">\(\sigma\)</span>-代数恰好等于由一致收敛拓扑诱导的
+Borel <span
+class="math inline">\(\sigma\)</span>-代数。（因为连续函数的上下极限可以只考虑稠密可数的有理数点）</p>
+</blockquote>
+<p>对于随机过程 <span class="math inline">\(X: \Omega \times T \to
+\mathbb{R}^n\)</span>，我们可以定义映射 <span class="math inline">\(\pi:
+\Omega \to \tilde \Omega\)</span>，使得对于每个 <span
+class="math inline">\(\omega \in \Omega\)</span>，<span
+class="math inline">\(\pi(\omega)\)</span> 是路径 <span
+class="math inline">\(t \mapsto X_t(\omega)\)</span>。然后，我们可以通过
+<span class="math inline">\(\pi\)</span> 将概率测度 <span
+class="math inline">\(P\)</span> 从 <span
+class="math inline">\(\Omega\)</span> 推到 <span
+class="math inline">\(\tilde \Omega\)</span> 上，得到测度 <span
+class="math inline">\(\tilde P\)</span>，定义为对于所有 <span
+class="math inline">\(A \in \tilde{\mathcal{F}}\)</span>， <span
+class="math display">\[
+\tilde P(A) = P(\pi^{-1}(A)).
+\]</span></p>
+<p>这样，我们就得到了一个新的概率空间 <span
+class="math inline">\((\tilde \Omega, \tilde{\mathcal{F}}, \tilde
+P)\)</span>，其中 <span
+class="math inline">\(\tilde{\mathcal{F}}\)</span> 是 <span
+class="math inline">\(\tilde \Omega\)</span> 上的 <span
+class="math inline">\(\sigma\)</span>-代数，<span
+class="math inline">\(\tilde P\)</span> 是定义在 <span
+class="math inline">\(\tilde{\mathcal{F}}\)</span> 上的概率测度。</p>
+<p>这样，随机过程 <span class="math inline">\(X\)</span>
+可以被视为定义在路径空间 <span class="math inline">\((\tilde \Omega =
+(\mathbb R^n)^{T}, \tilde{\mathcal{F}} = \mathcal{B}(\mathbb W), \tilde
+P)\)</span> 上的路径概率测度 <span class="math inline">\(\tilde
+P\)</span>。</p>
+<p>现在考虑从有限观测点出发，构造随机过程。</p>
+<h4 id="kolmogorov-扩展定理kolmogorov-extension-theorem">Kolmogorov
+扩展定理（Kolmogorov Extension Theorem）</h4>
+<p>观测 <span class="math inline">\(k\in \mathbb{N}\)</span>
+次，假定存在 <span class="math inline">\(\nu_{t_1, t_2, \ldots,
+t_k}\)</span> 是 <span class="math inline">\(\mathbb{R}^{nk}\)</span>
+上的概率测度。</p>
+<p>满足一致性条件：对于 <span class="math inline">\(\forall k \in
+\mathbb{N},t_1, t_2, \ldots, t_k \in T\)</span>，以及任意的 Borel 集合
+<span class="math inline">\(B_1, B_2, \ldots, B_k \in
+\mathcal{B}(\mathbb{R}^n)\)</span>，有 <span class="math display">\[
+\nu_{t_1, t_2, \ldots, t_k}(B_1 \times B_2 \times \ldots \times B_k) =
+\nu_{t_1, t_2, \ldots, t_k, t_{k+1}}(B_1 \times B_2 \times \ldots \times
+B_k \times \mathbb{R}^n).
+\]</span></p>
+<p>那么存在 一个随机过程 <span
+class="math inline">\(\{X_t\}\)</span>，定义在某个概率空间 <span
+class="math inline">\((\Omega, \mathcal{F}, P)\)</span>
+上，使得对于任意的 <span class="math inline">\(k \in \mathbb{N}\)</span>
+和 <span class="math inline">\(t_1, t_2, \ldots, t_k \in
+T\)</span>，随机变量 <span class="math inline">\((X_{t_1}, X_{t_2},
+\ldots, X_{t_k})\)</span> 的分布为 <span class="math inline">\(\nu_{t_1,
+t_2, \ldots, t_k}\)</span>。换言之，对任意 Borel 集合 <span
+class="math inline">\(B_1, B_2, \ldots, B_k \in
+\mathcal{B}(\mathbb{R}^n)\)</span>，有 <span class="math display">\[
+P(X_{t_1} \in B_1, X_{t_2} \in B_2, \ldots, X_{t_k} \in B_k) = \nu_{t_1,
+t_2, \ldots, t_k}(B_1 \times B_2 \times \ldots \times B_k).
+\]</span></p>
+<p>注意，这个定理并没有保证样本路径的正则性（如连续性或可测性）。它仅仅保证了存在一个随机过程，其有限维分布与给定的一致性条件相符。也就是说目前的
+<span class="math inline">\(\Omega\)</span> 只能视作 <span
+class="math inline">\((\mathbb R^n)^T\)</span>。</p>
+<p>为了得到具有更好路径性质的随机过程，我们需要以下定理。</p>
+<h4 id="kolmogorov-连续性定理kolmogorov-continuity-theorem">Kolmogorov
+连续性定理（Kolmogorov Continuity Theorem）</h4>
+<p>设 <span class="math inline">\(\{X_t : t \in [0, T]\}\)</span>
+是定义在概率空间 <span class="math inline">\((\Omega, \mathcal{F},
+P)\)</span> 上的随机过程。假设存在常数 <span
+class="math inline">\(\alpha, \beta, C &gt; 0\)</span>，使得对于所有的
+<span class="math inline">\(s, t \in [0, T]\)</span>，有 <span
+class="math display">\[
+E[\|X_t - X_s\|^\alpha] \leq C |t - s|^{1 + \beta}.
+\]</span> 那么存在一个修改版本 <span class="math inline">\(\{\tilde{X}_t
+: t \in [0, T]\}\)</span>，使得对于几乎所有的 <span
+class="math inline">\(\omega \in \Omega\)</span>，路径 <span
+class="math inline">\(t \mapsto \tilde{X}_t(\omega)\)</span> 是 Hölder
+连续的，指数为 <span class="math inline">\(\gamma\)</span>，其中 <span
+class="math inline">\(0 &lt; \gamma &lt;
+\frac{\beta}{\alpha}\)</span>。也就是说，存在随机变量 <span
+class="math inline">\(K(\omega)\)</span>，使得对于所有的 <span
+class="math inline">\(s, t \in [0, T]\)</span>，有 <span
+class="math display">\[
+\|\tilde{X}_t(\omega) - \tilde{X}_s(\omega)\| \leq K(\omega) |t -
+s|^{\gamma}.
+\]</span></p>
+<p>证明：</p>
+<p>考虑所有二进位网格点 <span class="math inline">\(\mathcal{D}_n = \{
+\frac{k}{2^n} : k = 0, 1, \dots, 2^n \}\)</span> 上的随机变量 <span
+class="math inline">\(X_t\)</span>。利用假设的矩不等式与切比雪夫不等式
+<span class="math display">\[
+P\left( |X_{\frac{k}{2^n}} - X_{\frac{k-1}{2^n}}| &gt; \epsilon \right)
+\le \frac{E[|X_{\frac{k}{2^n}} -
+X_{\frac{k-1}{2^n}}|^\alpha]}{\epsilon^\alpha} \le \frac{C
+(2^{-n})^{1+\beta}}{\epsilon^\alpha}
+\]</span> <span class="math inline">\(M_n = \max_{1 \le k \le 2^n}
+|X_{\frac{k}{2^n}} - X_{\frac{k-1}{2^n}}|\)</span>, 则 <span
+class="math display">\[
+P(M_n &gt; \epsilon) \le \sum_{k=1}^{2^n} P\left( |X_{\frac{k}{2^n}} -
+X_{\frac{k-1}{2^n}}| &gt; \epsilon \right) \le \frac{C
+2^{-n\beta}}{\epsilon^\alpha}
+\]</span> 取 <span class="math inline">\(\epsilon =
+2^{-n\gamma}\)</span>，其中 <span class="math inline">\(0 &lt; \gamma
+&lt; \frac{\beta}{\alpha}\)</span>，则 <span class="math display">\[
+P(M_n &gt; 2^{-n\gamma}) \le C 2^{n(\alpha \gamma - \beta)}
+\]</span> 由于 <span class="math inline">\(\alpha \gamma - \beta &lt;
+0\)</span>，级数 <span class="math inline">\(\sum_{n=1}^{\infty} P(M_n
+&gt; 2^{-n\gamma})\)</span> 收敛。由 Borel-Cantelli
+引理，几乎处处存在随机变量 <span
+class="math inline">\(N(\omega)\)</span>，使得对于所有的 <span
+class="math inline">\(n \geq N(\omega)\)</span>， 有 <span
+class="math inline">\(M_n(\omega) \leq 2^{-n\gamma}\)</span>。
+因此，对于几乎所有的 <span class="math inline">\(\omega \in
+\Omega\)</span>，存在 <span
+class="math inline">\(N(\omega)\)</span>，使得对于所有的 <span
+class="math inline">\(n \geq N(\omega)\)</span> 和 <span
+class="math inline">\(k = 1, 2, \ldots, 2^n\)</span>，有 <span
+class="math display">\[
+|X_{\frac{k}{2^n}}(\omega) - X_{\frac{k-1}{2^n}}(\omega)| \leq
+2^{-n\gamma}.
+\]</span> 这表明对于几乎所有的 <span class="math inline">\(\omega \in
+\Omega\)</span>，路径 <span class="math inline">\(t \mapsto
+X_t(\omega)\)</span> 在二进位网格点上是 Hölder 连续的。我们可以将这种
+Hölder 连续性扩展到整个区间 <span class="math inline">\([0,
+T]\)</span>，从而得到修改版本 <span
+class="math inline">\(\tilde{X}_t\)</span>，使得对于几乎所有的 <span
+class="math inline">\(\omega \in \Omega\)</span>，路径 <span
+class="math inline">\(t \mapsto \tilde{X}_t(\omega)\)</span> 是 <span
+class="math inline">\(\gamma\)</span>-Hölder 连续的。</p>
+<p>所以对于矩被控的随机过程，我们总能找到一个修改版本，使得路径具有
+Hölder 连续性。</p>
+<h3 id="布朗运动-brownian-motion">布朗运动 （Brownian Motion）</h3>
+<p>考虑这样的一个过程，在任何时刻 <span
+class="math inline">\(t_1\)</span> 观察，在 <span
+class="math inline">\(t_2\)</span> 时候的概率分布只与经过的时间 <span
+class="math inline">\(t_2 - t_1\)</span> 与位移有关。 <span
+class="math display">\[
+p(t,x,y) = (2\pi t)^{-n/2}\cdot \exp(-\frac{|x-y|^2}{2t}) \forall y\in
+\mathbb R^n, t &gt; 0
+\]</span> 给定 <span class="math inline">\(k\)</span> 个观测点, <span
+class="math inline">\(0\leq t_1 \leq t_2 \leq \cdots \leq
+t_k\)</span>，定义这样的概率度量为 <span
+class="math inline">\(\nu_{t_1,\ldots, t_k}\)</span> 在 <span
+class="math inline">\(\mathbb R^{nk}\)</span> 为 <span
+class="math display">\[
+v_{t_1,\ldots, t_k}(F_1\times\cdots \times F_k) = \int_{F_1\times \cdots
+\times F_k} p(t_1, x, x_1) p(t_2-t_1,x_1,x_2) \cdots p(t_k-t_{k-1},
+x_{k-1}, x_k) d x_1 \cdots d x_k
+\]</span> 并且规定 <span class="math inline">\(p(0,x,y) dy =
+\delta_x(y)\)</span>，其中 <span class="math inline">\(dy=dy_1\cdots
+dy_k\)</span> 是 Lebesgue 测度。 这些测度满足一致性条件，因此由
+Kolmogorov 扩展定理，存在一个概率空间 <span
+class="math inline">\((\Omega, \mathcal{F}, P^{x})\)</span> 和随机过程
+<span class="math inline">\(\{B_t : t \geq 0\}\)</span>，使得对于任意的
+<span class="math inline">\(k \in \mathbb{N}\)</span> 和 <span
+class="math inline">\(0 \leq t_1 \leq t_2 \leq \cdots \leq
+t_k\)</span>，随机变量 <span class="math inline">\((B_{t_1}, B_{t_2},
+\ldots, B_{t_k})\)</span> 的分布为 <span class="math inline">\(\nu_{t_1,
+t_2, \ldots, t_k}\)</span>。 这个随机过程称为从点 <span
+class="math inline">\(x\)</span> 开始的布朗运动（Brownian Motion），记作
+<span class="math inline">\(B_t^x\)</span> 或简称 <span
+class="math inline">\(B_t\)</span>。</p>
+<p>根据 Kolmogorov
+连续性定理，布朗运动存在一个修改版本，使得对于几乎所有的 <span
+class="math inline">\(\omega \in \Omega\)</span>，路径 <span
+class="math inline">\(t \mapsto B_t(\omega)\)</span> 是 Hölder
+连续的，指数为 <span class="math inline">\(\gamma\)</span>，其中 <span
+class="math inline">\(0 &lt; \gamma &lt;
+\frac{1}{2}\)</span>。故可以视为 <span
+class="math inline">\(C([0,\infty);\mathbb R^n)\)</span>
+上的概率测度。</p>
+<p>布朗运动具有以下重要性质： 1. 是高斯过程：对于任意的 <span
+class="math inline">\(k \in \mathbb{N}\)</span> 和 <span
+class="math inline">\(0 \leq t_1 &lt; t_2 &lt; \cdots &lt;
+t_k\)</span>，随机变量 <span class="math inline">\(Z=(B_{t_1}, B_{t_2},
+\ldots, B_{t_k})\)</span> 服从多元正态分布。 <span
+class="math display">\[
+\mathbb E^{x} \left[\exp\left(i \sum_j^{nk} u_j Z_j\right)\right] =
+\exp\left(i \sum_j^{nk} u_j M_j - \frac{1}{2} \sum_{j,l}^{nk} u_j c_{jl}
+u_l \right)
+\]</span></p>
+<p>其中 <span class="math display">\[
+M = [x, x, \ldots, x]^T \in \mathbb R^{nk}
+\]</span> <span class="math display">\[
+C = \begin{bmatrix}
+t_1 I_n &amp; t_1 I_n &amp; \cdots &amp; t_1 I_n \\
+t_1 I_n &amp; t_2 I_n &amp; \cdots &amp; t_2 I_n \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+t_1 I_n &amp; t_2 I_n &amp; \cdots &amp; t_k I_n
+\end{bmatrix} \in \mathbb R^{nk \times nk}
+\]</span></p>
+<p>我们有 <span class="math inline">\(\mathbb E^{x}[(B_t - x)^2] = n
+t\)</span>。即布朗运动的方差与时间成正比； <span
+class="math inline">\(\mathbb E^{x}[(B_t - x) (B_s - x)] = n
+\min(t,s)\)</span>。即布朗运动的协方差与时间的最小值成正比。</p>
+<p>因此，<span class="math inline">\(\mathbb E^{x}[ (B_t - B_s)^2] = n
+(t-s), \forall 0 \leq s &lt; t\)</span>。</p>
+<ol start="2" type="1">
+<li><p>具有独立增量：对于任意的 <span class="math inline">\(0 \leq t_1
+&lt; t_2 &lt; \cdots &lt; t_k\)</span>，增量 <span
+class="math inline">\(B_{t_2} - B_{t_1}, B_{t_3} - B_{t_2}, \ldots,
+B_{t_k} - B_{t_{k-1}}\)</span> 是相互独立的随机变量。</p></li>
+<li><p>几乎处处连续路径：布朗运动存在一个修改版本，使得对于几乎所有的
+<span class="math inline">\(\omega \in \Omega\)</span>，路径 <span
+class="math inline">\(t \mapsto B_t(\omega)\)</span> 是连续的。</p></li>
+<li><p>几乎处处不可微：对于几乎所有的 <span class="math inline">\(\omega
+\in \Omega\)</span>，路径 <span class="math inline">\(t \mapsto
+B_t(\omega)\)</span> 在任意时刻 <span class="math inline">\(t\)</span>
+都不可微。</p></li>
+</ol>
+<p>1, 2, 3 是直接由构造和 Kolmogorov 连续性定理得到的。</p>
+<p>4 的详细证明这里略过，对于单点来说，考虑增量商 <span
+class="math inline">\(\geq M\)</span>
+的概率，可以证明几乎处处存在一个无穷序列，使得增量商 <span
+class="math inline">\(\geq
+M\)</span>，从而不可微。但是对于整个区间不存在可微点的概率，需要更复杂的论证。</p>
+<h3 id="一些重要的概率论定理">一些重要的概率论定理</h3>
+<h4 id="pi-lambda-定理"><span class="math inline">\(\pi\)</span>-<span
+class="math inline">\(\lambda\)</span> 定理</h4>
+<p>设 <span class="math inline">\(\mathcal{P}\)</span> 是 <span
+class="math inline">\(\Omega\)</span> 上的一个 <span
+class="math inline">\(\pi\)</span>-系（即对于任意的 <span
+class="math inline">\(A, B \in \mathcal{P}\)</span>，有 <span
+class="math inline">\(A \cap B \in \mathcal{P}\)</span>），<span
+class="math inline">\(\mathcal{L}\)</span> 是包含 <span
+class="math inline">\(\Omega\)</span> 的一个 <span
+class="math inline">\(\lambda\)</span>-系（即满足包含全集、补集封闭性、可列不交并封闭性）。如果
+<span class="math inline">\(\mathcal{P} \subseteq
+\mathcal{L}\)</span>，则由 <span
+class="math inline">\(\mathcal{P}\)</span> 生成的 <span
+class="math inline">\(\sigma\)</span>-代数 <span
+class="math inline">\(\sigma(\mathcal{P})\)</span> 包含在 <span
+class="math inline">\(\mathcal{L}\)</span> 中，即 <span
+class="math inline">\(\sigma(\mathcal{P}) \subseteq
+\mathcal{L}\)</span>。</p>
+<p>证明： 定义 <span class="math inline">\(\mathcal{L}&#39; = \{ A \in
+\sigma(\mathcal{P}) : A \in \mathcal{L} \}\)</span>。显然，<span
+class="math inline">\(\mathcal{L}&#39;\)</span> 是一个 <span
+class="math inline">\(\lambda\)</span>-系，并且包含 <span
+class="math inline">\(\mathcal{P}\)</span>。因此，由于 <span
+class="math inline">\(\sigma(\mathcal{P})\)</span> 是由 <span
+class="math inline">\(\mathcal{P}\)</span> 生成的最小的 <span
+class="math inline">\(\sigma\)</span>-代数，必有 <span
+class="math inline">\(\sigma(\mathcal{P}) \subseteq
+\mathcal{L}&#39;\)</span>。换言之，<span
+class="math inline">\(\sigma(\mathcal{P}) \subseteq
+\mathcal{L}\)</span>。</p>
+<blockquote>
+<p>特别地，如果一个集合族又是 <span
+class="math inline">\(\pi\)</span>-系 又是 <span
+class="math inline">\(\lambda\)</span>-系，则它是一个 <span
+class="math inline">\(\sigma\)</span>-代数。</p>
+</blockquote>
+<h4 id="borel-cantelli-引理">Borel-Cantelli 引理</h4>
+<p>设 <span class="math inline">\(\{A_n\}_{n=1}^{\infty}\)</span>
+是概率空间 <span class="math inline">\((\Omega, \mathcal{F}, P)\)</span>
+上的一列事件。</p>
+<p><span class="math inline">\(\limsup_{n \to \infty} A_n =
+\bigcap_{m=1}^{\infty} \bigcup_{n=m}^{\infty} A_n\)</span> 表示事件
+<span class="math inline">\(A_n\)</span>
+无限次发生的事件（无论多远都能找到某个 <span
+class="math inline">\(A_n\)</span> 发生）。</p>
+<p><span class="math inline">\(\liminf_{n \to \infty} A_n =
+\bigcup_{m=1}^{\infty} \bigcap_{n=m}^{\infty} A_n\)</span> 表示事件
+<span class="math inline">\(A_n\)</span>
+最终总是发生的事件（从某个时刻开始，所有的 <span
+class="math inline">\(A_n\)</span> 都发生）。</p>
+<p>Borel-Cantelli 引理说 <span class="math display">\[
+\sum_{n=1}^{\infty} P(A_n) &lt; \infty \Rightarrow P\left( \limsup_{n
+\to \infty} A_n \right) = 0.\\
+\]</span> <span class="math display">\[
+\text{如果 } \{A_n\} \text{ 相互独立且 } \sum_{n=1}^{\infty} P(A_n) =
+\infty\Rightarrow P\left( \limsup_{n \to \infty} A_n \right) = 1.
+\]</span> 证明： <span class="math display">\[
+P\left( \limsup_{n \to \infty} A_n \right) = P\left(
+\bigcap_{m=1}^{\infty} \bigcup_{n=m}^{\infty} A_n \right) = \lim_{m \to
+\infty} P\left( \bigcup_{n=m}^{\infty} A_n \right) \leq \lim_{m \to
+\infty} \sum_{n=m}^{\infty} P(A_n) = 0.
+\]</span> <span class="math display">\[
+\begin{aligned}
+P\left( \limsup_{n \to \infty} A_n \right) &amp;= 1 - P\left( \liminf_{n
+\to \infty} A_n^c \right) \\
+&amp;= 1 - \lim_{m \to \infty} P\left( \bigcap_{n=m}^{\infty} A_n^c
+\right)\\
+&amp;= 1 - \lim_{m \to \infty} \prod_{n=m}^{\infty} (1 - P(A_n)) \\
+&amp;\geq 1 - \lim_{m \to \infty} \exp\left( -\sum_{n=m}^{\infty} P(A_n)
+\right) = 1.
+\end{aligned}
+\]</span></p>
+<h4 id="kolmogorov-0-1-定理">Kolmogorov 0-1 定理</h4>
+<p>设 <span class="math inline">\(\{X_n\}_{n=1}^{\infty}\)</span>
+是定义在概率空间 <span class="math inline">\((\Omega, \mathcal{F},
+P)\)</span> 上的一列独立随机变量。定义尾 <span
+class="math inline">\(\sigma\)</span>-代数为 <span
+class="math display">\[
+\mathcal{T} = \bigcap_{n=1}^{\infty} \sigma(X_n, X_{n+1}, \ldots).
+\]</span> 那么对于任意的事件 <span class="math inline">\(A \in
+\mathcal{T}\)</span>，有 <span class="math inline">\(P(A) \in \{0,
+1\}\)</span>。</p>
+<p>证明： 设 <span class="math inline">\(A \in
+\mathcal{T}\)</span>，则对于任意的 <span class="math inline">\(n \in
+\mathbb{N}\)</span>，<span class="math inline">\(A \in \sigma(X_n,
+X_{n+1}, \ldots)\)</span>。由于 <span
+class="math inline">\(\{X_n\}\)</span> 是独立的，<span
+class="math inline">\(\sigma(X_1, X_2, \ldots, X_{n-1})\)</span> 与
+<span class="math inline">\(\sigma(X_n, X_{n+1}, \ldots)\)</span>
+独立。因此，<span class="math inline">\(A\)</span> 与 <span
+class="math inline">\(\sigma(X_1, X_2, \ldots, X_{n-1})\)</span>
+独立。由于 <span class="math inline">\(n\)</span> 是任意的，<span
+class="math inline">\(A\)</span> 与 <span
+class="math inline">\(\mathcal{L}=\bigcup_{n=1}^{\infty} \sigma(X_1,
+X_2, \ldots, X_{n-1})\)</span> 独立。注意到 <span
+class="math inline">\(\mathcal{L}\)</span> 是一个 <span
+class="math inline">\(\pi\)</span>-系，而 <span
+class="math inline">\(\sigma(\mathcal{L}) = \mathcal{F}\)</span>，因此由
+<span class="math inline">\(\pi\)</span>-<span
+class="math inline">\(\lambda\)</span> 定理，<span
+class="math inline">\(A\)</span> 与 <span
+class="math inline">\(\mathcal{F}\)</span> 独立。特别地，<span
+class="math inline">\(A\)</span> 与自身独立，因此 <span
+class="math display">\[
+P(A) = P(A \cap A) = P(A) P(A) \Rightarrow P(A) \in \{0, 1\}.
+\]</span></p>
+<h2 id="ito-积分ito-引理-和-ito-公式-chapter-3-4-of-øksendal">2. Ito
+积分，Ito 引理 和 Ito 公式 (Chapter 3, 4 of Øksendal)</h2>
+<h3 id="ito-积分">Ito 积分</h3>
+<p>首先我们要问，什么叫做随机积分？我们希望定义类似于 Riemann/Lebesgue
+积分的东西，但是积分的变元是随机过程。这样的过程是因为现实中很多现象都具有随机性，比如股票价格的变化，粒子的无规则运动等。</p>
+<p>形式化地说，假如我们有一个随机过程 <span
+class="math inline">\(X_t\)</span> 和布朗运动 <span
+class="math inline">\(B_t\)</span>，我们希望定义积分 <span
+class="math display">\[
+\int_S^T X_t dB_t
+\]</span> 这里的 <span class="math inline">\(dB_t\)</span>
+“表示布朗运动的增量”。</p>
+<p>回忆一下 Riemann 积分的定义，是将区间 <span
+class="math inline">\([S,T]\)</span>
+划分为小区间，然后在每个小区间上取一个点，计算函数值与区间长度的乘积之和，最后取极限。或者等价地，用上方控制的简单函数与下方控制的简单函数来逼近，然后两边取极限。</p>
+<p>类似地，我们可以尝试定义随机积分为 <span class="math display">\[
+\sum_{j} f(t_j^*,\omega) (B_{t_{j+1}} - B_{t_j})(\omega)
+\]</span> 其中 <span class="math inline">\(\{t_j\}\)</span> 是 <span
+class="math inline">\([S,T]\)</span> 的一个划分，<span
+class="math inline">\(t_j^* \in [t_j, t_{j+1}]\)</span>
+是每个小区间内的某一个点。</p>
+<p>我们现在考虑 <span class="math inline">\(X_t = B_t\)</span>
+的情况，即积分 <span class="math display">\[
+\int_0^T B_t dB_t
+\]</span> 我们尝试用上面的和式来定义这个积分。取一个划分 <span
+class="math inline">\(S=0 = t_0 &lt; t_1 &lt; \cdots &lt; t_n =
+T\)</span>，则 <span class="math display">\[
+\begin{aligned}
+\sum_{j=0}^{n-1} B_{t_j} (B_{t_{j+1}} - B_{t_j}) &amp;= \frac{1}{2}
+\sum_{j=0}^{n-1} (B_{t_{j+1}}^2 - B_{t_j}^2) - \frac{1}{2}
+\sum_{j=0}^{n-1} (B_{t_{j+1}} - B_{t_j})^2 \\
+= &amp; \frac{1}{2} (B_T^2 - B_0^2) - \frac{1}{2} \sum_{j=0}^{n-1}
+(B_{t_{j+1}} - B_{t_j})^2
+\end{aligned}
+\]</span> 而 <span class="math display">\[
+\mathbb E\left[\sum_{j=0}^{n-1} (B_{t_{j+1}} - B_{t_j})^2\right]  =
+\sum_{j=0}^{n-1} (t_{j+1} - t_j) = T
+\]</span></p>
+<p>而考虑求和 <span class="math display">\[
+\begin{aligned}
+\sum_{j=0}^{n-1} B_{t_{j+1}} (B_{t_{j+1}} - B_{t_j}) &amp;= \frac{1}{2}
+\sum_{j=0}^{n-1} (B_{t_{j+1}}^2 - B_{t_j}^2) + \frac{1}{2}
+\sum_{j=0}^{n-1} (B_{t_{j+1}} - B_{t_j})^2 \\
+&amp;= \frac{1}{2} (B_T^2 - B_0^2) + \frac{1}{2} \sum_{j=0}^{n-1}
+(B_{t_{j+1}} - B_{t_j})^2
+\end{aligned}
+\]</span> 这说明，随机积分的结果与取点的位置有关。</p>
+<p>这里的变化，正是因为布朗运动的增量 <span
+class="math inline">\((B_{t_{j+1}} - B_{t_j})\)</span>
+的平方的期望与区间长度成正比，而不是像确定性函数那样趋近于零。</p>
+<p>对于 Ito 积分，我们选择在每个小区间的左端点取值，即定义为 <span
+class="math display">\[
+\int_S^T X_t dB_t := \lim_{|\Delta| \to 0} \sum_{j} X_{t_j} (B_{t_{j+1}}
+- B_{t_j})
+\]</span> 令最大区间长度 <span class="math inline">\(|\Delta| = \max_j
+(t_{j+1} - t_j)\)</span> 趋近于零。</p>
+<p>顺便，我们也可以定义 Stratonovich
+积分，其选择在每个小区间的中点取值，即定义为 <span
+class="math display">\[
+\int_S^T X_t \circ dB_t := \lim_{|\Delta| \to 0} \sum_{j} X_{\frac{t_j +
+t_{j+1}}{2}} (B_{t_{j+1}} - B_{t_j})
+\]</span></p>
+<p>那么现在我们就可以保证我们的积分在 <span
+class="math inline">\(L^2\)</span> 意义下收敛到一个随机变量了吗？
+为了考察这个问题，我们先考虑简单函数的情况。</p>
+<p>我们称随机过程 <span class="math inline">\(X_t\)</span>
+是一个简单过程，如果它可以表示为 <span class="math display">\[
+X_t(\omega) = \sum_{j} e_j(\omega) \mathbf{1}_{[t_j, t_{j+1})}(t)
+\]</span> 其中 <span class="math inline">\(\{t_j\}\)</span> 是 <span
+class="math inline">\([S,T]\)</span> 的一个划分。</p>
+<p>显然，对于简单过程 <span
+class="math inline">\(X_t\)</span>，我们可以定义 Ito 积分为 <span
+class="math display">\[
+\int_S^T X_t dB_t := \sum_{j} e_j (B_{t_{j+1}} - B_{t_j})
+\]</span></p>
+<p>然后我们考虑在 <span class="math inline">\(L^2\)</span>
+意义下的收敛性。即计算 <span class="math display">\[
+\begin{aligned}
+\mathbb E\left[\left(\int_S^T X_t dB_t\right)^2\right] &amp;= \mathbb
+E\left[\left(\sum_{j} e_j (B_{t_{j+1}} - B_{t_j})\right)^2\right] \\
+&amp; = \sum_{i,j} \mathbb E[e_i e_j \Delta B_i \Delta B_j] \\
+\end{aligned}
+\]</span></p>
+<p>为了进一步计算，我们假设 <span class="math inline">\(e_j\)</span> 是
+<span class="math inline">\(\mathcal{F}_{t_j}\)</span>-可测的，其中
+<span class="math inline">\(\mathcal{F}_t\)</span> 是由 <span
+class="math inline">\(\{B_s : s \leq t\}\)</span> 生成的 <span
+class="math inline">\(\sigma\)</span>-代数（则<span
+class="math inline">\(\mathcal{F}_{s} \subseteq \mathcal{F}_{t}\)</span>
+对于 <span class="math inline">\(s &lt; t\)</span>）。</p>
+<p>对于 <span class="math inline">\(i &lt; j\)</span>，有 <span
+class="math inline">\(e_i, e_j, \Delta B_i\)</span> 都是 <span
+class="math inline">\(\mathcal{F}_{t_j}\)</span>-可测的，而 <span
+class="math inline">\(\Delta B_j\)</span> 独立于 <span
+class="math inline">\(\mathcal{F}_{t_j}\)</span>，因此 <span
+class="math display">\[
+\begin{aligned}
+\mathbb E[e_i e_j \Delta B_i \Delta B_j] &amp;= \mathbb E\left[ \mathbb
+E[e_i e_j \Delta B_i \Delta B_j | \mathcal{F}_{t_j}] \right] \quad
+\text{（全期望公式）} \\
+&amp;= \mathbb E\left[ e_i e_j \Delta B_i \mathbb E[\Delta B_j |
+\mathcal{F}_{t_j}] \right] \quad \text{（条件期望的线性性质）} \\
+&amp;= 0 \quad \text{（} \mathbb E[\Delta B_j | \mathcal{F}_{t_j}] =
+\mathbb E[\Delta B_j] = 0 \text{）}
+\end{aligned}
+\]</span></p>
+<p>类似地，对于 <span class="math inline">\(i &gt; j\)</span>，也有
+<span class="math inline">\(\mathbb E[e_i e_j \Delta B_i \Delta B_j] =
+0\)</span>。 因此，只有当 <span class="math inline">\(i = j\)</span>
+时，<span class="math inline">\(\mathbb E[e_i e_j \Delta B_i \Delta
+B_j]\)</span> 才可能非零。此时， <span class="math display">\[
+\mathbb E[e_j^2 (\Delta B_j)^2] = \mathbb E[e_j^2] \mathbb E[(\Delta
+B_j)^2] = \mathbb E[e_j^2] (t_{j+1} - t_j)
+\]</span> 综上所述，我们得到了 <span class="math display">\[
+\mathbb E\left[\left(\int_S^T X_t dB_t\right)^2\right] = \sum_{j}
+\mathbb E[e_j^2] (t_{j+1} - t_j) = \mathbb E\left[\int_S^T X_t^2
+dt\right]
+\]</span></p>
+<p>因此，我们得到了 Ito 等距公式 （简单过程版本）： <span
+class="math display">\[
+\mathbb E\left[\left(\int_S^T X_t dB_t\right)^2\right] = \mathbb
+E\left[\int_S^T X_t^2 dt\right]
+\]</span></p>
+<p>左边是一个 Ito 积分作为随机变量的 <span
+class="math inline">\(L^2\)</span> 范数，右边是一个随机过程被视作 <span
+class="math inline">\(\Omega \times [S,T]\)</span>
+上的概率测度/随机变量的 <span class="math inline">\(L^2\)</span>
+范数。因此叫做等距公式。</p>
+<p>这个实际上就在告诉我们，<strong>我们在时间这一维积分后，整体的长度是不变的。</strong></p>
+<p>现在我们将它推广到较为一般的过程并给出正式定义。</p>
+<p>令 <span class="math inline">\(\{\mathcal{N}_t\}\)</span>
+为一族递增的 <span
+class="math inline">\(\sigma\)</span>-代数，称为过滤（filtration）。随机过程
+<span class="math inline">\(X_t\)</span> 称为适应于过滤 <span
+class="math inline">\(\{\mathcal{N}_t\}\)</span> 的，如果对于每个 <span
+class="math inline">\(t\)</span>，<span
+class="math inline">\(X_t\)</span> 是 <span
+class="math inline">\(\mathcal{N}_t\)</span>-可测的。</p>
+<p>令 <span class="math inline">\(\mathcal{F}_t\)</span> 为由布朗运动
+<span class="math inline">\(\{B_s : s \leq t\}\)</span>
+生成的自然过滤，即 <span class="math display">\[
+\mathcal{F}_t = \sigma(B_s : s \leq t) = \sigma(\omega; \omega(t_1)\in
+B_1, \ldots, \omega(t_k) \in B_k, \text{其中 } t_i \leq t, B_i \in
+\mathcal{B}(\mathbb{R}^n))
+\]</span> 这里我们假设 <span
+class="math inline">\(\mathcal{F}_t\)</span> 是完备化的，即包含所有的
+<span class="math inline">\(P\)</span>-零测集。</p>
+<h4 id="逼近过程">逼近过程</h4>
+<p>定义空间 <span
+class="math inline">\(\mathcal{V}=\mathcal{V}(S,T)\)</span>
+为所有适应于过滤 <span class="math inline">\(\{\mathcal{F}_t\}\)</span>
+的随机过程 <span class="math inline">\(X_t\)</span>（或函数 <span
+class="math inline">\(X: [S,T] \times \Omega \to
+\mathbb{R}\)</span>）且满足 1. <span class="math inline">\(X\)</span> 在
+<span class="math inline">\([S,T] \times \Omega\)</span> 上联合可测； 2.
+<span class="math inline">\(\int_S^T E[X_t^2] dt &lt;
+\infty\)</span>，即 <span class="math inline">\(X_t \in L^2([S,T] \times
+\Omega)\)</span>。</p>
+<h5 id="step-1">Step 1</h5>
+<p>首先，令 <span class="math inline">\(g \in \mathcal{V}\)</span>
+是有界的，并且 <span class="math inline">\(g\)</span> 对于每个 <span
+class="math inline">\(\omega\)</span> 是连续的。则存在一列简单过程 <span
+class="math inline">\(\{g_n\} \subset \mathcal{V}\)</span>，使得 <span
+class="math display">\[
+\lim_{n \to \infty} E\left[\int_S^T (g_n(t,\omega) - g(t,\omega))^2
+dt\right] = 0.
+\]</span></p>
+<p>证明： 取 <span class="math inline">\(\phi_n = \sum_j g(t_j, \omega)
+\mathbf{1}_{[t_j, t_{j+1})}(t)\)</span>，其中 <span
+class="math inline">\(\{t_j\}\)</span> 是 <span
+class="math inline">\([S,T]\)</span> 的一个划分，且当 <span
+class="math inline">\(n \to \infty\)</span>，划分的间距趋近于零。显然有
+<span class="math inline">\(\phi_n \in \mathcal{V}\)</span>，并且由于
+<span class="math inline">\(g\)</span> 对于每个 <span
+class="math inline">\(\omega\)</span> 连续，因此 <span
+class="math inline">\(\phi_n(t,\omega)\)</span> 对于每个 <span
+class="math inline">\(\omega\)</span> 在 <span
+class="math inline">\([S,T]\)</span> 上逐点收敛于 <span
+class="math inline">\(g(t,\omega)\)</span>，且一致有界。</p>
+<p>由有界收敛定理，我们有 <span class="math display">\[
+\lim_{n \to \infty} \mathbb E\left[\int_S^T (\phi_n(t,\omega) -
+g(t,\omega))^2 dt\right] = \mathbb E\left[\int_S^T \lim_{n \to \infty}
+(\phi_n(t,\omega) - g(t,\omega))^2 dt\right] = 0.
+\]</span> 因此，<span class="math inline">\(\{\phi_n\}\)</span>
+是所需的简单过程列。</p>
+<h5 id="step-2">Step 2</h5>
+<p>令 <span class="math inline">\(h\in \mathcal V\)</span>
+是有界的。则存在以上有界过程 <span class="math inline">\(g_n \in
+\mathcal V\)</span>，使得 <span class="math display">\[
+\lim_{n\to \infty} \mathbb E \left[\int_S^T
+(h(t,\omega)-g_n(t,\omega))^2 dt\right] = 0
+\]</span></p>
+<p>证明：在实分析中，任取非负连续列 <span
+class="math inline">\(\{\phi_n(x)\}\)</span> 弱收敛到 <span
+class="math inline">\(\delta_0(x)\)</span>，令 <span
+class="math inline">\(g_n(t)=(\phi_n * h)(t)=\int_S^T h(s, \omega)
+\phi_n(s-t)\, ds\)</span> 作为卷积，易知有界连续且弱收敛到 <span
+class="math inline">\(h\)</span>。但是这里不可利用未来信息，所以取支撑在
+<span class="math inline">\(\mathbb R^+\)</span>的列即可。而 <span
+class="math inline">\(g_n(t, \cdot)\)</span>是 <span
+class="math inline">\(\mathcal{F_t}\)</span> 可测的，因为 <span
+class="math inline">\(F(s, \omega) = h(s, \omega) \phi_n(s-t)\)</span>
+是 <span class="math inline">\(\mathcal{B}([S,T]) \otimes
+\mathcal{F_t}\)</span> 上可测的，所以 <span
+class="math inline">\(\int_{S}^{T}F(s,\omega)\, ds\)</span> 根据 Fubini
+定理也是 <span class="math inline">\(\mathcal{F_t}\)</span>
+上可测的。</p>
+<h5 id="step-3">Step 3</h5>
+<p>令 <span class="math inline">\(f \in \mathcal
+V\)</span>。则存在以上有界过程 <span class="math inline">\(h_n \in
+\mathcal V\)</span>，<span class="math inline">\(h_n\)</span> 对每个
+<span class="math inline">\(n\)</span> 有界，而且 <span
+class="math display">\[
+\lim_{n\to \infty} \mathbb E\left[\int_S^T (f(t,\omega)-h_n(t,\omega))^2
+dt\right] = 0
+\]</span> 证明：令 <span class="math display">\[
+h_n =
+\begin{cases}
+-n &amp; \text{if  $f(t,\omega) &lt; -n$ } \\
+f(t,\omega) &amp; \text{if  $-n\leq f(t,\omega) \leq n$ } \\
+n &amp; \text{if  $f(t,\omega) &gt; n$ } \\
+\end{cases}
+\]</span></p>
+<p>然后使用控制收敛定理交换极限和积分即可。</p>
+<p>于是我们现在可以定义一个随机过程 <span class="math inline">\(f \in
+\mathcal V\)</span> 的 Ito 积分为</p>
+<p><span class="math display">\[
+\mathcal{I}[f](\omega):=\int_S^T f(t,\omega) \, dB_t(\omega)=\lim_{n\to
+\infty} \int_S^T \phi_n(t,\omega)\, dB_t(\omega)
+\]</span></p>
+<p>其中 <span class="math inline">\(\phi_n\)</span> 是简单函数列，满足
+<span class="math display">\[
+\lim_{n\to \infty} \mathbb E\left[\int_S^T |f-\phi_n|^2 \,dt \right] = 0
+\]</span> 由以上的证明保证存在性，并且由 Ito
+等距公式（简单过程版），我们知道 <span class="math display">\[
+\mathbb E\left[\int_S^T \phi_n(t,\omega)^2 \, dt \right] = \mathbb
+E\left[\left(\int_S^T \phi_n(t,\omega) \, dB_t(\omega)\right)^2\right]
+\]</span> 因此，<span class="math inline">\(\left\{\int_S^T
+\phi_n(t,\omega) \, dB_t(\omega)\right\}\)</span> 是 <span
+class="math inline">\(L^2(\Omega)\)</span> 中的 Cauchy 列，从而 <span
+class="math inline">\(\mathcal{I}[f](\omega)\)</span> 是良定义的。</p>
+<h5 id="总结">总结</h5>
+<ol type="1">
+<li><p>对于 <span class="math inline">\(f \in \mathcal V\)</span>，Ito
+积分 <span class="math inline">\(\int_S^T f(t,\omega) \,
+dB_t(\omega)\)</span> 是良定义的随机变量，且满足 Ito 等距公式 <span
+class="math display">\[
+\mathbb E\left[\left(\int_S^T f(t,\omega) \,
+dB_t(\omega)\right)^2\right] = \mathbb E\left[\int_S^T f(t,\omega)^2 \,
+dt\right]
+\]</span></p></li>
+<li><p>对于 <span class="math inline">\(f \in \mathcal V\)</span> 和
+一列 <span class="math inline">\(\left\{f_n\right\} \subset \mathcal
+V\)</span>，如果 <span class="math display">\[
+\lim_{n\to \infty} \mathbb E\left[\int_S^T |f_n(t,\omega)-f(t,\omega)|^2
+\, dt\right] = 0
+\]</span> 则 <span class="math display">\[
+\int_S^T f_n(t,\omega) \, dB_t(\omega) \xrightarrow{L^2(\Omega)}
+\int_S^T f(t,\omega) \, dB_t(\omega)
+\]</span> 换句话说，如果随机过程列在 <span
+class="math inline">\(L^2([S,T] \times \Omega)\)</span>
+意义下收敛，则对应的 Ito 积分列在 <span
+class="math inline">\(L^2(\Omega)\)</span> 意义下收敛。 <strong>Ito
+积分是一个在两个 <span class="math inline">\(L^2\)</span>
+空间之间的连续线性映射。</strong></p></li>
+</ol>
+<p>以上逻辑为，第一，因为布朗运动的二次变差是时间的线性函数，所以在
+<span class="math inline">\(L^2\)</span>
+下，简单过程对布朗运动的积分是良定义并且等距的。第二、简单过程（在适应过程的）
+<span class="math inline">\(L^2\)</span>
+意义下是<strong>稠密</strong>的，所以可以推广到所有过程。</p>
+<h4 id="ito积分的鞅性质">Ito积分的鞅性质</h4>
+<p>设 <span class="math inline">\(f \in
+\mathcal{V}(S,T)\)</span>，我们容易知道 <span class="math display">\[
+\mathbb E\left[\int_S^T f\, dB_t\right] = 0
+\]</span> 因为对于简单过程，每一段增量的期望均是零。</p>
+<p>更强的结果是，Ito
+积分得到的过程本身是一个鞅，也就是说如果我们只考虑事件点 <span
+class="math inline">\(t\)</span> 之前的信息 <span
+class="math inline">\(\mathcal{F}_t\)</span>，那么这个随机变量的期望是当前点的值。</p>
+<p>具体地说，给定概率空间 <span class="math inline">\((\Omega,
+\mathcal{F}, P)\)</span> 上的一个滤过 <span
+class="math inline">\(\{\mathcal{F}_t\}\)</span>，以及一个适应于 <span
+class="math inline">\(\{\mathcal{F}_t\}\)</span> 的随机过程 <span
+class="math inline">\(M_t\)</span>，并且假设对于每个 <span
+class="math inline">\(t\)</span>，<span class="math inline">\(\mathbb
+E[|M_t|] &lt; \infty\)</span>。</p>
+<p>如果对于所有的 <span class="math inline">\(s &lt; t\)</span>，都有
+<span class="math display">\[
+\mathbb E[M_t | \mathcal{F}_s] = M_s
+\]</span> 则称 <span class="math inline">\(M_t\)</span>
+是一个鞅（martingale）。</p>
+<p>现在我们来证明 Ito 积分过程是一个鞅。</p>
+<blockquote>
+<p>证明： 首先取逼近列 <span
+class="math inline">\(\{f_n\}\)</span>，则对应的 Ito 积分过程为 <span
+class="math display">\[M_t^n = \int_S^t f_n(u,\omega) \,
+dB_u(\omega)\]</span> 对于 <span class="math inline">\(s &lt;
+t\)</span>，我们有 <span class="math display">\[
+\begin{aligned}
+\mathbb E[M_t^n | \mathcal{F}_s] &amp;= \mathbb E\left[\int_S^s
+f_n(u,\omega) \, dB_u(\omega) + \int_s^t f_n(u,\omega) \, dB_u(\omega)
+\bigg| \mathcal{F}_s\right] \\
+&amp;= \int_S^s f_n(u,\omega) \, dB_u(\omega) + \mathbb E\left[\int_s^t
+f_n(u,\omega) \, dB_u(\omega) \bigg| \mathcal{F}_s\right] \text{
+（因为左侧 $\mathcal{F}_s$ 可测）} \\
+&amp;= M_s^n + \mathbb E\left[\sum_{j} f_n(t_j,\omega) (B_{t_{j+1}} -
+B_{t_j}) \bigg| \mathcal{F}_s\right] \\
+&amp;= M_s^n + 0 \quad \text{（增量独立于 $\mathcal{F}_s$）} \\
+&amp;= M_s^n
+\end{aligned}
+\]</span></p>
+<p>现在令 <span class="math inline">\(n \to \infty\)</span>，由于 Ito
+积分在 <span class="math inline">\(L^2(\Omega)\)</span>
+意义下连续，我们有 <span class="math display">\[
+\mathbb E[M_t | \mathcal{F}_s] = M_s
+\]</span> 因此，Ito 积分过程 <span class="math inline">\(M_t = \int_S^t
+f(u,\omega) \, dB_u(\omega)\)</span> 是一个鞅。</p>
+</blockquote>
+<p>但是我们首先注意到，目前我们只说明了，Ito
+积分的结果是一个鞅过程。但是，这个过程是否具有连续路径呢？是否能类似于在定义布朗运动时的情况，我们找一个修改版本，使得几乎对于所有的
+<span class="math inline">\(\omega\)</span>，路径 <span
+class="math inline">\(t \mapsto M_t(\omega)\)</span> 是连续的呢？</p>
+<p>为了应用 Kolmogorov 连续性定理，我们需要估计增量的矩。也即 <span
+class="math display">\[
+\mathbb E[|M_t - M_s|^\alpha] \leq C |t - s|^{1 + \beta}.
+\]</span> 对于某个 <span class="math inline">\(\alpha &gt; 0\)</span>。
+利用 Ito 等距公式，我们有 <span class="math display">\[
+\mathbb E[|M_t - M_s|^2] = \mathbb E\left[\left(\int_s^t f(u,\omega) \,
+dB_u(\omega)\right)^2\right] = \mathbb E\left[\int_s^t f(u,\omega)^2 \,
+du\right]
+\]</span> 但是，我们实际上需要更高阶的矩估计来应用 Kolmogorov
+连续性定理，所以用等距公式还不够。</p>
+<h4 id="doob-鞅不等式doobs-martingale-inequality">Doob 鞅不等式（Doob’s
+Martingale Inequality）</h4>
+<p>设 <span class="math inline">\(M_t\)</span> 是一个鞅过程，且对于每个
+<span class="math inline">\(t\)</span>，<span class="math inline">\(t
+\mapsto M_t(\omega)\)</span> 是连续的。则对于任意的 <span
+class="math inline">\(p &gt; 1\)</span>，<span class="math inline">\(T
+&gt; 0\)</span>，<span class="math inline">\(\lambda &gt; 0\)</span>，有
+<span class="math display">\[
+P\left(\sup_{0 \leq t \leq T} |M_t| \geq \lambda\right) \leq
+\frac{\mathbb E[|M_T|^p]}{\lambda^p}
+\]</span></p>
+<p>这个实际上是类比概率论中的 Markov 不等式。回顾 Markov
+不等式的证明过程，给定一个 <span
+class="math inline">\(\lambda\)</span>，我们只考虑那些 <span
+class="math inline">\(|X| \geq \lambda\)</span> 的事件，每一个都至少贡献
+<span class="math inline">\(\lambda^p\)</span>，所以总贡献至少是 <span
+class="math inline">\(\lambda^p P(|X| \geq
+\lambda)\)</span>，而这个贡献不能超过 <span
+class="math inline">\(E[|X|^p]\)</span>。</p>
+<p>那么现在，我们处理的是一个随机过程 <span
+class="math inline">\(M_t\)</span>，我们考虑在区间 <span
+class="math inline">\([0,T]\)</span> 上的最大值 <span
+class="math inline">\(\sup_{0 \leq t \leq T}
+|M_t|\)</span>。对于那些路径上最大值超过 <span
+class="math inline">\(\lambda\)</span> 的事件 <span
+class="math inline">\(\omega\)</span>，我们需要考虑它对 <span
+class="math inline">\(|M_T|^p\)</span> 的贡献。</p>
+<p>换句话说，我们需要一个不等式，控制路径最大值和终点值之间的关系。那么，现在我们考虑第一次超过
+<span class="math inline">\(\lambda\)</span> 的时间点 <span
+class="math inline">\(\tau\)</span>。在这个时候，鞅性质告诉我们，因为我们不知道未来信息，未来的期望值仍然是当前值，<span
+class="math inline">\(\mathbb E[M_{T}(\omega) | \mathcal{F}_\tau] =
+M_\tau(\omega)\)</span>。</p>
+<h5 id="可选停时定理-optional-stopping-theorem">可选停时定理 （Optional
+Stopping Theorem）</h5>
+<p>对于过滤 <span
+class="math inline">\(\{\mathcal{F}_t\}\)</span>，随机变量 <span
+class="math inline">\(\tau: \Omega \to [0, \infty]\)</span> 称为一个停时
+（stopping time），如果对于每个 <span class="math inline">\(t \geq
+0\)</span>，事件 <span class="math inline">\(\{\tau \leq t\} \in
+\mathcal{F}_t\)</span>。</p>
+<p>现给定随机过程 <span class="math inline">\(M_t\)</span> 和停时 <span
+class="math inline">\(\tau\)</span>，定义截断过程 <span
+class="math inline">\(M_{t \wedge \tau}\)</span> 为 <span
+class="math display">\[
+M_{t \wedge \tau}(\omega) = M_{\min(t, \tau(\omega))}(\omega)
+\]</span> 也就是在时间 <span class="math inline">\(\tau(\omega)\)</span>
+之后，过程保持不变，因此称作停止过程。</p>
+<p>停止过程<strong>保持适应性</strong>：如果 <span
+class="math inline">\(M_t\)</span> 是关于 <span
+class="math inline">\(\{\mathcal{F}_t\}\)</span> 的适应过程，则 <span
+class="math inline">\(M_{t \wedge \tau}\)</span> 也是关于 <span
+class="math inline">\(\{\mathcal{F}_t\}\)</span> 的适应过程。
+证明：对于任意的 <span class="math inline">\(t \geq 0\)</span>，有 <span
+class="math display">\[
+\{ \omega : M_{t \wedge \tau}(\omega) \in B \} = \{\omega : \tau(\omega)
+\leq t, M_{\tau(\omega)}(\omega) \in B\} \cup \{\omega : \tau(\omega)
+&gt; t, M_t(\omega) \in B\}
+\]</span> 其中 <span class="math inline">\(\{\omega : \tau(\omega) \leq
+t\} \in \cal{F}_t\)</span>，且 <span class="math inline">\(\{\omega :
+M_{\tau(\omega)}(\omega) \in B\} \in \cal{F}_{\tau(\omega)} \subseteq
+\cal{F}_t\)</span>，因此第一部分在 <span
+class="math inline">\(\cal{F}_t\)</span> 中。同理，第二部分也在 <span
+class="math inline">\(\cal{F}_t\)</span> 中，因此整体也在 <span
+class="math inline">\(\cal{F}_t\)</span> 中。</p>
+<p>注意到 <span class="math inline">\(M_{t \wedge \tau_2} - M_{t \wedge
+\tau_1} = \mathbf{1}_{\{\tau_1 &lt; t\}} (M_{t \wedge \tau_2} -
+M_{\tau_1})\)</span>。特别地，<span class="math inline">\(M_{t \wedge
+\tau} - M_0 = \mathbf{1}_{\{\tau &lt; t\}} (M_{t \wedge \tau} -
+M_0)\)</span>。</p>
+<p>设 <span class="math inline">\(\{M_t\}_{t \geq 0}\)</span> 是关于
+<span class="math inline">\(\{\mathcal{F}_t\}\)</span>
+的右连续鞅（即对于每个 <span
+class="math inline">\(\omega\)</span>，<span class="math inline">\(t
+\mapsto M_t(\omega)\)</span> 是右连续的），满足 <span
+class="math inline">\(M_{t\wedge \tau}\)</span> 是均匀可积的（uniformly
+integrable），即 <span class="math display">\[
+\lim_{K \to \infty} \sup_{t\geq 0} \mathbb E[|M_t| \mathbf{1}_{\{|M_t|
+&gt; K\}}] = 0.
+\]</span> （一个充分条件是 <span class="math inline">\(\tau\)</span>
+是有界的，或者被某个可积随机变量控制。）</p>
+<p>则对于两个有限停时（<span class="math inline">\(P(\tau&lt;\infty) =
+1\)</span>） <span class="math inline">\(\tau_1 \leq \tau_2\)</span>，有
+<span class="math display">\[
+\mathbb E[M_{\tau_2} | \mathcal{F}_{\tau_1}] = M_{\tau_1}, \quad
+\text{a.s.}
+\]</span> 特别地， <span class="math display">\[
+\mathbb E[M_{\tau_2}] = \mathbb E[M_{\tau_1}].
+\]</span></p>
+<p>证明： 首先考虑简单停时的情况。设 <span
+class="math inline">\(\tau_1\)</span> 和 <span
+class="math inline">\(\tau_2\)</span> 是简单停时，分别取值于有限集合
+<span class="math inline">\(\{t_1, t_2, \ldots, t_n\}\)</span> 和 <span
+class="math inline">\(\{s_1, s_2, \ldots, s_m\}\)</span>。则 <span
+class="math display">\[
+\begin{aligned}
+\mathbb E[M_{\tau_2} | \mathcal{F}_{\tau_1}] &amp;= \sum_{i=1}^n \mathbb
+E[M_{\tau_2} | \mathcal{F}_{t_i}] \mathbf{1}_{\tau_1 = t_i} \\
+&amp;= \sum_{i=1}^n \left( \sum_{j=1}^m \mathbb E[M_{s_j} |
+\mathcal{F}_{t_i}] \mathbf{1}_{\tau_2 = s_j} \right) \mathbf{1}_{\tau_1
+= t_i} \\
+&amp;= \sum_{i=1}^n \left( \sum_{j=1}^m M_{t_i} \mathbf{1}_{\tau_2 =
+s_j} \right) \mathbf{1}_{\tau_1 = t_i} \quad \text{（鞅性质）} \\
+&amp;= \sum_{i=1}^n M_{t_i} \mathbf{1}_{\tau_1 = t_i} \\
+&amp;= M_{\tau_1}
+\end{aligned}
+\]</span> 而对于一般的停时 <span class="math inline">\(\tau_1,
+\tau_2\)</span>，我们可以找到一列简单停时 <span
+class="math inline">\(\{\tau_1^n\}, \{\tau_2^n\}\)</span>，使得 <span
+class="math inline">\(\tau_1^n \downarrow \tau_1\)</span>，<span
+class="math inline">\(\tau_2^n \downarrow \tau_2\)</span>。</p>
+<p>对于每一组 <span class="math inline">\(\tau_1^n,
+\tau_2^n\)</span>，我们已经知道： <span class="math display">\[
+\mathbb{E}[M_{\tau_2^n} \mathbf{1}_{A}] = \mathbb{E}[M_{\tau_1^n}
+\mathbf{1}_{A}] \quad (\text{对所有 } A \in \mathcal{F}_{\tau_1^n})
+\]</span> 现在约定 <span class="math inline">\(A \in
+\mathcal{F}_{\tau_1}\)</span>，则对于每个 <span
+class="math inline">\(n\)</span>，都有 <span class="math inline">\(A \in
+\mathcal{F}_{\tau_1^n}\)</span>，因此，两侧取极限得到 <span
+class="math display">\[
+\mathbb{E}[M_{\tau_2} \mathbf{1}_{A}] = \mathbb{E}[M_{\tau_1}
+\mathbf{1}_{A}]
+\]</span> 于是 <span class="math inline">\(\mathbb{E}[M_{\tau_2} |
+\mathcal{F}_{\tau_1}] = M_{\tau_1}\)</span>
+几乎处处成立，这里我们使用了均匀可积性来交换极限和期望。</p>
+<h5 id="次鞅的可选停时定理">次鞅的可选停时定理</h5>
+<p>定义次鞅（submartingale）：如果对于所有的 <span
+class="math inline">\(s &lt; t\)</span>，都有 <span
+class="math display">\[
+\mathbb E[M_t | \mathcal{F}_s] \geq M_s,
+\]</span> 则称 <span class="math inline">\(M_t\)</span>
+是一个次鞅。而可选停时定理同样适用于次鞅，结论变为 <span
+class="math display">\[
+\mathbb E[M_{\tau_2} | \mathcal{F}_{\tau_1}] \geq M_{\tau_1}, \quad
+\text{a.s.}
+\]</span></p>
+<hr />
+<p>回到 Doob 鞅不等式的证明，我们取停时 <span class="math inline">\(\tau
+= \inf\{t \geq 0 : |M_t| \geq \lambda\}\)</span>，则 <span
+class="math display">\[
+P\left(\sup_{0 \leq t \leq T} |M_t| \geq \lambda\right) = P(\tau \leq
+T).
+\]</span> 根据 Jensen 不等式 的条件期望版本，对于 <span
+class="math inline">\(s &lt; t\)</span>： <span class="math display">\[
+E[|M_t|^p \mid \mathcal{F}_s] \geq |E[M_t \mid \mathcal{F}_s]|^p =
+|M_s|^p
+\]</span> 因此，<span class="math inline">\(|M_t|^p\)</span>
+是一个次鞅。由可选停时定理，有 <span class="math display">\[
+\mathbb E[|M_{T \wedge \tau}|^p] \geq \mathbb E[|M_0|^p] = |M_0|^p.
+\]</span></p>
+<p>注意到当 <span class="math inline">\(\tau \leq T\)</span> 时，<span
+class="math inline">\(|M_{T \wedge \tau}| \geq \lambda\)</span>，因此
+<span class="math display">\[
+\begin{aligned}
+\mathbb E[|M_{T \wedge \tau}|^p] &amp;\geq \mathbb E[|M_{T \wedge
+\tau}|^p \mathbf{1}_{\{\tau \leq T\}}] \\
+&amp;\geq \lambda^p P(\tau \leq T).
+\end{aligned}
+\]</span> 综上所述，我们得到 <span class="math display">\[
+P\left(\sup_{0 \leq t \leq T} |M_t| \geq \lambda\right) = P(\tau \leq T)
+\leq \frac{\mathbb E[|M_{T \wedge \tau}|^p]}{\lambda^p} \leq
+\frac{\mathbb E[|M_T|^p]}{\lambda^p}.
+\]</span> 这就完成了 Doob 鞅不等式的证明。</p>
+<h4 id="ito-积分路径的连续性">Ito 积分路径的连续性</h4>
+<p>现在我们回到 Ito 积分路径的连续性问题。设 <span
+class="math inline">\(f \in \mathcal{V}(0,T)\)</span>，我们定义 Ito
+积分过程 <span class="math display">\[
+M_t = \int_0^t f(s,\omega) \, dB_s(\omega).
+\]</span> 我们希望证明 <span class="math inline">\(M_t\)</span>
+存在一个修改版本，使得对于几乎所有的 <span
+class="math inline">\(\omega\)</span>，路径 <span
+class="math inline">\(t \mapsto M_t(\omega)\)</span> 是连续的。</p>
+<p>令 <span class="math inline">\(\phi_n\)</span> 是逼近 <span
+class="math inline">\(f\)</span> 的简单过程列，使得 <span
+class="math display">\[
+\lim_{n \to \infty} \mathbb E\left[\int_0^T |f(t,\omega) -
+\phi_n(t,\omega)|^2 \, dt\right] = 0.
+\]</span> 对应的 Ito 积分过程为 <span class="math display">\[
+I_n(t,\omega) = \int_0^t \phi_n(s,\omega) \, dB_s(\omega).
+\]</span> 同时定义 <span class="math display">\[
+I(t,\omega) = \int_0^t f(s,\omega) \,dB_s(\omega).
+\]</span> 由于 <span class="math inline">\(\phi_n\)</span>
+是简单过程，<span class="math inline">\(I_n(t,\omega)\)</span> 对于每个
+<span class="math inline">\(\omega\)</span> 都是连续的。 现在我们来估计
+<span class="math inline">\(I_n(t,\omega)\)</span> 和 <span
+class="math inline">\(I_m(t,\omega)\)</span> 之间的差异。利用 Doob
+鞅不等式，对于任意的 <span class="math inline">\(\epsilon &gt;
+0\)</span>，有 <span class="math display">\[
+P\left(\sup_{0 \leq t \leq T} |I_n(t,\omega) - I_m(t,\omega)| \geq
+\epsilon\right) \leq \frac{1}{\epsilon^2} \mathbb{E}\left[|I_n(T,\omega)
+- I_m(T,\omega)|^2\right].
+\]</span> 根据 Ito 等距公式，我们有 <span class="math display">\[
+\lim_{n,m\to \infty} \mathbb{E}\left[|I_n(T,\omega) -
+I_m(T,\omega)|^2\right] = \mathbb{E}\left[\int_0^T |\phi_n(s,\omega) -
+\phi_m(s,\omega)|^2 \, ds\right]=0
+\]</span> 所以我们可以选取一个子序列 <span
+class="math inline">\(\{I_{n_k}\}\)</span>，使得 <span
+class="math display">\[
+\sum_{k=1}^\infty P\left(\sup_{0 \leq t \leq T} |I_{n_{k+1}}(t,\omega) -
+I_{n_k}(t,\omega)| \geq 2^{-k}\right) &lt; \infty.
+\]</span> 根据 Borel-Cantelli 引理，几乎所有的 <span
+class="math inline">\(\omega\)</span>，存在一个 <span
+class="math inline">\(k_0(\omega)\)</span>，使得对于所有的 <span
+class="math inline">\(k \geq k_0(\omega)\)</span>，都有 <span
+class="math display">\[
+\sup_{0 \leq t \leq T} |I_{n_{k+1}}(t,\omega) - I_{n_k}(t,\omega)| &lt;
+2^{-k}.
+\]</span> 这说明对于几乎所有的 <span
+class="math inline">\(\omega\)</span>，序列 <span
+class="math inline">\(\{I_{n_k}(t,\omega)\}\)</span> 在 <span
+class="math inline">\(C([0,T])\)</span> 空间中是一致收敛的。因此，定义
+<span class="math display">\[
+I(t,\omega) = \lim_{k \to \infty} I_{n_k}(t,\omega),
+\]</span> 则对于几乎所有的 <span
+class="math inline">\(\omega\)</span>，路径 <span
+class="math inline">\(t \mapsto I(t,\omega)\)</span> 是连续的。</p>
+<p>因此，我们得出结论：对于任意的 <span class="math inline">\(f \in
+\mathcal{V}(0,T)\)</span>，Ito 积分过程 <span class="math inline">\(M_t
+= \int_0^t f(s,\omega) \, dB_s(\omega)\)</span>
+存在一个修改版本，使得对于几乎所有的 <span
+class="math inline">\(\omega\)</span>，路径 <span
+class="math inline">\(t \mapsto M_t(\omega)\)</span>
+是连续的。<strong>以后我们默认使用这个连续版本的 Ito
+积分过程。</strong></p>
+<p>而且我们有 <span class="math display">\[
+P\left(\sup_{0 \leq t \leq T} |M_t| \geq \lambda\right) \leq
+\frac{1}{\lambda^2} \mathbb{E}\left[|M_T|^2\right] = \frac{1}{\lambda^2}
+\mathbb{E}\left[\int_0^T f(s,\omega)^2 \, ds\right].
+\]</span></p>
+<h3 id="ito-引理">Ito 引理</h3>
+<p>在讨论 Ito 引理之前，我们先具体计算一下几个 Ito 积分和 Stratonovich
+积分的例子，来帮助理解它们和普通微积分的区别。</p>
+<h4 id="计算-ito-积分-int_0t-f-db_t">计算 Ito 积分 <span
+class="math inline">\(\int_0^T f \, dB_t\)</span></h4>
+<p>假设我们什么公式都没学过，我们拿到这个积分在手，唯一能做的就是按照定义展开，
+取 <span class="math inline">\(\phi_n= \sum f(t_j,\cdot)
+\mathbf{1}_{t_j\leq t &lt; t_{j+1}}, t_j = \frac{j}{2^n} T\)</span>
+<span class="math display">\[
+\int_{0}^{T} f \, dB_t = \lim_{n\to\infty } \sum_{j}\phi_n(t_j)
+(B_{t_{j+1}}-B_{t_j}) =  \lim_{n\to\infty } \sum_{j}f(t_j,\cdot)
+(B_{t_{j+1}}-B_{t_j})
+\]</span></p>
+<p>仿照之前的计算，我们希望把 <span class="math inline">\(f\)</span> 在
+<span class="math inline">\(t_j\)</span>
+的取值分成一些部分，每个部分都是某个不定积分的增量。我们先假定我们的积分结果形式为
+<span class="math display">\[
+\int_S^t f \, dB_t = F(t,B_t, \omega) - F(S,B_S, \omega)
+\]</span> 其中 <span class="math inline">\(F\)</span>
+是某个待定函数。然后我们来计算增量 <span class="math display">\[
+\begin{aligned}
+\Delta F_j &amp;:= F(t_{j+1}, B_{t_{j+1}}, \omega) - F(t_j, B_{t_j},
+\omega) \\
+&amp;= F(t_{j+1}, B_{t_j} + \Delta B_j, \omega) - F(t_j, B_{t_j},
+\omega) \\
+&amp;= \sum_{k=1}^\infty \frac{1}{k!} \frac{\partial^k F}{\partial
+x^k}(t_j, B_{t_j}, \omega) (\Delta B_j)^k + \frac{\partial F}{\partial
+t}(t_j, B_{t_j}, \omega) \Delta t_j + o(\Delta t_j)
+\end{aligned}
+\]</span> 这里的展开是对 <span class="math inline">\(x\)</span>
+变量的泰勒展开加上对 <span class="math inline">\(t\)</span>
+变量的线性近似。我们简单考虑一下对 <span
+class="math inline">\(x\)</span> 的二阶截断误差项 <span
+class="math inline">\(R_j\)</span> 在 <span
+class="math inline">\(L^2\)</span> 意义下的收敛性。我们有 <span
+class="math display">\[
+E \left[ \left( \sum_j R_j \right)^2 \right] = \sum_j E[R_j^2] + \sum_{i
+\neq j} E[R_i R_j]
+\]</span> 根据拉格朗日余项，<span class="math inline">\(R_j =
+\frac{1}{6} F_{xxx}(\eta_j) (\Delta B_j)^3\)</span>。 假设 <span
+class="math inline">\(F_{xxx}\)</span> 一致有界，则：</p>
+<p>第一部分（平方项）：<span class="math inline">\(E[R_j^2] \leq C \cdot
+E[(\Delta B_j)^6]\)</span>。由正态分布矩性质，<span
+class="math inline">\(E[(\Delta B_j)^6] = 15(\Delta t_j)^3\)</span>。
+<span class="math display">\[
+\sum_j E[R_j^2] \leq 15C \sum_j (\Delta t_j)^3 \leq 15C \cdot \delta^2
+\sum_j \Delta t_j = 15C \cdot \delta^2 (T-S) \to 0
+\]</span></p>
+<p>第二部分（交叉项）：</p>
+<p>根据全期望公式，<span class="math inline">\(E[R_i R_j] = E[E[R_i R_j
+| \mathcal{F}_{t_{\max(i,j)}}]]\)</span>。假设 <span
+class="math inline">\(i &lt; j\)</span>，则 <span
+class="math display">\[E[R_i R_j | \mathcal{F}_{t_j}] = R_i E[R_j |
+\mathcal{F}_{t_j}] = R_i \cdot 0 = 0\]</span> 因为 <span
+class="math inline">\(\Delta B_j\)</span> 独立于 <span
+class="math inline">\(\mathcal{F}_{t_j}\)</span>，且 <span
+class="math inline">\(E[\Delta B_j] = 0\)</span>。所以交叉项为零。</p>
+<p>所以当我们对所有的增量求和时，<span class="math inline">\(n\geq
+2\)</span> 的误差项 在 <span class="math inline">\(L^2\)</span>
+意义下收敛到零。</p>
+<p>我们只需要对这个展开式取前两项： <span class="math display">\[
+\Delta F_j \approx \frac{\partial F}{\partial x}(t_j, B_{t_j}, \omega)
+\Delta B_j + \frac{1}{2} \frac{\partial^2 F}{\partial x^2}(t_j, B_{t_j},
+\omega) (\Delta B_j)^2 + \frac{\partial F}{\partial t}(t_j, B_{t_j},
+\omega) \Delta t_j
+\]</span> 因此，我们有 <span class="math display">\[
+\sum_j \Delta F_j \approx \sum_j \frac{\partial F}{\partial x}(t_j,
+B_{t_j}, \omega) \Delta B_j + \frac{1}{2} \sum_j \frac{\partial^2
+F}{\partial x^2}(t_j, B_{t_j}, \omega) (\Delta B_j)^2 + \sum_j
+\frac{\partial F}{\partial t}(t_j, B_{t_j}, \omega) \Delta t_j
+\]</span> 注意到 <span class="math inline">\((\Delta B_j)^2\)</span>
+收敛到 <span class="math inline">\(\Delta
+t_j\)</span>，所以在极限下，第二项变成 <span
+class="math display">\[\frac{1}{2} \int_S^T \frac{\partial^2 F}{\partial
+x^2}(t, B_t, \omega) dt\]</span> 而第三项则是 <span
+class="math display">\[\int_S^T \frac{\partial F}{\partial t}(t, B_t,
+\omega) dt\]</span></p>
+<p>因此，我们得出 Ito 引理的基本形式：</p>
+<h4 id="ito-引理itos-lemma">Ito 引理（Ito’s Lemma）</h4>
+<p>设 <span class="math inline">\(B_t\)</span> 是一个标准布朗运动，<span
+class="math inline">\(F: [0,T] \times \mathbb{R} \to \mathbb{R}\)</span>
+是一个二次连续可微函数（即 <span class="math inline">\(F \in
+C^{1,2}([0,T] \times \mathbb{R})\)</span>）。定义随机过程 <span
+class="math display">\[
+X_t = F(t, B_t).
+\]</span> 则 <span class="math inline">\(X_t\)</span> 的微分满足 <span
+class="math display">\[
+dX_t = \frac{\partial F}{\partial t}(t, B_t) dt + \frac{\partial
+F}{\partial x}(t, B_t) dB_t + \frac{1}{2} \frac{\partial^2 F}{\partial
+x^2}(t, B_t) dt.
+\]</span></p>
+<p>于是我们记住以下微分的规则：</p>
+<ul>
+<li><p><span class="math inline">\(dt \cdot dt = 0\)</span></p></li>
+<li><p><span class="math inline">\(dt \cdot dB_t = 0\)</span></p></li>
+<li><p><span class="math inline">\(dB_t \cdot dB_t =
+dt\)</span></p></li>
+</ul>
+<p>这些都是在 <span class="math inline">\(L^2\)</span>
+意义下对积分求和逼近意义下成立的。</p>
+<p>回到上面的例子，我们现在试图构造一个函数 <span
+class="math inline">\(F\)</span>，使得 <span class="math display">\[
+\frac{\partial F}{\partial x}(t, B_t) = f(t, B_t).
+\]</span> 这就意味着我们可以取 <span class="math display">\[
+F(t,x) = \int_0^x f(t,y) \, dy - G(t),
+\]</span> 其中 <span class="math inline">\(G(t)\)</span> 是任意的关于
+<span class="math inline">\(t\)</span> 的可微函数。</p>
+<p>根据 Ito 引理，我们有 <span class="math display">\[
+dX_t = \frac{\partial F}{\partial t}(t, B_t) dt + f(t, B_t) dB_t +
+\frac{1}{2} \frac{\partial f}{\partial x}(t, B_t) dt.
+\]</span> 因此，Ito 积分 <span class="math inline">\(\int_0^T f(t, B_t)
+\, dB_t\)</span> 可以表示为 <span class="math display">\[
+\int_0^T f(t, B_t) \, dB_t = X_T - X_0 - \int_0^T \left( \frac{\partial
+F}{\partial t}(t, B_t) + \frac{1}{2} \frac{\partial f}{\partial x}(t,
+B_t) \right) dt.
+\]</span></p>
+<p>这就是我们通过 Ito 引理计算 Ito 积分的一个基本方法。首先对 <span
+class="math inline">\(f\)</span> 非时间依赖部分进行不定积分，得到 <span
+class="math inline">\(F\)</span>，然后应用 Ito 引理计算 <span
+class="math inline">\(dX_t\)</span>，最后减去时间积分部分即可得到所需的
+Ito 积分表达式。</p>
+<p>在以上的例子中，我们取 <span
+class="math inline">\(f(x,t)=x\)</span>， <span
+class="math inline">\(G(t) = 0\)</span>，<span
+class="math inline">\(F(t,x) = \int_0^x y \, dy = \frac{1}{2}
+x^2\)</span>，$ X_t = F(t, B_t)$。</p>
+<p><span class="math display">\[
+\int_0^T B_t \, dB_t = X_T - X_0 - \int_0^T \left( 0 + \frac{1}{2} \cdot
+1 \right) dt = \frac{1}{2} B_T^2 - \frac{1}{2} T
+\]</span> 这和我们之前直接计算的结果是一致的。</p>
+<p>如果我们想寻找一个类似于微积分中直接的原函数形式的表达式，根据 Ito
+引理，我们需要修改 <span
+class="math inline">\(G(t)\)</span>，使得剩下的时间积分部分抵消，也即
+<span class="math display">\[
+\frac{dG}{dt}(t) = \int_0^{x} \frac{\partial f}{\partial t}(t,y) \, dy +
+\frac{1}{2} \frac{\partial f}{\partial x}(t, x)
+\]</span></p>
+<h3 id="ito-积分的推广">Ito 积分的推广</h3>
+<p>到目前为止，我们已经定义了适应过程 <span class="math inline">\(f \in
+\mathcal V\)</span> 上的 Ito 积分 <span class="math inline">\(\int_S^T
+f(t,\omega) \,
+dB_t(\omega)\)</span>，并且证明了它的鞅性质和路径连续性。</p>
+<p>我们可以拓展它的定义域，使得 <span class="math inline">\(f\)</span>
+适应于更复杂的滤过，不再局限于一维布朗运动。</p>
+<p>首先，在 <span class="math inline">\(\mathcal{V}(S,T)\)</span>
+的定义中，对应的滤过可以改为满足以下条件的滤过 <span
+class="math inline">\(\{\mathcal{H}_t\}\)</span>： 1. <span
+class="math inline">\(B_t\)</span> 是关于 <span
+class="math inline">\(\{\mathcal{H}_t\}\)</span> 的鞅。 2. <span
+class="math inline">\(f_t\)</span> 是关于 <span
+class="math inline">\(\{\mathcal{H}_t\}\)</span> 的适应过程，即对于每个
+<span class="math inline">\(t\)</span>，<span
+class="math inline">\(f_t\)</span> 是 <span
+class="math inline">\(\mathcal{H}_t\)</span> 可测的。</p>
+<p>注意 (1) 蕴含了 <span class="math inline">\(\mathcal{F}_t \subseteq
+\mathcal{H}_t\)</span>。</p>
+<p>实际上，这里的意思是，我们允许 <span class="math inline">\(f\)</span>
+依赖于比布朗运动更多的信息，只要布朗运动仍然是这个更大滤过下的鞅即可，因为在我们证明
+Ito 积分的鞅性质时，只用到了布朗运动增量独立于过去的信息和 <span
+class="math inline">\(f\)</span>
+的适应性，在上面证明的过程中已经标注清楚了。</p>
+<h4 id="多维-ito-积分">多维 Ito 积分</h4>
+<p>设 <span class="math inline">\(\mathbf{B}_t = (B_t^{(1)}, B_t^{(2)},
+\ldots, B_t^{(n)})\)</span> 是一个 <span
+class="math inline">\(n\)</span> 维标准布朗运动，即每个分量 <span
+class="math inline">\(B_t^{(i)}\)</span> 都是独立的标准布朗运动。</p>
+<p>令 <span class="math inline">\(\mathcal{V}^{m\times
+n}_{\mathcal{H}}(S,T)\)</span> 为 <span class="math inline">\(m\times
+n\)</span> 矩阵 <span
+class="math inline">\(v=[v_{i,j}(t,\omega)]\)</span>
+构成的集合，其中，每个 <span class="math inline">\(v_{i,j}\)</span>
+满足以上的条件，（联合可测，对某个滤过 <span
+class="math inline">\(\mathcal{H_t}\)</span> 适应，<span
+class="math inline">\(L^2\)</span> 有界）。</p>
+<p>我们定义多维 Ito 积分为 <span class="math display">\[
+\int_S^T v\, d\mathbf{B}_t = \int_S^T \begin{pmatrix}
+v_{1,1} &amp; \cdots &amp; v_{1,n} \\
+\vdots  &amp; \ddots &amp; \vdots \\
+v_{m,1} &amp; \cdots &amp; v_{m,n}
+\end{pmatrix} \, d\begin{pmatrix}
+B_t^{(1)} \\
+\vdots \\
+B_t^{(n)}
+\end{pmatrix} = \begin{pmatrix}
+\sum_{j=1}^n \int_S^T v_{1,j}(t,\omega) \, dB_t^{(j)}(\omega) \\
+\vdots \\
+\sum_{j=1}^n \int_S^T v_{m,j}(t,\omega) \, dB_t^{(j)}(\omega)
+\end{pmatrix}
+\]</span></p>
+<p>这里的每个分量都是一个一维 Ito 积分。类似地，我们可以定义多维 Ito
+积分的等距性质和鞅性质。</p>
+<ol type="1">
+<li><p>等距性质： <span class="math display">\[
+\mathbb E\left[\left\|\int_S^T v \, d\mathbf{B}_t\right\|^2\right] =
+\mathbb E\left[\int_S^T \|v(t,\omega)\|_F^2 \, dt\right]
+\]</span> 其中 <span class="math inline">\(\|v(t,\omega)\|_F\)</span>
+是矩阵 <span class="math inline">\(v(t,\omega)\)</span> 的 Frobenius
+范数，定义为 <span class="math display">\[
+\|v(t,\omega)\|_F^2 = \sum_{i=1}^m \sum_{j=1}^n |v_{i,j}(t,\omega)|^2.
+\]</span></p></li>
+<li><p>鞅性质： 设 <span class="math inline">\(M_t = \int_S^t
+v(t,\omega) \,d\mathbf{B}_t(\omega)\)</span>，则对于 <span
+class="math inline">\(s &lt; t\)</span>，有 <span
+class="math display">\[
+\mathbb E[M_t | \mathcal{H}_s] = M_s.
+\]</span></p></li>
+</ol>
+<p>我们将以上过程构成的空间分别记作 <span
+class="math inline">\(\mathcal{W}_{\mathcal{H}}(S,T),
+\mathcal{W}_{\mathcal{H}}^{m\times n}(S,T)\)</span>，并记 <span
+class="math inline">\(\mathcal{W}_{\mathcal{H}} = \bigcup_{T&gt;0}
+\mathcal{W}_{\mathcal{H}}(0,T)\)</span>.</p>
+<h3 id="与-stratonovich-积分的比较">与 Stratonovich 积分的比较</h3>
+<p>回顾之前所作的，我们可以给这样的一个随机微分方程 <span
+class="math display">\[
+\frac{d X}{dt} = b(t, X_t) + \sigma(t, X_t) \cdot W_t
+\]</span> 在 Ito 积分框架下一个合理的解： <span class="math display">\[
+X_t = X_0 + \int_0^t b(s, X_s) \, ds + \int_0^t \sigma(s, X_s) dB_s
+\]</span> 其中 <span class="math inline">\(W_t\)</span>
+是某种“白噪声”（看作布朗运动的“导数”）。</p>
+<p>Ito 积分的意义是，考虑简单过程 <span
+class="math inline">\(\phi_n\)</span> 逼近 <span
+class="math inline">\(\sigma(t, X_t)\)</span>，<span
+class="math inline">\(L_t = \int_0^t \sigma(s, X_s) dB_s\)</span> 就是
+<span class="math inline">\(\int_0^t \phi_n(s) dB_s\)</span> 的 <span
+class="math inline">\(L^2\)</span> 极限。</p>
+<p>也就是认为 <span class="math inline">\(\sigma(t, X_t)\)</span>
+在每个时间点 <span class="math inline">\(t\)</span>
+的取值在极小时间内保持不变并且等于左侧点的取值，然后考虑布朗运动的波动的影响并求和汇总。等距公式告诉我们，<span
+class="math inline">\(L_t\)</span> 的方差是 <span
+class="math inline">\(\int_0^t \sigma(s, X_s)^2 ds\)</span>。</p>
+<p>这里取左侧点和其他点会得到不同的结果是因为布朗运动的增量可能与 <span
+class="math inline">\(\sigma(t, X_t)\)</span> 的取值相关联了，而 Ito
+积分保证了这个增量独立于 <span class="math inline">\(\sigma(t,
+X_t)\)</span> 的取值，也就是鞅性质的体现。</p>
+<p>这个关联项，由上面的 Ito
+引理的展开分析，我们大致知道，它意味着某种额外的漂移项的出现，对应结果中
+<span class="math inline">\(B_t\)</span> 的二阶影响。</p>
+<p>现在我们来严格分析，从这样的一个展开式出发。 <span
+class="math display">\[
+\sum_j \Delta F_j \approx \sum_j \frac{\partial F}{\partial x}(t_j,
+B_{t_j}, \omega) \Delta B_j + \frac{1}{2} \sum_j \frac{\partial^2
+F}{\partial x^2}(t_j, B_{t_j}, \omega) (\Delta B_j)^2 + \sum_j
+\frac{\partial F}{\partial t}(t_j, B_{t_j}, \omega) \Delta t_j
+\]</span> 我们假设有 <span class="math inline">\(\frac{\partial
+F}{\partial x}(t_j, B_{t_j}, \omega) = \sigma(t_j,
+X_{t_j})\)</span>，则第一项就是我们定义的 Ito 积分的近似表达式。</p>
+<p>这个告诉我们什么？首先 <span class="math inline">\(F\)</span>
+的增量可以分成两部分，一部分关于时间的增量，另一部分关于空间（布朗运动）增量的影响。对于时间的响应，我们只需要考虑一阶就足以在分割趋于零时得到正确的结果；但是对于空间的响应，如果只取左侧点并求和，就需要额外考虑一个二阶项，才能在分割趋于零时得到正确的结果。</p>
+<p>但这样的一个二阶项展开，实际上就等价于我们使用导数在区间中点的取值了（误差一个三阶项会消失）。如果我们在定义积分时，取
+<span class="math inline">\(\sigma(t, X_t)\)</span> 在区间 <span
+class="math inline">\([t_j, t_{j+1}]\)</span>
+的中点处的取值，那么这个二阶项就会自然地被包含在内。</p>
+<p>所以，我们有以下结论： <span class="math display">\[
+\sum_j \Delta F_j \approx \sum_j \sigma\left(\frac{t_j + t_{j+1}}{2},
+X_{\frac{t_j + t_{j+1}}{2}}\right) \Delta B_j + \sum_j \frac{\partial
+F}{\partial t}(t_j, B_{t_j}, \omega) \Delta t_j
+\]</span> 而Stratonovich 积分按定义就是： <span class="math display">\[
+\int_0^t \sigma(s, X_s) \circ dB_s = \lim_{n \to \infty} \sum_j
+\sigma\left(\frac{t_j + t_{j+1}}{2}, X_{\frac{t_j + t_{j+1}}{2}}\right)
+(B_{t_{j+1}} - B_{t_j}),
+\]</span> 那从微分的角度，我们简洁地有： <span class="math display">\[
+dX_t = b(t, X_t) dt + \sigma(t, X_t) \circ dB_t
+\]</span> 因此，Stratonovich
+积分的定义方式使得它在微分形式上与普通微积分的链式法则保持一致，而 Ito
+积分则需要额外的二阶项来修正。</p>
+<p>利用以下公式，我们可以在 Ito 积分和 Stratonovich 积分之间进行转换：
+<span class="math display">\[
+\sigma(t, X_t) \circ dB_t = \sigma(t, X_t) dB_t + \frac{1}{2}
+\frac{\partial \sigma}{\partial x}(t, X_t) dt
+\]</span></p>
+<p>而如果考虑一列 <span class="math inline">\(t\)</span>-可微的随机过程
+<span class="math inline">\(B_t^{(n)}\)</span>，使得 <span
+class="math inline">\(B_t^{(n)}\)</span> 在 <span
+class="math inline">\(L^2\)</span> 意义下一致收敛到 <span
+class="math inline">\(B_t\)</span>。 则，以上的随机微分方程变为 <span
+class="math display">\[
+\frac{d X^{(n)}}{dt} = b(t, X_t^{(n)}) + \sigma(t, X_t^{(n)}) \cdot
+\frac{dB_t^{(n)}}{dt}
+\]</span> 它的解满足以下的积分方程： <span class="math display">\[
+X_t^{(n)} = X_0 + \int_0^t b(s, X_s^{(n)}) \, ds + \int_0^t \sigma(s,
+X_s^{(n)}) \cdot \frac{dB_s^{(n)}}{ds} ds
+\]</span></p>
+<p>存在唯一性，也许可以通过 Banach 不动点定理来证明，但是问了问 AI
+感觉证明需要各种不等式估计，就算了。</p>
+<p>如果 <span class="math inline">\(B_t^{(n)}\)</span> 是 <span
+class="math inline">\(B_t\)</span> 的某种平滑近似，那么 <span
+class="math inline">\(\int_0^t \sigma(s, X_s^{(n)}) \cdot
+\frac{dB_s^{(n)}}{ds} ds\)</span> 就是一个普通的 Riemann
+积分。众所周知，黎曼积分取中点是作为二阶近似的。因此，随着 <span
+class="math inline">\(n \to \infty\)</span>，取中点的黎曼积分会收敛到
+Stratonovich 积分 <span class="math inline">\(\int_0^t \sigma(s, X_s)
+\circ dB_s\)</span>，取左侧的黎曼积分则收敛到 Ito 积分 <span
+class="math inline">\(\int_0^t \sigma(s, X_s) dB_s\)</span>。</p>
+<p>然后在不动点迭代的过程中，最后收敛的结果是 Stratonovich
+积分的解。具体的收敛性证明可以查阅 Wong-Zakai
+定理。这里确实也很神奇。</p>
+<h3 id="练习">练习</h3>
+<p>学而不练就完蛋了，接下来是练习环节。</p>
+<p>3.1. 用 Ito 积分的定义，证明以下的等式： <span
+class="math display">\[
+\int_0^t s dB_s = t B_t - \int_0^t B_s ds
+\]</span></p>
+<p>3.2 按定义证明： <span class="math display">\[
+\int_0^t B_s^2 dB_s = \frac{1}{3} B_t^3 - \int_0^t B_s ds
+\]</span></p>
+<p>3.3 <span class="math inline">\(X_t: \Omega \to \mathbb{R}^n\)</span>
+是一个随机过程，<span class="math inline">\(\mathcal{H}_t\)</span>
+是其生成的滤过（<span
+class="math inline">\(\sigma\)</span>-代数）。试解决以下问题：</p>
+<ol type="1">
+<li>如果 <span class="math inline">\(X_t\)</span> 是关于某个滤过 <span
+class="math inline">\(\mathcal{N}_t\)</span> 的鞅，那么 <span
+class="math inline">\(X_t\)</span> 也是关于 <span
+class="math inline">\(\mathcal{H}_t\)</span> 的鞅。</li>
+<li>如果 <span class="math inline">\(X_t\)</span> 是关于 <span
+class="math inline">\(\mathcal{H}_t\)</span> 的鞅，那么 <span
+class="math inline">\(\mathbb{E}[X_t] = \mathbb{E}[X_0], \forall t\geq
+0\)</span>。</li>
+<li>举出一例 <span class="math inline">\(X_t\)</span> 满足 (2)
+但不是关于 <span class="math inline">\(\mathcal{H}_t\)</span>
+的鞅。</li>
+</ol>
+<p>3.4 检查以下的过程是否是关于 <span
+class="math inline">\(\mathcal{F}_t\)</span> 的鞅：</p>
+<ol type="1">
+<li><span class="math inline">\(X_t = B_t + 4t\)</span></li>
+<li><span class="math inline">\(X_t = B_t^2\)</span></li>
+<li><span class="math inline">\(X_t = t^2 B_t - 2 \int_0^t s B_s
+ds\)</span></li>
+<li><span class="math inline">\(X_t = B_1(t) B_2(t)\)</span>，其中 <span
+class="math inline">\((B_1(t), B_2(t))\)</span>
+是一个二维布朗运动。</li>
+</ol>
+<h4 id="解答">解答</h4>
+<p>3.1</p>
+<p>还是展示一下直接使用 Ito 引理来证明这个等式，为了利用 Ito 引理，令
+<span class="math display">\[
+\frac{\partial F}{\partial x}(t,x) = t \implies F(t,x) = t x - G(t)
+\]</span> 取 <span class="math inline">\(G(t) = 0\)</span>，则 <span
+class="math inline">\(F(t,x) = t x\)</span>。根据 Ito 引理，我们有 <span
+class="math display">\[
+dF(t, B_t) = B_t dt + t dB_t
+\]</span> 因此， <span class="math display">\[
+\int_0^t s dB_s = F(t, B_t) - F(0, B_0) - \int_0^t B_s ds = t B_t -
+\int_0^t B_s ds
+\]</span></p>
+<p>直接按照定义来证明需要我们用简单过程切片分段逼近 <span
+class="math inline">\(s\)</span>，例如 <span
+class="math inline">\(\phi_n(s) = \sum_{j=0}^{n-1} t_j \mathbf{1}_{[t_j,
+t_{j+1})}(s)\)</span>，其中 <span class="math inline">\(t_j =
+\frac{j}{n} t\)</span>，则 <span class="math display">\[
+\int_0^t s dB_s = \lim_{n \to \infty} \sum_{j=0}^{n-1} t_j (B_{t_{j+1}}
+- B_{t_j})
+\]</span></p>
+<p>回顾求和的 Abel 转换：</p>
+<p>对于 <span class="math inline">\(\sum_{j=0}^{n} \Delta A_j
+b_j\)</span>，<span class="math inline">\(a_j = \Delta A_j = A_{j+1} -
+A_j\)</span>，我们有 <span class="math display">\[
+\sum_{j=0}^{n} \Delta A_j b_j = A_{n+1} b_n - A_0 b_0 - \sum_{j=1}^{n}
+A_{j} \Delta b_{j-1}
+\]</span></p>
+<p>这里 <span class="math inline">\(b_j=t_j\)</span>，<span
+class="math inline">\(A_j = B_{t_j}\)</span>，则 <span
+class="math display">\[
+\begin{aligned}
+\sum_{j=0}^{n-1} t_j \Delta B_j &amp;= t_n B_{t_{n-1}} - t_0 B_{t_0} -
+\sum_{j=1}^{n-1} B_{t_j} \Delta t_{j-1} \\
+&amp;= t B_{t} - \sum_{j=1}^{n-1} B_{t_j} \Delta t_{j-1}
+\end{aligned}
+\]</span> 而 <span class="math inline">\(n \to \infty\)</span> 时，<span
+class="math inline">\(\sum_{j=1}^{n-1} B_{t_j} \Delta t_{j-1}\)</span>
+就是 <span class="math inline">\(\int_0^t B_s ds\)</span> 的右端 Riemann
+和的近似（或者取右端点的简单过程逼近 <span
+class="math inline">\(B_s\)</span>，在 Lebesgue
+积分的意义下也是成立的），因此 <span class="math display">\[
+\int_0^t s dB_s = \lim_{n \to \infty} \sum_{j=0}^{n-1} t_j (B_{t_{j+1}}
+- B_{t_j}) = t B_t - \int_0^t B_s ds
+\]</span></p>
+<p>3.2</p>
+<p>同样地，我们先使用 Ito 引理来证明这个等式。令 <span
+class="math display">\[
+\frac{\partial F}{\partial x}(t,x) = x^2 \implies F(t,x) = \frac{1}{3}
+x^3 - G(t)
+\]</span> 取 <span class="math inline">\(G(t) = 0\)</span>，则 <span
+class="math inline">\(F(t,x) = \frac{1}{3} x^3\)</span>。根据 Ito
+引理，我们有 <span class="math display">\[
+dF(t, B_t) = \frac{1}{2} B_t dt + B_t^2 dB_t
+\]</span> 因此， <span class="math display">\[
+\int_0^t B_s^2 dB_s = F(t, B_t) - F(0, B_0) - \int_0^t \frac{1}{2} B_s
+ds = \frac{1}{3} B_t^3 - \int_0^t B_s ds
+\]</span></p>
+<p>按定义证明，我们取 <span class="math inline">\(\phi_n(t,\omega) =
+\sum_{j=0}^{n-1} B_{t_j}^2 \mathbf{1}_{[t_j, t_{j+1})}(s)\)</span>，其中
+<span class="math inline">\(t_j = \frac{j}{n} t\)</span>。继续利用 Abel
+转换，我们有 <span class="math display">\[
+\begin{aligned}
+\sum_{j=0}^{n-1} B_{t_j}^2 \Delta B_j &amp;= B_{t_n}^2 B_{t_{n-1}} -
+B_{t_0}^3 - \sum_{j=1}^{n-1} B_{t_j}^2 \Delta t_{j-1} \\
+&amp;= B_t^2 B_{t_{n-1}} - \sum_{j=1}^{n-1} B_{t_j}^2 \Delta t_{j-1}
+\end{aligned}
+\]</span> 当 <span class="math inline">\(n \to \infty\)</span> 时，<span
+class="math inline">\(B_{t_{n-1}} \to B_t\)</span>，因此 <span
+class="math inline">\(B_t^2 B_{t_{n-1}} \to B_t^3\)</span>，而 <span
+class="math inline">\(\sum_{j=1}^{n-1} B_{t_j}^2 \Delta t_{j-1}\)</span>
+就是 <span class="math inline">\(\int_0^t B_s^2 ds\)</span>。</p>
+<p>3.3</p>
+<ol type="1">
+<li>如果 <span class="math inline">\(X_t\)</span> 是关于某个滤过 <span
+class="math inline">\(\mathcal{N}_t\)</span> 的鞅，那么对于 <span
+class="math inline">\(s &lt; t\)</span>，有 <span
+class="math display">\[\mathbb{E}[X_t | \mathcal{N}_s] = X_s.\]</span>
+由于 <span class="math inline">\(\mathcal{H}_s \subseteq
+\mathcal{N}_s\)</span>，根据全期望公式，我们有<span
+class="math display">\[\mathbb{E}[X_t | \mathcal{H}_s] =
+\mathbb{E}[\mathbb{E}[X_t | \mathcal{N}_s] | \mathcal{H}_s] =
+\mathbb{E}[X_s | \mathcal{H}_s] = X_s.\]</span> 因此，<span
+class="math inline">\(X_t\)</span> 也是关于 <span
+class="math inline">\(\mathcal{H}_t\)</span> 的鞅。
+我们理解为，一个随机过程如果在一个大信息集合下是鞅，那么在一个子信息集合下也是鞅。而
+<span class="math inline">\(X_t\)</span>
+本身生成的滤过是最小的满足适应性的滤过。</li>
+<li>如果 <span class="math inline">\(X_t\)</span> 是关于 <span
+class="math inline">\(\mathcal{H}_t\)</span> 的鞅，我们知道 <span
+class="math inline">\(\mathbb{E}[X_t | \mathcal{H}_0] =
+X_0\)</span>。然后根据全期望公式，<span
+class="math inline">\(\mathbb{E}[X_t] = \mathbb{E}[\mathbb{E}[X_t |
+\mathcal{H}_0]] = \mathbb{E}[X_0]\)</span>。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Mathematics/" class="category-chain-item">Mathematics</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Stochastic-Differential-Equations/" class="print-no-link">#Stochastic Differential Equations</a>
+      
+        <a href="/tags/Ito-Calculus/" class="print-no-link">#Ito Calculus</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>随机微分方程（SDE）</div>
+      <div>https://notdesigned.github.io/2026/01/01/随机微分方程（SDE）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Luocheng Liang</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 1, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - Share-alike">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/01/10/nanochat-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="nanochat 学习笔记">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">nanochat 学习笔记</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/12/15/QAOA/" title="QAOA">
+                        <span class="hidden-mobile">QAOA</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"Ov23lisUTr0Y3YpBngo1","clientSecret":"4068f2efc1d2d6015f3c8089a4e0ad4c1aeb8ed2","repo":"gitalkcomment","owner":"NotDesigned","admin":["NotDesigned"],"language":"en","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://autumn-recipe-17e3.theadscn.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '6ee025d4c858adaa4de9ae57ea622d9f'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

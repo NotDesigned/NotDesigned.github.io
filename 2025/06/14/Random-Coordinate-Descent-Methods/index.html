@@ -1,0 +1,1445 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Luocheng Liang">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="This is a reading note on the paper “Random Coordinate Descent Methods for Minimizing Decomposable Submodular Functions” by A. ENE, Huy L. NGUYEN arxiv Knowledge prerequisite on submodular function (i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Random Coordinate Descent Methods">
+<meta property="og:url" content="https://notdesigned.github.io/2025/06/14/Random-Coordinate-Descent-Methods/index.html">
+<meta property="og:site_name" content="Adscn&#39;s Blog">
+<meta property="og:description" content="This is a reading note on the paper “Random Coordinate Descent Methods for Minimizing Decomposable Submodular Functions” by A. ENE, Huy L. NGUYEN arxiv Knowledge prerequisite on submodular function (i">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-06-14T13:18:06.000Z">
+<meta property="article:modified_time" content="2026-02-26T12:57:24.804Z">
+<meta property="article:author" content="Luocheng Liang">
+<meta property="article:tag" content="Coordinate Descent">
+<meta property="article:tag" content="Optimization">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Random Coordinate Descent Methods - Adscn&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"notdesigned.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Adscn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Blog</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Random Coordinate Descent Methods"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-14 13:18" pubdate>
+          June 14, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Random Coordinate Descent Methods</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>This is a reading note on the paper “Random Coordinate Descent
+Methods for Minimizing Decomposable Submodular Functions” by A. ENE, Huy
+L. NGUYEN</p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1502.02643">arxiv</a></p>
+<p>Knowledge prerequisite on submodular function (in Chinese):</p>
+<p><a
+href="https://notdesigned.github.io/2025/06/11/%E5%AD%90%E6%A8%A1%E5%87%BD%E6%95%B0%E4%BB%A5%E5%8F%8ALovasz%E6%8B%93%E5%B1%95/">子模函数以及Lovasz拓展</a></p>
+<h2 id="preliminaries">Preliminaries</h2>
+<p>Let <span class="math inline">\(V = \{1,2,\ldots, n\}\)</span>.</p>
+<p>Regarding <span class="math inline">\(w\in \mathbb{R}^n\)</span> as a
+modular function <span class="math inline">\(w(A) = \sum_{i\in A}
+w_i\)</span>.</p>
+<p>Let <span class="math inline">\(F: 2^V \to \mathbb{R}\)</span> be a
+submodular function of the form: <span class="math display">\[
+\begin{align*}
+F &amp;= \sum_{i=1}^r F_i\\
+F(\emptyset) &amp;= 0
+\end{align*}
+\]</span> where each <span class="math inline">\(f_i\)</span> is a
+simple submodular function.</p>
+<p>Additionally, we assume minimizing <span
+class="math inline">\(F_i+w\)</span> is easy, i.e., there exists
+efficient oracles to find the minimizer of <span
+class="math inline">\(F_i + w\)</span> for each <span
+class="math inline">\(i\)</span> and <span class="math inline">\(w\in
+\mathbb R^n\)</span>.</p>
+<p>We want to minimize <span class="math inline">\(F\)</span>.</p>
+<p>We pivot to the minimization of the Lovász extension <span
+class="math inline">\(f\)</span>.</p>
+<p>Let <span class="math inline">\(f\)</span> be the Lovász extension of
+<span class="math inline">\(F\)</span> written as the support function
+of the base polytope <span class="math inline">\(B(F)\)</span>: <span
+class="math display">\[
+f(x) = \max_{w\in B(F)} \langle w, x \rangle
+\]</span> where <span class="math inline">\(B(F) = \{w\in \mathbb{R}^n:
+w(A) \leq F(A), \forall A\subseteq V, w(V)=F(V)\}\)</span>.</p>
+<p>And let <span class="math inline">\(f_i\)</span> be the Lovász
+extension of <span class="math inline">\(F_i\)</span>, <span
+class="math inline">\(B_i\)</span> be the base polytope of <span
+class="math inline">\(F_i\)</span>.</p>
+<p>The paper considers a proximal version of the problem:</p>
+<p><span class="math display">\[
+\min_{x\in \mathbb{R}^n} f(x) + \frac{1}{2}\|x\|^2 \equiv \min_{x\in
+\mathbb{R}^n} \sum_{i=1}^r f_i(x) + \frac{1}{2r}\|x\|^2
+\]</span></p>
+<p>Given an optimal solution <span class="math inline">\(x\)</span> to
+the proximal problem, one can obtain an optimal solution to the discrete
+problem by thresholding <span class="math inline">\(x\)</span> at <span
+class="math inline">\(0\)</span>; more precisely, the optimal solution
+to the discrete problem is given by <span class="math inline">\(A = \{i:
+x_i \geq 0\}\)</span>.</p>
+<h3 id="lemma-1">Lemma 1</h3>
+<p>The dual of the proximal problem is given by:</p>
+<p><span class="math display">\[
+\max_{y^(1)\in B_1, \ldots, y^(r)\in B_r} -\frac{1}{2}\|\sum_{i=1}^r
+y^{(i)}\|^2.
+\]</span></p>
+<p>The primal and dual variables are related by: <span
+class="math display">\[
+x = -\sum_{i=1}^r y^{(i)}.
+\]</span></p>
+<h2 id="application-on-densest-subgraph-problem">Application on Densest
+Subgraph Problem</h2>
+<p>To see the definition, please refer to the <a
+href="https://notdesigned.github.io/2025/06/16/Densest-Subgraph/">Densest
+Subgraph Problem</a> post.</p>
+<p>The quadratic formulation of DDS problem is defined as follows:</p>
+<p><span class="math display">\[
+\begin{align*}
+\mathsf{QP}(c):&amp;&amp;\min&amp;&amp;\sqrt c \cdot \sum_{u\in
+V}\left(\sum_{(u,v) \in E}\alpha_{u,v}\right)^2+\frac 1{\sqrt c} \cdot
+&amp; \sum_{v\in V}\left(\sum_{(u,v) \in E}\beta_{v,u}\right)^2 \\
+&amp;&amp; \text{s.t.}&amp;&amp;\alpha_{u,v}+\beta_{v,u}
+&amp;=1,&amp;&amp; \forall (u,v) \in E\\
+&amp;&amp; &amp;&amp;\alpha_{u,v},\beta_{v,u} &amp;\geq 0 &amp;&amp;
+\forall (u,v) \in E
+\end{align*}
+\]</span></p>
+<p>The dual of such quadratic program is formulated as follows:</p>
+<h3 id="lagrangian-relaxation">Lagrangian relaxation</h3>
+<p><span class="math display">\[
+\begin{align*}
+L = &amp; \sqrt{c} \sum_{u\in V}\left(\sum_{(u,v) \in
+E}\alpha_{u,v}\right)^2 + \frac{1}{\sqrt{c}} \sum_{v\in
+V}\left(\sum_{(u,v) \in E}\beta_{v,u}\right)^2 \\
+&amp; + \sum_{(u,v) \in E} \lambda_{u,v}(1 - \alpha_{u,v} - \beta_{v,u})
+\\
+&amp; - \sum_{(u,v) \in E} \rho_{u,v} \alpha_{u,v} - \sum_{(u,v) \in E}
+\sigma_{v,u} \beta_{v,u}
+\end{align*}
+\]</span></p>
+<p>Now consider the KKT conditions:</p>
+<h3 id="kkt-conditions">KKT Conditions</h3>
+<h4 id="stationarity-conditions">Stationarity Conditions</h4>
+<p><span class="math display">\[
+\begin{align*}
+\frac{\partial L}{\partial \alpha_{u,v}} &amp;= 2\sqrt{c} \sum_{(u,s)
+\in E}\alpha_{u,s} - \lambda_{u,v} - \rho_{u,v} = 0 \\
+\frac{\partial L}{\partial \beta_{v,u}} &amp;= \frac{2}{\sqrt{c}}
+\sum_{(t,v) \in E}\beta_{v,t} - \lambda_{u,v} - \sigma_{v,u} = 0
+\end{align*}
+\]</span></p>
+<p>Define: <span class="math display">\[
+w_{\alpha}(u) = \sum_{(u,v) \in E}\alpha_{u,v}, \quad w_{\beta}(v) =
+\sum_{(u,v) \in E}\beta_{v,u}
+\]</span></p>
+<p>Then: <span class="math display">\[
+\begin{align*}
+2\sqrt{c} w_{\alpha}(u) - \lambda_{u,v} - \rho_{u,v} &amp;= 0\\
+\frac{2}{\sqrt{c}} w_{\beta}(v) - \lambda_{u,v} - \sigma_{v,u} &amp;= 0
+\end{align*}
+\]</span> <span class="math display">\[
+\begin{align*}
+\Rightarrow
+\begin{cases}
+\lambda_{u,v} + \rho_{u,v} &amp;= 2\sqrt{c} \sum_{(u,s) \in
+E}\alpha_{u,s}\\
+\lambda_{u,v} + \sigma_{v,u} &amp;= \frac{2}{\sqrt{c}} \sum_{(t,v) \in
+E}\beta_{v,t}
+\end{cases}
+\end{align*}
+\]</span></p>
+<h4 id="primal-feasibility-conditions">Primal Feasibility
+Conditions</h4>
+<p><span class="math display">\[
+\begin{align*}
+\alpha_{u,v} + \beta_{v,u} &amp;= 1, &amp;&amp; \forall (u,v) \in E \\
+\alpha_{u,v}, \beta_{v,u} &amp;\geq 0, &amp;&amp; \forall (u,v) \in E
+\end{align*}
+\]</span></p>
+<h4 id="dual-feasibility-conditions">Dual Feasibility Conditions</h4>
+<p><span class="math display">\[
+\begin{align*}
+\rho_{u,v} &amp;\geq 0, &amp;&amp; \forall (u,v) \in E \\
+\sigma_{v,u} &amp;\geq 0, &amp;&amp; \forall (u,v) \in E
+\end{align*}
+\]</span></p>
+<h4 id="complementary-slackness-conditions">Complementary Slackness
+Conditions</h4>
+<p><span class="math display">\[
+\begin{align*}
+\rho_{u,v} \cdot \alpha_{u,v} &amp;= 0, &amp;&amp; \forall (u,v) \in E
+\\
+\sigma_{v,u} \cdot \beta_{v,u} &amp;= 0, &amp;&amp; \forall (u,v) \in E
+\end{align*}
+\]</span></p>
+<h3 id="analysis-simplification">Analysis &amp; Simplification</h3>
+<p>From the stationarity conditions, we notice that for any vertex <span
+class="math inline">\(u\)</span>, the quantity <span
+class="math inline">\(2\sqrt{c} \sum_{(u,s) \in E}\alpha_{u,s}\)</span>
+must be equal to <span class="math inline">\(\lambda_{u,v} +
+\rho_{u,v}\)</span> for <strong>all edges</strong> <span
+class="math inline">\((u,v)\)</span> incident to <span
+class="math inline">\(u\)</span>. This gives us:</p>
+<p><span class="math display">\[\lambda_{u,v_1} + \rho_{u,v_1} =
+\lambda_{u,v_2} + \rho_{u,v_2} = \cdots\]</span></p>
+<p>for all edges <span class="math inline">\((u,v_1), (u,v_2),
+\ldots\)</span> incident to vertex <span
+class="math inline">\(u\)</span>.</p>
+<p>Similarly, for any vertex <span class="math inline">\(v\)</span>:
+<span class="math display">\[\lambda_{u_1,v} + \sigma_{v,u_1} =
+\lambda_{u_2,v} + \sigma_{v,u_2} = \cdots\]</span></p>
+<p>Let us define: <span class="math display">\[x_u := 2\sqrt{c}
+\sum_{(u,s) \in E}\alpha_{u,s}, \quad y_v := \frac{2}{\sqrt{c}}
+\sum_{(t,v) \in E}\beta_{v,t}\]</span></p>
+<p>Then we have: <span class="math display">\[\lambda_{u,v} + \rho_{u,v}
+= x_u, \quad \lambda_{u,v} + \sigma_{v,u} = y_v\]</span></p>
+<p>Substituting stationarity conditions back to Lagrangian: <span
+class="math display">\[
+\begin{align*}
+\inf_{\alpha,\beta,w}L(\alpha,\beta,w,\lambda,\rho,\sigma) = &amp;
+\sqrt{c} \sum_{u\in V}\left(\sum_{(u,v) \in E}\alpha_{u,v}\right)^2 +
+\frac{1}{\sqrt{c}} \sum_{v\in V}\left(\sum_{(u,v) \in
+E}\beta_{v,u}\right)^2 \\
+&amp; + \sum_{(u,v) \in E} \lambda_{u,v}(1 - \alpha_{u,v} - \beta_{v,u})
+\\
+&amp; - \sum_{(u,v) \in E} \rho_{u,v} \alpha_{u,v} - \sum_{(u,v) \in E}
+\sigma_{v,u} \beta_{v,u}\\
+= &amp; \sqrt{c} \sum_{u\in V}\left(\sum_{(u,v) \in
+E}\alpha_{u,v}\right)^2 + \frac{1}{\sqrt{c}} \sum_{v\in
+V}\left(\sum_{(u,v) \in E}\beta_{v,u}\right)^2 \\
+&amp; + \sum_{(u,v) \in E} \lambda_{u,v} \\
+&amp; - \sum_{(u,v) \in E} (\lambda_{u,v} + \rho_{u,v}) \alpha_{u,v} -
+\sum_{(u,v) \in E} (\lambda_{u,v} + \sigma_{v,u}) \beta_{v,u}\\
+= &amp; \sqrt{c} \sum_{u\in V}\left(\sum_{(u,v) \in
+E}\alpha_{u,v}\right)^2 + \frac{1}{\sqrt{c}} \sum_{v\in
+V}\left(\sum_{(u,v) \in E}\beta_{v,u}\right)^2 \\
+&amp; + \sum_{(u,v) \in E} \lambda_{u,v} - \sum_{(u,v) \in E}
+\left(2\sqrt{c} \sum_{(u,s) \in E}\alpha_{u,s}\right) \alpha_{u,v} \\
+&amp; - \sum_{(u,v) \in E} \left(\frac{2}{\sqrt{c}} \sum_{(t,v) \in
+E}\beta_{v,t}\right) \beta_{v,u} \\
+= &amp; \sqrt{c} \sum_{u\in V}\left(\sum_{(u,v) \in
+E}\alpha_{u,v}\right)^2 + \frac{1}{\sqrt{c}} \sum_{v\in
+V}\left(\sum_{(u,v) \in E}\beta_{v,u}\right)^2 \\
+&amp; + \sum_{(u,v) \in E} \lambda_{u,v} - 2\sqrt{c} \sum_{u \in V}
+\left(\sum_{(u,v) \in E}\alpha_{u,v}\right)^2 \\
+&amp; - \frac{2}{\sqrt{c}} \sum_{v \in V} \left(\sum_{(u,v) \in
+E}\beta_{v,u}\right)^2 \\
+= &amp; -\sqrt{c} \sum_{u\in V}\left(\sum_{(u,v) \in
+E}\alpha_{u,v}\right)^2 - \frac{1}{\sqrt{c}} \sum_{v\in
+V}\left(\sum_{(u,v) \in E}\beta_{v,u}\right)^2 \\
+&amp; + \sum_{(u,v) \in E} \lambda_{u,v} \\
+= &amp; -\frac{1}{4\sqrt{c}} \sum_{u\in V} x_u^2 - \frac{\sqrt{c}}{4}
+\sum_{v\in V} y_v^2 + \sum_{(u,v) \in E} \lambda_{u,v}
+\end{align*}
+\]</span></p>
+<p>To maximize the dual objective, we want to maximize <span
+class="math inline">\(\lambda_{u,v}\)</span> which means minimizing
+<span class="math inline">\(\rho_{u,v} + \sigma_{v,u}\)</span> subject
+to:</p>
+<ul>
+<li><span class="math inline">\(\rho_{u,v}, \sigma_{v,u} \geq
+0\)</span></li>
+<li><span class="math inline">\(\lambda_{u,v} = x_u - \rho_{u,v} = y_v -
+\sigma_{v,u}\)</span></li>
+</ul>
+<p>This gives us <span class="math inline">\(\rho_{u,v} - \sigma_{v,u} =
+x_u - y_v\)</span>.</p>
+<p><strong>Case 1:</strong> If <span class="math inline">\(x_u \geq
+y_v\)</span>, set <span class="math inline">\(\sigma_{v,u} = 0\)</span>
+and <span class="math inline">\(\rho_{u,v} = x_u - y_v \geq 0\)</span>.
+Then <span class="math inline">\(\lambda_{u,v} = y_v\)</span>.</p>
+<p><strong>Case 2:</strong> If <span class="math inline">\(x_u \leq
+y_v\)</span>, set <span class="math inline">\(\rho_{u,v} = 0\)</span>
+and <span class="math inline">\(\sigma_{v,u} = y_v - x_u \geq
+0\)</span>. Then <span class="math inline">\(\lambda_{u,v} =
+x_u\)</span>.</p>
+<p>Therefore: <span class="math inline">\(\lambda_{u,v} = \min(x_u,
+y_v)\)</span>.</p>
+<p>So the dual objective function can be simplified to: <span
+class="math display">\[
+\begin{align*}
+\mathsf{DQP}(c) &amp;= \max_{x,y} -\frac{1}{4\sqrt{c}} \sum_{u\in V}
+x_u^2 - \frac{\sqrt{c}}{4} \sum_{v\in V} y_v^2 + \sum_{(u,v) \in E}
+\min(x_u, y_v)
+\end{align*}
+\]</span></p>
+<p>And the constraints are given by the primal feasibility conditions,
+which is equivalent to:</p>
+<p><span class="math display">\[
+\begin{align*}
+\frac{1}{2\sqrt{c}}\sum_{u \in V} x_u + \frac{\sqrt{c}}{2}\sum_{v \in V}
+y_v = |E| \\
+x_u, y_v \geq 0, \quad \forall u \in V, v \in V
+\end{align*}
+\]</span></p>
+<p>Because a valid solution of primal can be constructed by using flow
+theory.</p>
+<h3 id="dual-quadratic-program">Dual Quadratic Program</h3>
+<p>Set new <span class="math inline">\(x=(\frac{x}{2},
+\frac{y}{2})\)</span>, we can rewrite the dual quadratic program as
+follows:</p>
+<p><span class="math display">\[
+\begin{align*}
+\mathsf{DQP}(c):&amp;\min_{x\in \mathbb R^{2n}}  \frac{1}{2}x^TWx -
+\sum_{(u,v)\in E}\min(x_u,x_{n+v})\\
+&amp;\text{s.t. } a^Tx = |E| \\
+&amp;\quad\quad\quad x_u \geq 0, \quad \forall u \in V\\
+&amp;\text{where } W=\begin{bmatrix}
+\frac{1}{\sqrt c}I_n &amp; 0 \\
+0 &amp; \sqrt{c}I_n
+\end{bmatrix}
+, \quad \vec{a} = [\frac{1}{\sqrt{c}}, \frac{1}{\sqrt{c}}, \ldots,
+\frac{1}{\sqrt{c}},\sqrt{c}, \sqrt{c}, \ldots, \sqrt{c}]^T
+\end{align*}
+\]</span></p>
+<h4 id="submodular-function-representation">Submodular Function
+Representation</h4>
+<p>Let define the submodular function <span
+class="math inline">\(F:2^{V\coprod V}\to \mathbb R\)</span> as
+follows:</p>
+<p><span class="math display">\[
+F(S,T) = \sum_{(u,v)\in E} F_{u,v}(S,T) = -|E(S,T)|
+\]</span></p>
+<p><span class="math inline">\(F_{u,v}(S,T)\)</span> is defined as
+follows:</p>
+<p><span class="math display">\[
+F_{u,v}(S,T) = \begin{cases}
+0 &amp; \text{if } u\notin S \text{ and } v\notin T \\
+0 &amp; \text{if } u\in S \text{ and } v\notin T \\
+0 &amp; \text{if } u\notin S \text{ and } v\in T\\
+-1 &amp; \text{if } u\in S \text{ and } v\in T
+\end{cases}
+\]</span></p>
+<p>The base polytope <span class="math inline">\(B(F_{u,v})\)</span> is
+defined as follows:</p>
+<p><span class="math display">\[
+B(F_{u,v}) = \{w\in \mathbb{R}^{V\coprod V}: w(S,T) \leq F(S,T), \forall
+S\subseteq V, T\subseteq V, w(V,V)=F(V,V)\}
+\]</span></p>
+<p>Obviously we have <span class="math inline">\(w_{j}=0\)</span> for
+all <span class="math inline">\(j\neq u \text{ or } {v+n}\)</span>.
+(Here use <span class="math inline">\(v+n\)</span> to denote the vertex
+corresponding to <span class="math inline">\(v\)</span> in the second
+copy of <span class="math inline">\(V\)</span>.)</p>
+<p>And <span class="math inline">\(w_{u}+w_{v+n} = -1\)</span>.</p>
+<p>the Lovász extension of <span class="math inline">\(F_{u,v}\)</span>
+is given by:</p>
+<p><span class="math display">\[
+f_{u,v}(x) = \max_{w\in B(F_{u,v})} \langle w, x \rangle
+\]</span></p>
+<p>which just equals to <span class="math inline">\(-\min(x_u,
+x_{n+v})\)</span>.</p>
+<p>Thus, with <span class="math inline">\(a^Tx\)</span> normalized from
+<span class="math inline">\(|E|\)</span> to <span
+class="math inline">\(2\)</span>,</p>
+<p>the dual quadratic program can be rewritten as: <span
+class="math display">\[
+\begin{align*}
+\mathsf{DQP}(c):&amp;\min_{x\in \mathbb R^{2n}}  \frac{1}{2}x^TWx +
+\sum_{(u,v)\in E} f_{u,v}(x)\\
+&amp;\text{s.t. } a^Tx = 2 \\
+&amp;\quad\quad\quad x_u, y_v \geq 0, \quad \forall u \in V, v \in V \\
+&amp;\text{where } W=\begin{bmatrix}
+\frac{1}{\sqrt c}I_n &amp; 0 \\
+0 &amp; \sqrt{c}I_n
+\end{bmatrix}, \quad \vec{a} = [\frac{1}{\sqrt{c}}, \frac{1}{\sqrt{c}},
+\ldots, \frac{1}{\sqrt{c}},\sqrt{c}, \sqrt{c}, \ldots, \sqrt{c}]^T
+\end{align*}
+\]</span></p>
+<h3 id="another-derivation">Another Derivation</h3>
+<p>Just ignore the quadratic term, we can rewrite the dual quadratic
+program as a ratio linear program (RLP): <span class="math display">\[
+\begin{align*}
+\mathsf{RLP}(c):&amp;\max_{x\in \mathbb R^{2n}}  \sum_{(u,v)\in
+E}\min(x_u,x_{n+v})\\
+&amp;\text{s.t. } a^Tx = 2 \\
+&amp;\quad\quad\quad x_u, y_v \geq 0, \quad \forall u \in V, v \in V \\
+&amp;\text{where } \vec{a} = [\frac{1}{\sqrt{c}}, \frac{1}{\sqrt{c}},
+\ldots, \frac{1}{\sqrt{c}},\sqrt{c}, \sqrt{c}, \ldots, \sqrt{c}]^T
+\end{align*}
+\]</span></p>
+<p>Let’s introduce the definition of c-biased density: <span
+class="math display">\[
+\begin{gather*}
+\rho_c(S,T) = \frac{2 \sqrt c \sqrt
+{c&#39;}}{c+c&#39;}  \frac{|E(S,T)|}{\sqrt{|S||T|}}=\frac{2|E(S,T)|}{\frac{1}{\sqrt
+c} |S|+ \sqrt c |T|}\\
+\text{where } c&#39; = \frac{|S|}{|T|}
+\end{gather*}
+\]</span></p>
+<p>And the c-biased DDS is defined as the subgraph G(S,T) such that
+<span class="math inline">\(\rho_c(S,T)\)</span> is maximized.</p>
+<p>We have the following theorem: #### Theorem 1</p>
+<p>The optimal value of <span
+class="math inline">\(\mathsf{RLP}(c)\)</span>, <span
+class="math inline">\(\text{OPT}({\mathsf{RLP}(c)})=\rho^*_c(S,T)\)</span>
+and the optimal solution can be recovered by thresholding.</p>
+<h5 id="proof">Proof</h5>
+<p>First, we show that <span
+class="math inline">\(\text{OPT}({\mathsf{RLP}(c)})\geq
+\rho^*_c(S,T)\)</span>.</p>
+<p>For any vertex sets <span class="math inline">\(S \subseteq V, T
+\subseteq V\)</span>, consider the feasible solution to RLP:</p>
+<p><span class="math inline">\(x_u = \alpha\)</span> for <span
+class="math inline">\(u \in S\)</span>, <span class="math inline">\(x_u
+= 0\)</span> for <span class="math inline">\(u \notin S\)</span></p>
+<p><span class="math inline">\(x_{n+v} = \beta\)</span> for <span
+class="math inline">\(v \in T\)</span>, <span
+class="math inline">\(x_{n+v} = 0\)</span> for <span
+class="math inline">\(v \notin T\)</span></p>
+<p>The constraint gives us:</p>
+<p><span class="math display">\[
+\frac{1}{\sqrt{c}}|S| \cdot \alpha + \sqrt{c}|T| \cdot \beta = 2
+\]</span></p>
+<p>The objective value is:</p>
+<p><span class="math display">\[
+\sum_{(u,v) \in E} \min(x_u, x_{n+v}) = |E(S,T)| \cdot \min(\alpha,
+\beta)
+\]</span></p>
+<p>To maximize this, we want to maximize <span
+class="math inline">\(\min(\alpha, \beta)\)</span> subject to the
+constraint.</p>
+<p>If <span class="math inline">\(\alpha = \beta\)</span>, then: <span
+class="math inline">\(\alpha = \frac{2}{\frac{1}{\sqrt{c}}|S| +
+\sqrt{c}|T|}\)</span></p>
+<p>Objective = <span class="math inline">\(|E(S,T)| \cdot
+\frac{2}{\frac{1}{\sqrt{c}}|S| + \sqrt{c}|T|}\)</span></p>
+<p>This can be rewritten as: <span class="math display">\[
+\frac{2|E(S,T)|}{\frac{1}{\sqrt{c}}|S| + \sqrt{c}|T|}  = \rho_c(S,T)
+\]</span></p>
+<p>Therefore: <span class="math inline">\(\text{OPT}({\mathsf{RLP}(c)})
+\geq \max_{S,T} \rho_c(S,T)\)</span></p>
+<p>Now we show that <span
+class="math inline">\(\text{OPT}({\mathsf{RLP}(c)}) \leq \max_{S,T}
+\rho_c(S,T)\)</span>.</p>
+<p>The LP objective can be rewritten as: <span class="math display">\[
+\sum_{(u,v) \in E} \min(x^*_u, y^*_v) = \sum_{(u,v) \in E}
+\int_0^{\infty} \mathbf{1}[x^*_u \geq t \text{ and } y^*_v \geq t] \, dt
+\]</span></p>
+<p>For each threshold <span class="math inline">\(t \geq 0\)</span>,
+define:</p>
+<ul>
+<li><span class="math inline">\(S_t = \{u \in V : x^*_u \geq
+t\}\)</span> (vertices in first part with value ≥ t)</li>
+<li><span class="math inline">\(T_t = \{v \in V : y^*_v \geq
+t\}\)</span> (vertices in second part with value ≥ t)</li>
+</ul>
+<p>Then the number of edges between <span
+class="math inline">\(S_t\)</span> and <span
+class="math inline">\(T_t\)</span> is given by: <span
+class="math display">\[\sum_{(u,v) \in E} \mathbf{1}[x^*_u \geq t \text{
+and } y^*_v \geq t] = |E(S_t, T_t)|\]</span></p>
+<p>Consider the constraint: <span class="math display">\[
+\begin{align*}
+\frac{1}{\sqrt{c}}\sum_{u} x^*_u + \sqrt{c}\sum_{v} y^*_v &amp;=
+\frac{1}{\sqrt{c}}\sum_{u} \int_0^{\infty} \mathbf{1}[x^*_u \geq t] \,
+dt + \sqrt{c}\sum_{v} \int_0^{\infty} \mathbf{1}[y^*_v \geq t] \, dt\\
+&amp;= \int_0^{\infty} \left( \frac{1}{\sqrt{c}}|S_t| + \sqrt{c}|T_t|
+\right) dt
+\end{align*}
+\]</span></p>
+<p>So <span class="math display">\[
+\frac{\text{LP objective}}{2} = \frac{\int_0^{\infty} |E(S_t, T_t)| \,
+dt}{\int_0^{\infty} \left( \frac{1}{\sqrt{c}}|S_t| + \sqrt{c}|T_t|
+\right) dt}
+\]</span></p>
+<p>By averaging principle:</p>
+<p><span class="math display">\[
+\frac{\int g(t) dt}{\int h(t) dt} \leq \max_t \frac{g(t)}{h(t)}
+\]</span></p>
+<p>We get: <span class="math display">\[
+\frac{\text{LP objective}}{2} \leq \max_{t \geq 0} \frac{|E(S_t,
+T_t)|}{\frac{1}{\sqrt{c}}|S_t| + \sqrt{c}|T_t|}
+\]</span></p>
+<p>Thus: <span class="math display">\[
+\text{OPT}({\mathsf{RLP}(c)}) \leq \max_{S,T} \rho_c(S,T)
+\]</span></p>
+<p>This completes the proof of Theorem 1.</p>
+<p>And <span class="math inline">\(\text{DQP}\)</span> can be considered
+as a proximal version of <span
+class="math inline">\(\text{RLP}\)</span>.</p>
+<h3 id="complexity-analysis">Complexity Analysis</h3>
+<p>Let <span class="math inline">\(\kappa = \max\{\sqrt c,
+\frac{1}{\sqrt c}\}\)</span>,</p>
+<p><span class="math display">\[
+\begin{gather*}
+r=m\\
+y\in \R^{2n*r}=(y^{(1)},...,y^{(r)})\\
+W=\begin{bmatrix}
+c^{1/4}I_n &amp; 0 \\
+0 &amp; c^{-1/4}I_n
+\end{bmatrix},
+S=\frac{1}{\sqrt r}[W,W,...,W]\in{\R^{2n\times{2nr}}}\\
+%f=\sum_{(u,v)\in E}f_{u,v}(x)\\
+g=r||Sy||^2\\
+\nabla g(y)=2rS^T Sy\\
+||\nabla_ig(x)-\nabla_ig(y)||\leq L_i||x^{(i)}-y^{(i)}||,\text{for all
+vectors }x,y\in \R^{2nr} \text{that differ only in block } i\\
+L_i=2\max\{\sqrt c,\frac{1}{\sqrt c}\}=2\kappa\\
+S^T S = \frac{1}{r} \begin{bmatrix}
+W^T W &amp; W^T W &amp; \cdots &amp; W^T W \\
+W^T W &amp; W^T W &amp; \cdots &amp; W^T W \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+W^T W &amp; W^T W &amp; \cdots &amp; W^T W
+\end{bmatrix}
+\end{gather*}
+\]</span></p>
+<h3 id="key-sets-and-definitions">Key Sets and Definitions</h3>
+<p><strong>Feasible Set:</strong> <span class="math inline">\(Y =
+\prod_{i=1}^r B(F_i) = B(F_1) \times B(F_2) \times \cdots \times
+B(F_r)\)</span></p>
+<p><strong>Null Space:</strong> <span class="math inline">\(Q = \{y \in
+\mathbb{R}^{2nr} : Sy = 0\} = \left\{y \in \mathbb{R}^{2nr} :
+\sum_{i=1}^r W y^{(i)} = 0\right\}\)</span></p>
+<p><strong>Optimal Solution Set:</strong> <span class="math inline">\(E
+= \{y \in Y : g(y) = \min_{z \in Y} g(z)\}\)</span></p>
+<p><strong>Alternative Characterization of <span
+class="math inline">\(E\)</span>:</strong> <span class="math inline">\(E
+= \{y \in Y : d(y, Q) = d(Y, Q)\}\)</span></p>
+<p>where <span class="math inline">\(d(y, Q) = \min_{z \in Q} \|y -
+z\|\)</span> and <span class="math inline">\(d(Y, Q) = \min_{y \in Y}
+d(y, Q)\)</span>.</p>
+<p><strong>Geometric Interpretation:</strong></p>
+<ul>
+<li><span class="math inline">\(E\)</span> represents the set of points
+in the feasible region <span class="math inline">\(Y\)</span> that are
+closest to satisfying the constraint <span class="math inline">\(Sy =
+0\)</span></li>
+<li>Points in <span class="math inline">\(E\)</span> are optimal
+solutions to our proximal optimization problem</li>
+<li>The set <span class="math inline">\(E\)</span> connects to optimal
+solutions of the original discrete problem via thresholding</li>
+</ul>
+<h4 id="analogue-of-theorem-2">Analogue of theorem 2:</h4>
+<p><span class="math display">\[
+||S(y-y^*)|| \geq \frac{1}{2nr}||y-y^*||
+\]</span></p>
+<p>Proof:</p>
+<p>The result is identical to the one in the original paper.</p>
+<p><a target="_blank" rel="noopener" href="https://g.co/gemini/share/7a4f1299ca26">Proof of
+gemini</a></p>
+<h4 id="analogue-of-lemma-7">Analogue of lemma 7:</h4>
+<p>Let <span class="math inline">\(R \subseteq \{1, 2, \ldots,
+r\}\)</span> be a random subset where each <span class="math inline">\(i
+\in \{1, 2, \ldots, r\}\)</span> is included independently with
+probability <span class="math inline">\(1/r\)</span>. For vectors <span
+class="math inline">\(x, h \in \mathbb{R}^{2nr}\)</span>, let <span
+class="math inline">\(h_R\)</span> be defined by <span
+class="math inline">\((h_R)^{(i)} = h^{(i)}\)</span> if <span
+class="math inline">\(i \in R\)</span> and <span
+class="math inline">\((h_R)^{(i)} = 0\)</span> otherwise. Then: <span
+class="math display">\[
+E[g(x + h_R)] \leq g(x) + \frac{1}{r}\langle\nabla g(x), h\rangle +
+\frac{2\kappa}{r}\|h\|^2
+\]</span></p>
+<p><strong>Proof:</strong></p>
+<p>We have: <span class="math display">\[E[g(x + h_R)] = E[r\|S(x +
+h_R)\|^2]\]</span> <span class="math display">\[= E[r\|Sx\|^2 +
+r\|Sh_R\|^2 + 2r\langle Sx, Sh_R\rangle]\]</span> <span
+class="math display">\[= g(x) + rE[\|Sh_R\|^2] +
+\frac{1}{r}\langle\nabla g(x), h\rangle\]</span></p>
+<p>The key term to bound is: <span class="math display">\[E[\|Sh_R\|^2]
+= E\left[\left\|\frac{1}{\sqrt{r}} \sum_{i \in R} W
+h^{(i)}\right\|^2\right] = \frac{1}{r} E\left[\left\|W \sum_{i \in R}
+h^{(i)}\right\|^2\right]\]</span></p>
+<p>Using the matrix norm bound: <span
+class="math display">\[E\left[\left\|W \sum_{i \in R}
+h^{(i)}\right\|^2\right] \leq \|W\|^2 E\left[\left\|\sum_{i \in R}
+h^{(i)}\right\|^2\right]\]</span></p>
+<p>From standard coordinate descent analysis: <span
+class="math display">\[E\left[\left\|\sum_{i \in R}
+h^{(i)}\right\|^2\right] \leq \frac{2}{r} \sum_{i=1}^r \|h^{(i)}\|^2 =
+\frac{2}{r} \|h\|^2\]</span></p>
+<p>Since <span class="math inline">\(\|W\|^2 = \kappa\)</span>: <span
+class="math display">\[E[\|Sh_R\|^2] \leq \frac{1}{r} \cdot \kappa \cdot
+\frac{2}{r} \|h\|^2 = \frac{2\kappa}{r^2} \|h\|^2\]</span></p>
+<p>Therefore: <span class="math display">\[E[g(x + h_R)] \leq g(x) +
+\frac{1}{r}\langle\nabla g(x), h\rangle +
+\frac{2\kappa}{r}\|h\|^2\]</span></p>
+<h4 id="analogue-of-theorem-8">Analogue of theorem 8:</h4>
+<p>Consider iteration <span class="math inline">\(k\)</span> of the
+APPROX algorithm. Let <span
+class="math inline">\(y_k=\theta_k^2u_{k+1}+z_{k+1}\)</span>, Let <span
+class="math inline">\(y^*=\arg \min_{y\in E} ||y-y_k||\)</span> is the
+optimal solution that is closest to <span
+class="math inline">\(y_k\)</span>. Then we have: <span
+class="math display">\[
+E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq \frac{8r^2 \kappa}{(k - 1 +
+2r)^2} \left(\left(1 - \frac{1}{r}\right)(g(y_\ell) - g(y^*)) +
+2\|y_\ell - y^*\|^2\right)
+\]</span> <strong>Proof:</strong></p>
+<p>This follows directly from applying Fercoq-Richtárik’s Theorem 3
+with:</p>
+<ul>
+<li><span class="math inline">\(\tau = 1\)</span> (sampling
+parameter)</li>
+<li><span class="math inline">\(\nu_i = 4\kappa\)</span> for each <span
+class="math inline">\(i \in \{1, 2, \ldots, r\}\)</span></li>
+</ul>
+<h4 id="geometric-bound-from-theorem-2-analogue">Geometric Bound from
+Theorem 2 Analogue</h4>
+<p>We need the relationship between function values and distances.</p>
+<p><strong>Key Geometric Relationship:</strong> For our specific
+objective function <span class="math inline">\(g(y) =
+r\|Sy\|^2\)</span>, we have: <span class="math display">\[g(y_\ell) =
+g(y^*) + \langle\nabla g(y^*), y_\ell - y^*\rangle + \int_0^1
+\langle\nabla g(y^* + t(y_\ell - y^*)) - \nabla g(y^*), y_\ell -
+y^*\rangle dt\]</span></p>
+<p>This uses the fundamental theorem of calculus. For <span
+class="math inline">\(\phi(t) = g(y^* + t(y_\ell - y^*))\)</span>: <span
+class="math display">\[g(y_\ell) - g(y^*) = \int_0^1 \phi&#39;(t) dt =
+\int_0^1 \langle\nabla g(y^* + t(y_\ell - y^*)), y_\ell - y^*\rangle
+dt\]</span></p>
+<p>Since <span class="math inline">\(\nabla g(z) = 2rS^T Sz\)</span>:
+<span class="math display">\[\nabla g(y^* + t(y_\ell - y^*)) - \nabla
+g(y^*) = 2rS^T S \cdot t(y_\ell - y^*)\]</span></p>
+<p>Therefore: <span class="math display">\[\int_0^1 \langle\nabla g(y^*
++ t(y_\ell - y^*)) - \nabla g(y^*), y_\ell - y^*\rangle dt = \int_0^1
+2rt\|S(y_\ell - y^*)\|^2 dt = r\|S(y_\ell - y^*)\|^2\]</span></p>
+<p>Since <span class="math inline">\(y^*\)</span> is optimal, <span
+class="math inline">\(\langle\nabla g(y^*), y_\ell - y^*\rangle \leq
+0\)</span> (first-order optimality condition).</p>
+<p>Thus: <span class="math display">\[g(y_\ell) - g(y^*) \geq
+r\|S(y_\ell - y^*)\|^2\]</span></p>
+<h4 id="applying-theorem-2-analog">Applying Theorem 2 Analog</h4>
+<p>From our Theorem 2 analog: <span class="math display">\[\|S(y_\ell -
+y^*)\| \geq \frac{1}{2nr} \|y_\ell - y^*\|\]</span></p>
+<p>Therefore: <span class="math display">\[g(y_\ell) - g(y^*) \geq
+r\|S(y_\ell - y^*)\|^2 \geq \frac{r}{(2nr)^2} \|y_\ell -
+y^*\|^2\]</span> <span class="math display">\[= \frac{1}{4n^2r} \|y_\ell
+- y^*\|^2\]</span></p>
+<p><strong>Geometric Bound:</strong> <span
+class="math display">\[\|y_\ell - y^*\|^2 \leq 4n^2r (g(y_\ell) -
+g(y^*))\]</span></p>
+<h4 id="single-epoch-analysis">Single Epoch Analysis</h4>
+<p>Consider epoch <span class="math inline">\(\ell\)</span>. Let <span
+class="math inline">\(y_{\ell+1}\)</span> be the solution constructed by
+the APPROX algorithm after running for <span
+class="math inline">\(T\)</span> iterations starting with <span
+class="math inline">\(y_\ell\)</span> (so <span
+class="math inline">\(z_0 = y_\ell\)</span>).</p>
+<p>Let <span class="math inline">\(y^* = \arg\min_{y \in E} \|y -
+y_{\ell+1}\|\)</span> be the optimal solution closest to <span
+class="math inline">\(y_{\ell+1}\)</span>.</p>
+<p>By Theorem 8 Analog with <span class="math inline">\(k = T\)</span>:
+<span class="math display">\[E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq
+\frac{8r^2 \kappa}{(T - 1 + 2r)^2} \left(\left(1 -
+\frac{1}{r}\right)(g(y_\ell) - g(y^*)) + 2\|y_\ell -
+y^*\|^2\right)\]</span></p>
+<p>From Step 3: <span class="math display">\[\|y_\ell - y^*\|^2 \leq
+4n^2r (g(y_\ell) - g(y^*))\]</span></p>
+<p>Therefore: <span class="math display">\[E_{\xi_\ell}[g(y_{\ell+1}) -
+g(y^*)] \leq \frac{8r^2 \kappa}{(T - 1 + 2r)^2} \left(\left(1 -
+\frac{1}{r}\right) + 2 \cdot 4n^2r\right) (g(y_\ell) -
+g(y^*))\]</span></p>
+<p><span class="math display">\[= \frac{8r^2 \kappa}{(T - 1 + 2r)^2}
+\left(1 - \frac{1}{r} + 8n^2r\right) (g(y_\ell) - g(y^*))\]</span></p>
+<p>For large <span class="math inline">\(n, r\)</span>, the dominant
+term is <span class="math inline">\(8n^2r\)</span>, so: <span
+class="math display">\[E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq
+\frac{8r^2 \kappa \cdot 8n^2r}{(T - 1 + 2r)^2} (g(y_\ell) -
+g(y^*))\]</span></p>
+<p><span class="math display">\[= \frac{64n^2r^3 \kappa}{(T - 1 + 2r)^2}
+(g(y_\ell) - g(y^*))\]</span></p>
+<h4 id="epoch-length-calculation">Epoch Length Calculation</h4>
+<p>To achieve a factor of <span
+class="math inline">\(\frac{1}{2}\)</span> improvement per epoch, we
+need: <span class="math display">\[\frac{64n^2r^3 \kappa}{(T - 1 +
+2r)^2} \leq \frac{1}{2}\]</span></p>
+<p>This gives us: <span class="math display">\[(T - 1 + 2r)^2 \geq
+128n^2r^3 \kappa\]</span></p>
+<p><span class="math display">\[T - 1 + 2r \geq 8\sqrt{2} nr^{3/2}
+\kappa^{1/2}\]</span></p>
+<p>For large <span class="math inline">\(r\)</span>, we can approximate:
+<span class="math display">\[T \geq 8\sqrt{2} nr^{3/2} \kappa^{1/2}
+\approx 11.31 nr^{3/2} \kappa^{1/2}\]</span></p>
+<p>To ensure the bound holds robustly, we choose: <span
+class="math display">\[T = 12nr^{3/2} \kappa^{1/2}\]</span></p>
+<p>This gives us: <span
+class="math display">\[E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq
+\frac{1}{2} (g(y_\ell) - g(y^*))\]</span></p>
+<h3 id="conclusion">Conclusion</h3>
+<p>From now on, here an iteration is defined as one pass through the
+entire set of edges <span class="math inline">\(|E| = r = m\)</span> for
+the convenience of comparison.</p>
+<p>After <span class="math inline">\(\ell\)</span> epochs of the ACDM
+algorithm (equivalently, <span
+class="math inline">\(12n\sqrt{r\kappa}\ell\)</span> iterations), we
+have: <span class="math inline">\(E[g(y_{\ell+1}) - g(y^*)] \leq
+\frac{1}{2^{\ell+1}}(g(y_0) - g(y^*))\)</span></p>
+<p>where <span class="math inline">\(y^* = \arg\min_{y \in E} \|y -
+y_{\ell+1}\|\)</span> is the optimal solution in <span
+class="math inline">\(E\)</span> that is closest to <span
+class="math inline">\(y_{\ell+1}\)</span>.</p>
+<h4 id="theorem-5.6">Theorem 5.6</h4>
+<p>Suppose <span class="math inline">\(\|g(y)-g(y^*)\| \leq
+\epsilon\)</span>, then <span
+class="math inline">\(\|y\|_{\infty}-\|y^*\|_{\infty} \leq 2 \sqrt
+{\kappa \epsilon}\)</span></p>
+<p>Now we can use the above result to give a guarantee for the <span
+class="math inline">\(\epsilon\)</span>-approximation c-DDS
+subproblem.</p>
+<p>To solve the <span
+class="math inline">\(\epsilon\)</span>-approximation c-DDS subproblem,
+we need <span class="math display">\[
+\|y\|_{\infty}-\|y^*\|_{\infty} \leq \epsilon
+\]</span></p>
+<p>which requires: <span class="math display">\[
+\|g(y)-g(y^*)\| \leq \frac{\epsilon^2}{4\kappa}
+\]</span> Thus, in expectation, we need to run the algorithm for <span
+class="math inline">\(\ell\)</span> epochs, where: <span
+class="math display">\[
+\ell = \log_2\left(\frac{g(y_0) - g(y^*)}{\epsilon^2/(4\kappa)}\right)
+\]</span></p>
+<p>We upper bound <span class="math inline">\(\|g(y_0) -
+g(y^*)\|\)</span> by the maximum value of the objective function <span
+class="math inline">\(g\)</span>.</p>
+<p>Denote <span class="math inline">\(\psi(G) = \max\{
+\Delta^+(G),  \Delta^-(G)\}\)</span>, where <span
+class="math inline">\(\Delta^+(G)\)</span> and <span
+class="math inline">\(\Delta^-(G)\)</span> denote the maximum outdegree
+and indegree of directed graph <span class="math inline">\(G\)</span>,
+respectively</p>
+<p>We can show that <span class="math inline">\(g(y) = \sqrt c
+\sum_{u\in V}\left(\sum_{(u,v) \in E}\alpha_{u,v}\right)^2 +
+\frac{1}{\sqrt{c}} \sum_{v\in V}\left(\sum_{(u,v) \in
+E}\beta_{v,u}\right)^2\)</span> is upper bounded by <span
+class="math inline">\(\psi(G)\cdot |E| \cdot \kappa\)</span></p>
+<p>Thus, we have: <span class="math display">\[\ell =
+\log_2\left(\frac{\psi(G)\cdot |E|}{\epsilon^2}\right)\]</span></p>
+<p>So we need to run the algorithm in iterations of <span
+class="math display">\[
+T \cdot \ell = 12n\sqrt{m\kappa} \log_2\left(\frac{\psi(G)\cdot
+|E|}{\epsilon^2}\right)
+\]</span></p>
+<p>In terms of asymptotic complexity, this gives us: <span
+class="math display">\[
+\mathcal{O}\left(n\sqrt {m\kappa} \log\left(\frac{\psi(G)\cdot
+m}{\epsilon^2}\right)\right)
+\]</span> to solve a c-DDS subproblem.</p>
+<p>The set of C is defined as <span class="math display">\[
+C=\{\frac ab | 1\leq a,b \leq n, a,b \in \mathbb{Z}^+\}
+\]</span></p>
+<p>For the DDS problem, define <span class="math inline">\(\Phi =
+\sum_{c\in C} \max\{c^{\frac 14},c^{-\frac 14}\}\)</span></p>
+<p>Then the total complexity of solving all c-DDS subproblems is: <span
+class="math display">\[
+\mathcal{O}\left(\Phi n\sqrt {m} \log\left(\frac{\psi(G)\cdot
+m}{\epsilon^2}\right)\right)
+\]</span></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Mathematics/" class="category-chain-item">Mathematics</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Optimization/" class="print-no-link">#Optimization</a>
+      
+        <a href="/tags/Coordinate-Descent/" class="print-no-link">#Coordinate Descent</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Random Coordinate Descent Methods</div>
+      <div>https://notdesigned.github.io/2025/06/14/Random-Coordinate-Descent-Methods/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Luocheng Liang</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>June 14, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - Share-alike">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/16/Densest-Subgraph/" title="Densest Subgraph">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Densest Subgraph</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/11/%E5%AD%90%E6%A8%A1%E5%87%BD%E6%95%B0%E4%BB%A5%E5%8F%8ALovasz%E6%8B%93%E5%B1%95/" title="子模函数以及Lovász拓展">
+                        <span class="hidden-mobile">子模函数以及Lovász拓展</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"Ov23lisUTr0Y3YpBngo1","clientSecret":"4068f2efc1d2d6015f3c8089a4e0ad4c1aeb8ed2","repo":"gitalkcomment","owner":"NotDesigned","admin":["NotDesigned"],"language":"en","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://autumn-recipe-17e3.theadscn.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '8957db65b0cd7b115a007f918bcffe89'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

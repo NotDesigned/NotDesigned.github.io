@@ -1,0 +1,1612 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Luocheng Liang">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="This note is to summarize key points, note down key formulae and gives some discussion for the book “The Principle of Diffusion Models” by Song et al.  arxiv 1. Deep Generative Modeling TODO. 2. Varia">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Reading notes of The Principle of Diffusion Models">
+<meta property="og:url" content="https://notdesigned.github.io/2025/11/03/Reading-notes-of-The-Principle-of-Diffusion-Models/index.html">
+<meta property="og:site_name" content="Adscn&#39;s Blog">
+<meta property="og:description" content="This note is to summarize key points, note down key formulae and gives some discussion for the book “The Principle of Diffusion Models” by Song et al.  arxiv 1. Deep Generative Modeling TODO. 2. Varia">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://notdesigned.github.io/2025/11/03/Reading-notes-of-The-Principle-of-Diffusion-Models/ScoreVector.png">
+<meta property="og:image" content="https://notdesigned.github.io/2025/11/03/Reading-notes-of-The-Principle-of-Diffusion-Models/LangevinDynamics.png">
+<meta property="article:published_time" content="2025-11-03T21:08:49.000Z">
+<meta property="article:modified_time" content="2026-02-26T12:57:24.804Z">
+<meta property="article:author" content="Luocheng Liang">
+<meta property="article:tag" content="Diffusion Models">
+<meta property="article:tag" content="Generative Models">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://notdesigned.github.io/2025/11/03/Reading-notes-of-The-Principle-of-Diffusion-Models/ScoreVector.png">
+  
+  
+  
+  <title>Reading notes of The Principle of Diffusion Models - Adscn&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"notdesigned.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Adscn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Blog</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Reading notes of The Principle of Diffusion Models"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-11-03 21:08" pubdate>
+          November 3, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          36 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Reading notes of The Principle of Diffusion Models</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>This note is to summarize key points, note down key formulae and
+gives some discussion for the book “The Principle of Diffusion Models”
+by Song et al. </p>
+<p><a target="_blank" rel="noopener" href="https://www.arxiv.org/pdf/2510.21890">arxiv</a></p>
+<h2 id="deep-generative-modeling">1. Deep Generative Modeling</h2>
+<p>TODO.</p>
+<h2 id="variational-perspective-from-vaes-to-ddpms">2. Variational
+Perspective: From VAEs to DDPMs</h2>
+<h3 id="variational-autoencoder">2.1 Variational Autoencoder</h3>
+<h4 id="model-structure">Model structure</h4>
+<p><span class="math display">\[
+x\xrightarrow{\mathrm{encoder},q_{\theta}(z|x)} z\sim \mathcal{N}(0,1)
+\xrightarrow{\mathrm{decoder}, p_{\phi}(x|z)} \hat{x}
+\]</span></p>
+<h4 id="key-formulae">Key formulae</h4>
+<p>The learned data distribution:</p>
+<p><span class="math display">\[
+p_{\phi}(x) = \mathbb{E}_{p(z)}[p_{\phi}(x|z)] = \int
+p_{\phi}(x|z)p(z)dz
+\]</span></p>
+<p>Intractable to compute due to integral over latent variable <span
+class="math inline">\(z\)</span>.</p>
+<p>Maximizing log-likelihood <span class="math inline">\(\iff\)</span>
+minimizing the KL divergence between true data distribution <span
+class="math inline">\(q(x)\)</span> and learned data distribution <span
+class="math inline">\(p_{\phi}(x)\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\arg\max_{\phi} \mathbb{E}_{q(x)}[\log p_{\phi}(x)] &amp;\iff
+\arg\min_{\phi} \mathbb{E}_{q(x)}[\log q(x) - \log p_{\phi}(x)] \\
+&amp;\iff \arg\min_{\phi} \mathrm{KL}(q(x) || p_{\phi}(x))
+\end{aligned}
+\]</span></p>
+<h3 id="evidence-lower-bound-elbo">Evidence Lower Bound (ELBO)</h3>
+<p><strong>Core Idea</strong>:</p>
+<p>We try to estimate <span class="math inline">\(p_{\phi}(x)\)</span>
+by Bayes’ theorem</p>
+<p><span class="math display">\[
+p_{\phi}(x) = \frac{p_{\phi}(x,z)}{p_{\phi}(z|x)}
+\]</span></p>
+<p>Now the posterior <span class="math inline">\(p_{\phi}(z|x)\)</span>
+is also intractable, so we introduce a variational distribution <span
+class="math inline">\(q_{\theta}(z|x)\)</span> to approximate it.</p>
+<p>Proof of being lower bound of the log-likelihood <span
+class="math inline">\(\log p_{\phi}(x)\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\log p_{\phi}(x) &amp;= \mathbb{E}_{q_{\theta}(z|x)}\left[\log
+\frac{p_{\phi}(x,z)}{p_{\phi}(z|x)}\right] \\
+&amp;= \mathbb{E}_{q_{\theta}(z|x)}\left[\log
+\frac{p_{\phi}(x,z)}{q_{\theta}(z|x)} \cdot
+\frac{q_{\theta}(z|x)}{p_{\phi}(z|x)}\right] \\
+&amp;= \mathbb{E}_{q_{\theta}(z|x)}\left[\log
+\frac{p_{\phi}(x,z)}{q_{\theta}(z|x)}\right] +
+\mathbb{E}_{q_{\theta}(z|x)}\left[\log
+\frac{q_{\theta}(z|x)}{p_{\phi}(z|x)}\right] \\
+&amp;= \mathbb{E}_{q_{\theta}(z|x)}\left[\log
+\frac{p_{\phi}(x,z)}{q_{\theta}(z|x)}\right] +
+\mathrm{KL}(q_{\theta}(z|x) || p_{\phi}(z|x)) \\
+&amp;\geq \mathbb{E}_{q_{\theta}(z|x)}\left[\log
+\frac{p_{\phi}(x,z)}{q_{\theta}(z|x)}\right] \\
+&amp;= \underbrace{\mathbb E_{q_{\theta}(z|x)}\left[\log
+p_{\phi}(x|z)\right]}_{\text{Reconstruction Term}} - \underbrace
+{\mathrm{KL}(q_{\theta}(z|x) || p(z))}_{\text{Latent Regularization}}\\
+&amp;= \mathcal{L}(\theta, \phi; x)
+\end{aligned}
+\]</span></p>
+<p><strong>Quick summary</strong>:</p>
+<p>By introducing a latent variable <span
+class="math inline">\(z\)</span> and an inaccurate posterior
+approximation <span class="math inline">\(q_{\theta}(z|x)\)</span>, we
+derive a lower bound of the log-likelihood <span
+class="math inline">\(\log p_{\phi}(x)\)</span>, which is called
+Evidence Lower Bound (ELBO).</p>
+<p>Interpretation 1.</p>
+<p>It is the expectation of the <strong>Bayes-like ratio</strong> <span
+class="math inline">\(\frac{p_{\phi}(x,z)}{q_{\theta}(z|x)}\)</span> by
+replacing the intractable true posterior <span
+class="math inline">\(p_{\phi}(z|x)\)</span> with the variational
+distribution <span class="math inline">\(q_{\theta}(z|x)\)</span>.</p>
+<p>Interpretation 2.</p>
+<p>It consists of two terms: a reconstruction term that encourages the
+decoder to reconstruct <span class="math inline">\(x\)</span> from <span
+class="math inline">\(z\)</span>, and a latent regularization term that
+encourages the encoder distribution <span
+class="math inline">\(q_{\theta}(z|x)\)</span> to be close to the prior
+<span class="math inline">\(p(z)\)</span>.</p>
+<h3 id="reason-of-blurriness-of-standard-vae">Reason of blurriness of
+Standard VAE</h3>
+<p>The standard VAE employs Gaussian distribution for both encoder and
+decoder.</p>
+<p><span class="math display">\[
+\begin{aligned}
+q_{\theta}(z|x) &amp;= \mathcal{N}(z; \mu_{\theta}(x),
+\sigma_{\theta}^2(x)I)\\
+p_{\phi}(x|z) &amp;= \mathcal{N}(x; \mu_{\phi}(z), \sigma^2 I)
+\end{aligned}
+\]</span></p>
+<p>The optimal decoder mean <span
+class="math inline">\(\mu_{\phi}(z)\)</span> is the conditional
+expectation <span class="math inline">\(\mathbb{E}[x|z]\)</span>, which
+is the average of all possible <span class="math inline">\(x\)</span>
+that can be mapped to the same <span class="math inline">\(z\)</span>.
+This averaging effect leads to blurriness in generated samples.</p>
+<p>Derivation of optimal decoder mean:</p>
+<p>First note that <span class="math display">\[
+\begin{aligned}
+\mathbb{E}_{q_{\theta}(z|x)}[\log p_{\phi}(x|z)]
+&amp;= \mathbb{E}_{q_{\theta}(z|x)}\left[-\frac{1}{2\sigma^2}\|x -
+\mu_{\phi}(z)\|^2 + \text{const}\right] \\
+&amp;= -\frac{1}{2\sigma^2} \mathbb{E}_{q_{\theta}(z|x)}[\|x -
+\mu_{\phi}(z)\|^2] + \text{const} \\
+\end{aligned}
+\]</span></p>
+<p>And take expectation over <span
+class="math inline">\(p(x)\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}_{p(x)}[\mathbb{E}_{q_{\theta}(z|x)}[\log p_{\phi}(x|z)]]
+&amp;= -\frac{1}{2\sigma^2}
+\mathbb{E}_{p(x)}[\mathbb{E}_{q_{\theta}(z|x)}[\|x - \mu_{\phi}(z)\|^2]]
++ \text{const} \\
+&amp;= -\frac{1}{2\sigma^2}
+\mathbb{E}_{q_{\theta}(z)}[\mathbb{E}_{q_{\theta}(x|z)}[\|x -
+\mu_{\phi}(z)\|^2]] + \text{const} \\
+\end{aligned}
+\]</span></p>
+<p>where <span class="math inline">\(q_{\theta}(x|z)= \frac{p(x)
+q_{\theta}(z|x)}{q_{\theta}(z)}\)</span> is the posterior distribution
+of <span class="math inline">\(x\)</span> given <span
+class="math inline">\(z\)</span> under the encoder.</p>
+<p>For the inner expectation <span
+class="math inline">\(\mathbb{E}_{q_{\theta}(x|z)}[\|x -
+\mu_{\phi}(z)\|^2]\)</span>, it is minimized when <span
+class="math inline">\(\mu_{\phi}(z) =
+\mathbb{E}_{q_{\theta}(x|z)}[x]\)</span>.</p>
+<p><strong>Think</strong>: Which part of the structure of VAE leads to
+blurriness most?</p>
+<p>Encoder or Decoder?</p>
+<p>Answer:</p>
+<p>It depends on your perspective.</p>
+<p>The encoder mixes different <span class="math inline">\(x\)</span>
+into the same <span class="math inline">\(z\)</span>, create ambiguity.
+The Gaussian assumption of <span class="math inline">\(z\)</span>
+enforces this mixing, otherwise the aggregate posterior <span
+class="math inline">\(q_{\theta}(z)=\int p(x) q_{\theta}(z|x)
+dx\)</span> cannot match the simple prior <span
+class="math inline">\(p(z)\)</span>.</p>
+<p>The Gaussian decoder reconstructs the average of these ambiguous
+<span class="math inline">\(x\)</span>, leading to blurriness.</p>
+<h3 id="hierarchical-vae">2.1.5 Hierarchical VAE</h3>
+<h4 id="model-structure-1">Model structure</h4>
+<p><span class="math display">\[
+x \xLeftrightarrow[\mathrm{decoder}, p_{\phi}(x|z_1)]{\mathrm{encoder},
+q_{\theta}(z_1|x)} z_1 \xLeftrightarrow[\mathrm{decoder},
+p_{\phi}(z_1|z_2)]{\mathrm{encoder}, q_{\theta}(z_2|z_1)} z_2
+\xleftrightarrow{}\cdots \xLeftrightarrow[\mathrm{decoder},
+p_{\phi}(z_{L-1}|z_L)]{\mathrm{encoder}, q_{\theta}(z_L|z_{L-1})}z_L
+\]</span></p>
+<h4 id="key-formulae-1">Key formulae</h4>
+<p>Distributions <span class="math display">\[
+\begin{aligned}
+p_{\phi}(x, z_{1:L}) &amp;= p_{\phi}(x|z_1) \prod_{i=1}^{L-1}
+p_{\phi}(z_i|z_{i+1}) p(z_L) \\
+p_{\phi}(x) &amp;= \int p_{\phi}(x, z_{1:L}) dz_{1:L}\\
+q_{\theta}(z_{1:L}|x) &amp;= q_{\theta}(z_1|x) \prod_{i=1}^{L-1}
+q_{\theta}(z_{i+1}|z_i) \\
+\end{aligned}
+\]</span></p>
+<h4 id="elbo">ELBO</h4>
+<p><span class="math display">\[
+\begin{aligned}
+\log p_{\phi}(x) &amp;\geq \mathbb{E}_{q_{\theta}(z_{1:L}|x)}\left[\log
+\frac{p_{\phi}(x, z_{1:L})}{q_{\theta}(z_{1:L}|x)}\right] \\
+&amp;= \mathbb{E}_{q_{\theta}(z_{1:L}|x)}\left[\log
+\frac{p_{\phi}(x|z_1) \prod_{i=2}^{L} p_{\phi}(z_{i-1}|z_{i})
+p(z_L)}{q_{\theta}(z_1|x) \prod_{i=2}^{L}
+q_{\theta}(z_{i}|z_{i-1})}\right] \\
+&amp;= E_q\left[\log p_{\phi}(x|z_1)\right] -
+E_q\left[\mathrm{KL}(q_{\theta}(z_L|z_{L-1}) || p(z_L))\right] -
+\sum_{i=2}^{L-1} E_q\left[\mathrm{KL}(q_{\theta}(z_{i}|z_{i-1}) ||
+p_{\phi}(z_{i}|z_{i+1}))\right] - E_q\left[\mathrm{KL}(q_{\theta}(z_1|x)
+|| p_{\phi}(z_1|z_2))\right] \\
+\end{aligned}
+\]</span> where <span class="math inline">\(\mathbb E_q\)</span> means
+<span class="math inline">\(\mathbb E_{p(x)
+q_{\theta}(z_{1:L}|x)}\)</span>.</p>
+<h3 id="denoising-diffusion-probabilistic-models">2.2 Denoising
+Diffusion Probabilistic Models</h3>
+<h4 id="model-structure-2">Model structure</h4>
+<p><span class="math display">\[
+x_0 \xLeftrightarrow[\mathrm{denoising},
+p_{\phi}(x_{0}|x_1)]{\mathrm{add \ noise}, q(x_1|x_{0})} x_1
+\xLeftrightarrow[\mathrm{denoising}, p_{\phi}(x_{1}|x_2)]{\mathrm{add\
+noise}, q(x_2|x_{1})} x_2 \xLeftrightarrow{}\cdots
+\xLeftrightarrow[\mathrm{denoising}, p_{\phi}(x_{T-1}|x_T)]{\mathrm{add\
+noise}, q(x_{T-1}|x_T)} x_T
+\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+p(x_i|x_{i-1}) &amp;= \mathcal{N}(x_i; \sqrt{1-\beta_i^2} x_{i-1},
+\beta_i^2 I) \\
+x_i &amp;= \alpha_i x_{i-1} + \beta_i \epsilon_{i}, \quad \epsilon_{i}
+\sim \mathcal{N}(0, I) \\
+p_i(x_i|x_0) &amp;= \mathcal{N}(x_i; \bar{\alpha}_i x_0,
+(1-\bar{\alpha}_i^2) I) , \quad \bar{\alpha}_i = \prod_{k=1}^{i}
+\sqrt{1-\beta_k^2} = \prod_{k=1}^{i} \alpha_k\\
+x_i &amp;= \bar{\alpha}_i x_0 + \sqrt{1-\bar{\alpha}^2_i} \epsilon,
+\quad \epsilon \sim \mathcal{N}(0, I) \\
+\end{aligned}
+\]</span></p>
+<p>Here “=” means equality in distribution.</p>
+<p><strong>Note</strong>: &gt; The DDPM paper uses <span
+class="math inline">\(\sqrt{1-\beta_i}\)</span> instead of <span
+class="math inline">\(\sqrt{1-\beta_i^2}\)</span>, so whenever see <span
+class="math inline">\(\beta_i\)</span> in this note, it means the one in
+DDPM paper squared. And the <span class="math inline">\(\bar
+\alpha_i\)</span> here is also different from DDPM paper by
+squaring.</p>
+<h4 id="idea">Idea</h4>
+<p>The forward process gradually adds Gaussian noise to the data <span
+class="math inline">\(x_0\)</span> until it is nearly pure Gaussian
+noise <span class="math inline">\(x_T\sim \mathcal{N}(0,
+I)\)</span>.</p>
+<p>We want to learn the reverse denoising process <span
+class="math inline">\(p_{\phi}(x_{i-1}|x_i)\)</span> to recover data
+from noise.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb E_{p_i(x_i)} \left[\mathrm{KL}(p_i(x_{i-1}|x_i) ||
+p_{\phi}(x_{i-1}|x_i))\right] &amp;= \int p_i(x_i) \int p_i(x_{i-1}|x_i)
+\log \frac{p_i(x_{i-1}|x_i)}{p_{\phi}(x_{i-1}|x_i)} dx_{i-1} dx_i\\
+&amp;= \int \int p_i(x_i | x_{i-1}) p_i(x_{i-1}) \log
+\frac{p_i(x_{i}|x_{i-1})p(x_{i-1})}{p_{\phi}(x_{i-1}|x_i)p(x_i)}
+dx_{i-1} dx_i\\
+\end{aligned}
+\]</span></p>
+<p>But estimate <span class="math inline">\(p_i(x_i) = \int p_i(x_i|x_0)
+p(x_0) dx_0\)</span> is intractable.</p>
+<p>We turn to <span class="math display">\[
+p(x_{i-1}|x_i, x_0) = \frac{p_i(x_i|x_{i-1}, x_0)
+p_i(x_{i-1}|x_0)}{p_i(x_i|x_0)} = \frac{p_i(x_i|x_{i-1})
+p(x_{i-1}|x_0)}{p_i(x_i|x_0)}
+\]</span> which is tractable since all distributions are Gaussian.</p>
+<p>Then we have <span class="math display">\[
+\begin{aligned}
+&amp;\mathbb E_{p_i(x_i)} [\mathrm{KL}(p_i(x_{i-1}|x_i) ||
+p_{\phi}(x_{i-1}|x_i))] \\
+= &amp;\mathbb E_{p(x_0) p_i(x_i|x_0)} [\mathrm{KL}(p_i(x_{i-1}|x_i,
+x_0) || p_{\phi}(x_{i-1}|x_i))] + C
+\end{aligned}
+\]</span></p>
+<p><strong>Claim</strong>:</p>
+<blockquote>
+<p>The minimizer of both is <span
+class="math inline">\(p(x_{i-1}|x_i)\)</span>.</p>
+</blockquote>
+<p><strong>Proof</strong>: <span class="math display">\[
+\begin{aligned}
+\mathbb E_{p(x_0, x_i)} [\mathrm{KL}(p_i(x_{i-1}|x_i, x_0) ||
+p_{\phi}(x_{i-1}|x_i))] &amp;= \int \int \int p(x_0, x_i) p(x_{i-1}|x_i,
+x_0) \log \frac{p(x_{i-1}|x_i, x_0)}{p_{\phi}(x_{i-1}|x_i)} dx_{i-1}
+dx_i dx_0 \\
+&amp;= \int p(x_i) \int p(x_0|x_i) \int p(x_{i-1}|x_i, x_0) \log
+\frac{p(x_{i-1}|x_i, x_0)}{p_{\phi}(x_{i-1}|x_i)} dx_{i-1} dx_0 dx_i \\
+&amp;= \mathbb E_{p(x_i)} \left[\mathbb E_{p(x_0|x_i)}\left[\mathbb
+E_{p(x_{i-1}|x_i,x_0)}\left[\log\frac{p(x_{i-1}|x_i,x_0)}{p_{\phi}(x_{i-1}|x_i)}\right]\right]\right]\\
+&amp;= \mathbb E_{p(x_i)} \left[\mathbb E_{p(x_0|x_i)}\left[\mathbb
+E_{p(x_{i-1}|x_i,x_0)}\left[\log
+\frac{p(x_{i-1}|x_i,x_0)}{p(x_{i-1}|x_i)}\right] \right]\right] +
+\mathbb E_{p(x_i)} \left[\mathbb E_{p(x_0|x_i)}\left[\mathbb
+E_{p(x_{i-1}|x_i,x_0)}\left[\log
+\frac{p(x_{i-1}|x_i)}{p_{\phi}(x_{i-1}|x_i)}\right] \right]\right]\\
+&amp;= \mathbb E_{p(x_i)} \left[\mathbb
+E_{p(x_0|x_i)}\left[\mathrm{KL}(p(x_{i-1}|x_i,x_0) ||
+p(x_{i-1}|x_i))\right]\right] + \mathbb E_{p(x_i)}
+\left[\mathrm{KL}(p(x_{i-1}|x_i) || p_{\phi}(x_{i-1}|x_i))\right]\\
+\end{aligned}
+\]</span></p>
+<p>Note the first term is independent of <span
+class="math inline">\(p_{\phi}\)</span>, so minimizing the whole
+expression is equivalent to minimizing the second term.</p>
+<p>And the second term is minimized when <span
+class="math inline">\(p_{\phi}(x_{i-1}|x_i) = p(x_{i-1}|x_i) =
+\mathbb{E}_{p(x_0|x_i)}[p(x_{i-1}|x_i, x_0)]\)</span>.</p>
+<p>The above argument shows that minimizing the KL divergence between
+marginal distributions is mathematically identical to minimizing the KL
+divergence between specific conditional distributions.</p>
+<p>This is very powerful and we will see similar conditional techniques
+again in flow-based models.</p>
+<h4 id="closed-form-of-px_i-1x_i-x_0">Closed form of <span
+class="math inline">\(p(x_{i-1}|x_i, x_0)\)</span>:</h4>
+<p>By Bayes’ theorem and Markov property,</p>
+<p><span class="math display">\[
+p(x_{i-1}|x_i, x_0) = \frac{p_i(x_i|x_{i-1}, x_0)
+p_i(x_{i-1}|x_0)}{p_i(x_i|x_0)} = \frac{p_i(x_i|x_{i-1})
+p(x_{i-1}|x_0)}{p_i(x_i|x_0)} \propto p_i(x_i|x_{i-1}) p_i(x_{i-1}|x_0)
+\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+p_i(x_i|x_{i-1}) &amp;= \mathcal{N}(x_i; \sqrt{1-\beta_i^2} x_{i-1},
+\beta_i^2 I) \propto \mathcal{N}(x_{i-1}; \frac{1}{\sqrt{1-\beta_i^2}}
+x_i, \frac{\beta_i^2}{1-\beta_i^2} I) \\
+p_i(x_{i-1}|x_0) &amp;= \mathcal{N}(x_{i-1}; \bar{\alpha}_{i-1} x_0,
+(1-\bar{\alpha}_{i-1}^2) I) \\
+\end{aligned}
+\]</span></p>
+<p>Formulas of Gaussian multiplication give <span
+class="math display">\[
+\begin{aligned}
+\Sigma^{-1} &amp;= \Sigma_1^{-1} + \Sigma_2^{-1}\\
+\mu &amp;= \Sigma(\Sigma_1^{-1} \mu_1 + \Sigma_2^{-1} \mu_2)
+\end{aligned}
+\]</span></p>
+<p>So we have <span class="math display">\[
+\begin{aligned}
+\sigma^2 &amp;= \left(\frac{1-\beta_i^2}{\beta_i^2} +
+\frac{1}{1-\bar{\alpha}_{i-1}^2}\right)^{-1} \\
+&amp;= \frac{\beta_i^2 (1-\bar{\alpha}_{i-1}^2)}{\beta_i^2 +
+(1-\beta_i^2)(1-\bar{\alpha}_{i-1}^2)}\\
+&amp;= \beta_i^2 \frac{1-\bar{\alpha}_{i-1}^2}{1-\bar{\alpha}_i^2} \\
+\mu &amp;= \sigma^2 \left(\frac{1-\beta_i^2}{\beta_i^2} \cdot
+\frac{1}{\sqrt{1-\beta_i^2}} x_i + \frac{1}{1-\bar{\alpha}_{i-1}^2}
+\cdot \bar{\alpha}_{i-1} x_0\right)\\
+&amp;= \frac{\sqrt{1-\beta_i^2}
+(1-\bar{\alpha}_{i-1}^2)}{1-\bar{\alpha}_i^2} x_i + \frac{\beta_i^2
+\bar{\alpha}_{i-1}}{1-\bar{\alpha}_i^2} x_0\\
+&amp;= \frac{\alpha_i (1-\bar{\alpha}_{i-1}^2)}{1-\bar{\alpha}_i^2} x_i
++ \frac{\bar{\alpha}_{i-1}\beta_i^2}{1-\bar{\alpha}_i^2} x_0\\
+\end{aligned}
+\]</span></p>
+<p>Thus, we have <span class="math display">\[
+p(x_{i-1}|x_i, x_0) = \mathcal{N}\left(x_{i-1}; \frac{\alpha_i
+(1-\bar{\alpha}_{i-1}^2)}{1-\bar{\alpha}_i^2} x_i +
+\frac{\bar{\alpha}_{i-1}\beta_i^2}{1-\bar{\alpha}_i^2} x_0, \beta_i^2
+\frac{1-\bar{\alpha}_{i-1}^2}{1-\bar{\alpha}_i^2} I\right)
+\]</span></p>
+<p>And the loss function for training DDPM is the sum of KL divergences:
+<span class="math display">\[
+\begin{aligned}
+\mathcal{L}_{\mathrm{DDPM}} &amp;= \sum_{i=1}^{T} \mathbb E_{p(x_0)
+p_i(x_i|x_0)} [\mathrm{KL}(p(x_{i-1}|x_i, x_0) ||
+p_{\phi}(x_{i-1}|x_i))] \\
+&amp;= \sum_{i=1}^{T} \frac{1}{\sigma_i^2}\mathbb E_{p(x_0)
+p_i(x_i|x_0)} \left[\| \mu_i(x_i, x_0, i) - \mu_{\phi}(x_i,i)\|^2\right]
++ C\\
+\end{aligned}
+\]</span> where <span class="math inline">\(\mu_i(x_i, x_0, i)\)</span>
+is the mean of <span class="math inline">\(p(x_{i-1}|x_i, x_0)\)</span>
+derived above and <span class="math inline">\(\mu_{\phi}(x_i,i)\)</span>
+is the predicted mean by the neural network.</p>
+<p><strong>Reparameterization trick</strong>:</p>
+<p>It is also common to parameterize the denoising model to predict the
+noise <span class="math inline">\(\epsilon\)</span> added to <span
+class="math inline">\(x_0\)</span> instead of predicting the mean <span
+class="math inline">\(\mu_{\phi}(x_i,i)\)</span> directly since we have
+the relation <span class="math display">\[
+x_i = \bar{\alpha}_i x_0 + \sqrt{1-\bar{\alpha}_i^2} \epsilon
+\]</span></p>
+<h4 id="elbo-1">ELBO</h4>
+<p><span class="math display">\[
+p_{\phi}(x_0) = \int p_{\phi}(x_0, x_{1:T}) dx_{1:T} = \int
+p_{\phi}(x_0|x_1) \prod_{i=2}^{T} p_{\phi}(x_{i-1}|x_i) p(x_T) dx_{1:T}
+\]</span></p>
+<p>To make it ELBO, we introduce the forward process <span
+class="math inline">\(q(x_{1:T}|x_0)\)</span> as the variational
+distribution to approximate the intractable true posterior <span
+class="math inline">\(p_{\phi}(x_{1:T}|x_0)\)</span> and expand it by
+the conditional posterior:</p>
+<p><span class="math display">\[
+\log p_{\phi}(x_0) \geq \mathbb{E}_{q(x_{1:T}|x_0)}\left[\log
+\frac{p_{\phi}(x_0, x_{1:T})}{p(x_{1:T}|x_0)}\right]
+\]</span> Use <span class="math display">\[
+p(x_{1:T}|x_0) = p(x_T|x_0) \prod_{i=2}^{T} p(x_{i-1}|x_{i}, x_0)
+\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathcal{L}_{\mathrm{ELBO}}&amp;= \mathbb{E}_{p(x_{1:T}|x_0)}\left[\log
+p_{\phi}(x_0|x_1) + \sum_{i=2}^{T} \log p_{\phi}(x_{i-1}|x_i) + \log
+p(x_T) - \sum_{i=1}^{T} \log q(x_i|x_{i-1}) - \log p(x_T|x_0)\right] \\
+&amp;= \underbrace{\mathbb{E}_{p(x_1|x_0)} \left[\log
+p_{\phi}(x_0|x_1)\right]}_{\mathrm{Reconstruction}} +
+\underbrace{\mathbb{E}_{p(x_T|x_0)} \left[\log p(x_T) - \log
+p(x_T|x_0)\right]}_{\mathrm{Prior}} + \underbrace{\sum_{i=2}^{T}
+\mathbb{E}_{p(x_{i}|x_0)} \left[\mathrm{KL}(p(x_{i-1}|x_i, x_0) ||
+p_{\phi}(x_{i-1}|x_i))\right]}_{\mathrm{Diffusion}} \\
+\end{aligned}
+\]</span></p>
+<h4 id="features-of-ddpm">Features of DDPM</h4>
+<p>Let’s consider <span class="math inline">\(x\)</span>-prediction
+since it is easier to understand.</p>
+<p>Assume we have the optimal denoising model in each step, i.e., <span
+class="math inline">\(p_{\phi}(x_{i-1}|x_i) = p(x_{i-1}|x_i)\)</span>,
+then we can recover <span class="math inline">\(x_0\)</span>
+perfectly.</p>
+<p>But the reality is we approximate the denoising step with a Gaussian
+distribution, so the optimal posterior mean <span
+class="math inline">\(\mu_i(x_i, i)\)</span> is still an average of all
+possible <span class="math inline">\(x_{i-1}\)</span> that can be mapped
+to the same <span class="math inline">\(x_i\)</span>.</p>
+<p>Claim:</p>
+<p>Although we circumvent predicting <span
+class="math inline">\(x_{T-1}\)</span> directly by predicting <span
+class="math inline">\(x_0\)</span> and then computing the posterior
+distribution. The optimal denoising mean <span
+class="math inline">\(\mu_i(x_i, x_0, i)\)</span> is still the average
+of all possible <span class="math inline">\(x_{i-1}\)</span> that can be
+mapped to the same <span class="math inline">\(x_i\)</span>.</p>
+<p><strong>Proof</strong>: <span class="math display">\[
+\begin{aligned}
+\mathbb{E}_{p(x_{t-1}|x_t)}[x_{t-1}] &amp;=
+\mathbb{E}_{p(x_0|x_t)}[\mathbb{E}_{p(x_{t-1}|x_t, x_0)}[x_{t-1}]] \\
+&amp;= \mathbb{E}_{p(x_0|x_t)}[\mu_t(x_t, x_0, t)] \\
+&amp;= \mathbb{E}_{p(x_0|x_t)}[a_t x_t + b_t x_0] \\
+&amp;= a_t x_t + b_t \mathbb{E}_{p(x_0|x_t)}[x_0] \\
+&amp;= \mu_t(x_t, \mathbb{E}_{p(x_0|x_t)}[x_0], t) \\
+\end{aligned}
+\]</span> where <span class="math inline">\(a_t = \frac{\alpha_t
+(1-\bar{\alpha}_{t-1}^2)}{1-\bar{\alpha}_t^2}\)</span> and <span
+class="math inline">\(b_t =
+\frac{\bar{\alpha}_{t-1}\beta_t^2}{1-\bar{\alpha}_t^2}\)</span>.</p>
+<p>So we can just discuss it as the standard VAE/HVAE case.</p>
+<p>A more theoretical analysis will be discussed when the
+<strong>differential equation perspective</strong> is introduced
+later.</p>
+<h2 id="score-based-perspective-from-ebms-to-ncsn">3. Score-Based
+Perspective: From EBMs to NCSN</h2>
+<h3 id="energy-based-models">3.1 Energy-Based Models</h3>
+<p>EBMs define a distribution through an energy function <span
+class="math inline">\(E_{\phi}(x)\)</span>: <span
+class="math display">\[
+p_{\phi}(x) = \frac{\exp(-E_{\phi}(x))}{Z_{\phi}}, \quad Z_{\phi} = \int
+\exp(-E_{\phi}(x)) dx
+\]</span> where the <span class="math inline">\(Z_{\phi}\)</span> is the
+partition function that normalizes the distribution.</p>
+<p>When we lower the energy of a region, the probability of that region
+increases, and its complement regions decrease in probability.</p>
+<blockquote>
+<p>Probability mass is redistributed across the entire space rather than
+assigned independently to each region.</p>
+</blockquote>
+<p><strong>Training through MLE</strong></p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathcal{L}_{\mathrm{MLE}}(\phi) &amp;= \mathbb{E}_{q(x)}[\log
+p_{\phi}(x)] \\
+&amp;= \mathbb{E}_{q(x)}[-E_{\phi}(x)] - \log Z_{\phi} \\
+&amp;= \mathbb{E}_{q(x)}[-E_{\phi}(x)] - \log \int \exp(-E_{\phi}(x)) dx
+\\
+\end{aligned}
+\]</span></p>
+<p>Intractable due to the partition function <span
+class="math inline">\(Z_{\phi}\)</span>, which requires integrating over
+the entire data space.</p>
+<h4 id="score-function">Score function</h4>
+<p>For a density <span class="math inline">\(p(x)\)</span>, its score
+function is defined as the gradient of the log-density with respect to
+<span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[
+s(x):= \nabla_x \log p(x),\quad \mathbb R^D \to \mathbb R^D
+\]</span></p>
+<figure>
+<img src="ScoreVector.png" srcset="/img/loading.gif" lazyload alt="Vector Field of Score Function" />
+<figcaption aria-hidden="true">Vector Field of Score
+Function</figcaption>
+</figure>
+<p>Score vector field points toward regions of higher data density.</p>
+<p>Calculate the score function of EBM is irrelevant to the partition
+function: <span class="math display">\[
+\begin{aligned}
+s_{\phi}(x) &amp;= \nabla_x \log p_{\phi}(x) \\
+&amp;= \nabla_x [-E_{\phi}(x) - \log Z_{\phi}] \\
+&amp;= -\nabla_x E_{\phi}(x) \\
+\end{aligned}
+\]</span></p>
+<p>And one can recover the density from the score function up to a
+constant: <span class="math display">\[
+\log p(x) = \log p(x_0) + \int_{0}^{1} s(x_0+ t(x - x_0))^{\top} (x -
+x_0) dt
+\]</span></p>
+<p><strong>Training EBM through Score Matching</strong></p>
+<p><span class="math display">\[
+\mathcal{L}_{\mathrm{SM}}(\phi) = \mathbb{E}_{p_{data}(x)} \left[\|
+\nabla_x \log p_{\phi}(x) - \nabla_x \log p_{data}(x) \|_2^2\right]
+\]</span></p>
+<p>And integration by parts gives an equivalent form that does not
+require <span class="math inline">\(\nabla_x \log p_{data}(x)\)</span>:
+<span class="math display">\[
+\mathcal{L}_{\mathrm{SM}}(\phi) = \mathbb{E}_{p_{data}(x)}
+\left[\mathrm{Tr}(\nabla_x^2 E_{\phi}(x)) + \frac{1}{2} \| \nabla_x
+E_{\phi}(x) \|_2^2\right]
+\]</span> However, computing the Hessian trace <span
+class="math inline">\(\mathrm{Tr}(\nabla_x^2 E_{\phi}(x))\)</span> is
+computationally expensive for high-dimensional data.</p>
+<h4 id="langevin-sampling-with-score-function">Langevin Sampling with
+Score Function</h4>
+<p>Without the partition function, we cannot directly sample from EBM.
+Instead, Langevin dynamics is used to generate samples.</p>
+<figure>
+<img src="LangevinDynamics.png" srcset="/img/loading.gif" lazyload alt="Langevin Dynamics Sampling" />
+<figcaption aria-hidden="true">Langevin Dynamics Sampling</figcaption>
+</figure>
+<p><strong>Discrete-time Langevin dynamics</strong>: <span
+class="math display">\[
+\mathbf{x}_{n+1} = \mathbf{x}_n - \eta \nabla_{\mathbf{x}}
+E_{\phi}(\mathbf{x}_n) + \sqrt{\eta} \mathbf{\epsilon}_n, \quad
+\mathbf{\epsilon}_n \sim \mathcal{N}(0, I)
+\]</span> where <span class="math inline">\(\eta&gt;0\)</span> is the
+step size.</p>
+<p>Write in terms of score function: <span class="math display">\[
+\mathbf{x}_{n+1} = \mathbf{x}_n + \eta \nabla_{\mathbf{x}} \log
+p_{\phi}(\mathbf{x}_n) + \sqrt{\eta} \mathbf{\epsilon}_n
+\]</span></p>
+<p><strong>Continuous-time Langevin dynamics</strong>: <span
+class="math display">\[
+d\mathbf{x}(t) = \nabla_{\mathbf{x}} \log p_{\phi}(\mathbf{x}(t)) dt +
+\sqrt{2} d\mathbf{w}(t)
+\]</span> where <span class="math inline">\(\mathbf{w}(t)\)</span> is a
+Wiener process.</p>
+<p><span class="math inline">\(\sqrt{2}\)</span> is used to ensure the
+stationary distribution is <span
+class="math inline">\(p_{\phi}(x)\)</span>. This will be explained in
+the differential equation appendix.</p>
+<p>The intution is that the score term <span
+class="math inline">\(\nabla_{\mathbf{x}} \log p_{\phi}(\mathbf{x}(t))
+dt\)</span> pushes the sample toward high-density regions, while the
+noise term <span class="math inline">\(\sqrt{2} d\mathbf{w}(t)\)</span>
+adds randomness to explore the space.</p>
+<p>But Langevin dynamics is still struggling to sample from complex data
+distribution with <strong>many isolated modes</strong>, where it
+requires extremely long time to traverse low-density regions between
+modes.</p>
+<h3 id="from-energy-based-to-score-based-generative-models">3.2 From
+Energy-Based to Score-Based Generative Models</h3>
+<p>Once we have the score function, we can sample from the EBM using
+Langevin dynamics without computing the partition function. Therefore,
+we turn to directly learn the score function from data, leading to
+score-based generative models (SGMs).</p>
+<p><span class="math display">\[
+\boxed{
+\mathcal{L}_{\mathrm{SM}}(\phi) = \mathbb{E}_{p_{data}(x)} \left[\|
+s_{\phi}(x) - s_{data}(x) \|_2^2\right]
+}
+\]</span></p>
+<p>The tractable score matching loss is <span class="math display">\[
+\boxed{
+\mathcal{L}_{\mathrm{SM}}(\phi) = \mathbb{E}_{p_{data}(x)}
+\left[\mathrm{Tr}(\nabla_x s_{\phi}(x)) + \frac{1}{2} \| s_{\phi}(x)
+\|_2^2\right]
+}
+\]</span></p>
+<hr />
+<p><strong>Proof of equivalence:</strong></p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathcal{L}_{\mathrm{SM}}(\phi) &amp;= \mathbb{E}_{p_{data}(x)} \left[\|
+s_{\phi}(x)\|_2^2\right] - 2 \mathbb{E}_{p_{data}(x)}
+\left[s_{\phi}(x)^{\top} s_{data}(x)\right] + \mathbb{E}_{p_{data}(x)}
+\left[\| s_{data}(x) \|_2^2\right] \\
+\end{aligned}
+\]</span></p>
+<p>Focus on the second term: <span class="math display">\[
+\begin{aligned}
+\mathbb{E}_{p_{data}(x)} \left[s_{\phi}(x)^{\top} s_{data}(x)\right]
+&amp;= \int p_{data}(x) s_{\phi}(x)^{\top} \nabla_x \log p_{data}(x) dx
+\\
+&amp;= \int s_{\phi}(x)^{\top} \nabla_x p_{data}(x) dx \\
+&amp;= \int \sum_{i=1}^{D} s_{\phi,i}(x) \frac{\partial
+p_{data}(x)}{\partial x_i} dx \\
+&amp;= \sum_{i=1}^{D} \left[ s_{\phi,i}(x) p_{data}(x)
+\Big|_{x_i=-\infty}^{x_i=+\infty} - \int p_{data}(x) \frac{\partial
+s_{\phi,i}(x)}{\partial x_i} dx \right] \\
+&amp;= - \mathbb{E}_{p_{data}(x)} \left[\mathrm{Tr}(\nabla_x
+s_{\phi}(x))\right] \\
+\end{aligned}
+\]</span></p>
+<p>The boundary term vanishes assuming <span
+class="math inline">\(p_{data}(x)\)</span> decays to zero at
+infinity.</p>
+<p>Note the third term is independent of <span
+class="math inline">\(\phi\)</span>, so we have the equivalence. <span
+class="math inline">\(\quad\square\)</span></p>
+<hr />
+<h3 id="denoising-score-matching">3.3 Denoising Score Matching</h3>
+<p>Although the tractable score matching loss avoids computing the
+partition function, it still requires calculating the Hessian trace
+<span class="math inline">\(\mathrm{Tr}(\nabla_x s_{\phi}(x))\)</span>,
+which is computationally expensive for high-dimensional data at <span
+class="math inline">\(O(D^2)\)</span> complexity.</p>
+<h4 id="sliced-score-matching">Sliced Score Matching</h4>
+<p>Let <span class="math inline">\(\mathbf{u}\)</span> be an isotropic
+random vector, i.e., <span
+class="math inline">\(\mathbb{E}[\mathbf{u}\mathbf{u}^{\top}] = I,
+\mathbb{E}[\mathbf{u}] = 0\)</span>.</p>
+<p>Then we have <span class="math display">\[
+\begin{aligned}
+\mathrm{Tr}(A) &amp;= \mathbb{E}[\mathbf{u}^{\top} A \mathbf{u}] \\
+\mathbb{E}[(\mathbf{u}^{\top} s_{\phi}(x))^2] &amp;= \| s_{\phi}(x)
+\|_2^2 \\
+\end{aligned}
+\]</span></p>
+<p>So the score matching loss can be rewritten as <span
+class="math display">\[
+\tilde{\mathcal{L}}_{\mathrm{SM}}(\phi) = \mathbb{E}_{x,u}
+\left[\mathbf{u}^{\top} \nabla_x s_{\phi}(x) \mathbf{u} + \frac{1}{2}
+(\mathbf{u}^{\top} s_{\phi}(x))^2\right]
+\]</span></p>
+<p>This can be computed using the Jacobian-vector product (JVP)
+technique, which only requires <span class="math inline">\(O(D)\)</span>
+complexity.</p>
+<p>Note the method only control the score function along random
+directions at observed data points, providing weak control in their
+neighborhood.</p>
+<h4 id="denoising-score-matching-dsm">Denoising Score Matching
+(DSM)</h4>
+<p>Sliced score matching still need to compute the Jacobian-vector
+product. And the random directions introduce variance in
+optimization.</p>
+<p>Vincent et al. (2011) proposed denoising score matching (DSM) to
+avoid computing the Hessian trace.</p>
+<p>The idea is to add noise to data and learn the score function of the
+noisy data distribution.</p>
+<p><span class="math display">\[
+p_{\sigma}(\mathbf{\tilde x}) = \int p_{data}(\mathbf{x})
+p_{\sigma}(\mathbf{\tilde x}|\mathbf{x}) d\mathbf{x}
+\]</span></p>
+<p><span class="math display">\[
+\mathcal{L}_{\mathrm{SM}}(\phi; \sigma) = \mathbb{E}_{\mathbf{\tilde{x}}
+\sim p_{\sigma}} \left[\| s_{\phi}(\mathbf{\tilde{x}}; \sigma) -
+\nabla_{\mathbf{\tilde{x}}} \log p_{\sigma}(\mathbf{\tilde{x}})
+\|_2^2\right]
+\]</span></p>
+<p>This is equivalent to the denoising objective:</p>
+<p><span class="math display">\[
+\mathcal{L}_{\mathrm{DSM}}(\phi; \sigma) = \mathbb{E}_{\mathbf x \sim
+p_{data}(x),\mathbf{\tilde x} \sim p_{\sigma}(\cdot |x)} \left[\|
+s_{\phi}(\mathbf{\tilde x}) - \nabla_{\mathbf{\tilde x}} \log
+p_{\sigma}(\mathbf{\tilde x}|\mathbf{x}) \|_2^2\right]
+\]</span></p>
+<p>Under Gaussian noise corruption <span
+class="math inline">\(p_{\sigma}(\mathbf{\tilde x}|\mathbf{x}) =
+\mathcal{N}(\mathbf{\tilde x}; \mathbf{x}, \sigma^2 I)\)</span>, we have
+<span class="math inline">\(\nabla_{\mathbf{\tilde x}} \log
+p_{\sigma}(\mathbf{\tilde x}|\mathbf{x}) = \frac{1}{\sigma^2}
+(\mathbf{x} - \mathbf{\tilde x})\)</span>.</p>
+<p>The loss becomes</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathcal{L}_{\mathrm{DSM}}(\phi; \sigma) &amp;= \mathbb{E}_{\mathbf x
+\sim p_{data}(x),\mathbf{\tilde x} \sim \mathcal{N}(\mathbf{x}, \sigma^2
+I)} \left[\| s_{\phi}(\mathbf{\tilde x}) - \frac{1}{\sigma^2}
+(\mathbf{x} - \mathbf{\tilde x}) \|_2^2\right]\\
+&amp;=\mathbb{E}_{\mathbf x \sim p_{data}(x),\epsilon \sim
+\mathcal{N}(0, I)} \left[\| s_{\phi}(\mathbf{x} + \sigma \epsilon) +
+\frac{\epsilon}{\sigma} \|_2^2\right]\\
+\end{aligned}
+\]</span></p>
+<h4 id="tweedies-formula">Tweedie’s Formula</h4>
+<p>Assume <span class="math inline">\(\mathbf{x} \sim p_{data}(\mathbf
+x)\)</span> and <span class="math inline">\(\mathbf{\tilde x}|\mathbf{x}
+\sim \mathcal{N}(\ \cdot \ ;\alpha\mathbf{x}, \sigma^2 I)\)</span>.</p>
+<p>Then we have: <span class="math display">\[
+\alpha \mathbb{E}_{\mathbf x \sim p(\mathbf x | \mathbf{\tilde
+x})}[\mathbf{x}|\mathbf{\tilde x}] = \mathbf{\tilde x} + \sigma^2
+\nabla_{\mathbf{\tilde x}} \log p_{\sigma}(\mathbf{\tilde x})
+\]</span> where the expectation is over the posterior distribution <span
+class="math inline">\(p(\mathbf x | \mathbf{\tilde x}) =
+\frac{p_{data}(\mathbf x) p_{\sigma}(\mathbf{\tilde
+x}|\mathbf{x})}{p_{\sigma}(\mathbf{\tilde x})}\)</span>.</p>
+<p>The proof is done by computing <span
+class="math inline">\(\nabla_{\mathbf{\tilde x}}\log
+p_{\sigma}(\mathbf{\tilde x})\)</span> using Bayes’ theorem.</p>
+<p>Higher cumulants of the posterior can also be computed through higher
+derivatives of <span class="math inline">\(\log
+p_{\sigma}(\mathbf{\tilde x})\)</span>.</p>
+<h4 id="higher-order-tweedies-formula">Higher Order Tweedie’s
+Formula</h4>
+<p>Like <span class="math inline">\(\sigma\)</span>, assume the
+conditional law of <span class="math inline">\(\mathbf{\tilde
+x}|\mathbf{x}\)</span> belongs to an exponential family with natural
+parameter <span class="math inline">\(\eta\)</span>: <span
+class="math display">\[
+q(\mathbf{\tilde x}|\mathbf{\eta}) = q_0(\mathbf{\tilde x})
+\exp(\eta^{\top} \mathbf{\tilde x} - \psi(\mathbf{\eta}))
+\]</span></p>
+<p>For Gaussian noise with variance <span class="math inline">\(\sigma^2
+\mathbf I\)</span>, <span class="math inline">\(\mathbf\eta =
+\frac{\mathbf x}{\sigma^2}\)</span>, <span
+class="math inline">\(q_0(\mathbf{\tilde x}) = \frac{1}{(2\pi
+\sigma^2)^{D/2}} \exp(-\frac{\|\mathbf{\tilde
+x}\|^2}{2\sigma^2})\)</span>.</p>
+<p><span class="math display">\[
+\psi(\mathbf{\eta}) = \log \int q_0(\mathbf{\tilde x}) \exp(\eta^{\top}
+\mathbf{\tilde x}) d\mathbf{\tilde x} = \frac{\sigma^2}{2}
+\|\mathbf{\eta}\|^2
+\]</span></p>
+<p>is the log-partition function of the <span
+class="math inline">\(q(\mathbf{\tilde x}|\mathbf{\eta})\)</span>.</p>
+<p>The observed data distribution is <span class="math display">\[
+p_{\eta}(\mathbf{\tilde x}) = \int p(\mathbf \eta) q(\mathbf{\tilde
+x}|\mathbf{\eta}) d\mathbf{\eta}
+\]</span></p>
+<p>Define the log-partition function of <span
+class="math inline">\(p_{\eta}(\mathbf{\tilde x})\)</span> as</p>
+<p><span class="math display">\[
+\lambda(\mathbf{\tilde x}) = \log p_{\mathbf{\eta}}(\mathbf{\tilde x}) -
+\log q_0(\mathbf{\tilde x}).
+\]</span></p>
+<p>Then the posterior of <span
+class="math inline">\(\mathbf{\eta}\)</span> given <span
+class="math inline">\(\mathbf{\tilde x}\)</span> is <span
+class="math display">\[
+p(\mathbf{\eta}|\mathbf{\tilde x}) = \exp(\eta^{\top} \mathbf{\tilde x}
+- \psi(\mathbf{\eta}) - \lambda(\mathbf{\tilde x}))p(\mathbf{\eta}).
+\]</span></p>
+<p>By Bayes’ theorem, <span class="math display">\[
+p(\mathbf{\eta}|\mathbf{\tilde x}) = \frac{p(\mathbf{\eta})
+q(\mathbf{\tilde x}|\mathbf{\eta})}{p_{\eta}(\mathbf{\tilde x})} \propto
+p(\mathbf{\eta}) q(\mathbf{\tilde x}|\mathbf{\eta}) = p(\mathbf{\eta})
+q_0(\mathbf{\tilde x}) \exp(\eta^{\top} \mathbf{\tilde x} -
+\psi(\mathbf{\eta})) = p(\mathbf{\eta}) \exp(\eta^{\top} \mathbf{\tilde
+x} - \psi(\mathbf{\eta}) - \lambda(\mathbf{\tilde x}))
+\]</span></p>
+<p>The <span class="math inline">\(\lambda\)</span> is the log-partition
+function of the posterior distribution.</p>
+<p>For every <span class="math inline">\(\mathbf{\tilde x}\)</span>, we
+have <span class="math display">\[
+\int p(\mathbf{\eta}| \mathbf{\tilde x}) d\mathbf{\eta} = \int
+p(\mathbf{\eta}) \exp(\eta^{\top} \mathbf{\tilde x} -
+\psi(\mathbf{\eta}) - \lambda(\mathbf{\tilde x})) d\mathbf{\eta} = 1
+\]</span></p>
+<p>Taking derivatives with respect to <span
+class="math inline">\(\mathbf{\tilde x}\)</span> on both sides gives
+<span class="math display">\[
+\begin{aligned}
+0 &amp;= \int p(\mathbf{\eta}) \exp(\eta^{\top} \mathbf{\tilde x} -
+\psi(\mathbf{\eta}) - \lambda(\mathbf{\tilde x})) (\mathbf{\eta} -
+\nabla_{\mathbf{\tilde x}} \lambda(\mathbf{\tilde x})) d\mathbf{\eta} \\
+&amp;= \mathbb{E}_{p(\mathbf{\eta}|\mathbf{\tilde x})}[\mathbf{\eta} -
+\nabla_{\mathbf{\tilde x}} \lambda(\mathbf{\tilde x})] \\
+\end{aligned}
+\]</span></p>
+<p>Thus, we have <span class="math display">\[
+\mathbb{E}_{p(\mathbf{\eta}|\mathbf{\tilde x})}[\mathbf{\eta}] =
+\nabla_{\mathbf{\tilde x}} \lambda(\mathbf{\tilde x})
+\]</span> Taking the second derivative gives <span
+class="math display">\[
+\mathrm{Cov}[\mathbf{\eta}|\mathbf{\tilde
+x}]=\mathbb{E}_{p(\mathbf{\eta}|\mathbf{\tilde x})}[(\mathbf{\eta} -
+\mathbb{E}_{p(\mathbf{\eta}|\mathbf{\tilde
+x})}[\mathbf{\eta}])(\mathbf{\eta} -
+\mathbb{E}_{p(\mathbf{\eta}|\mathbf{\tilde x})}[\mathbf{\eta}])^{\top}]
+= \nabla_{\mathbf{\tilde x}}^2 \lambda(\mathbf{\tilde x})
+\]</span></p>
+<p>Higher order cumulants can be derived similarly by taking higher
+order derivatives of <span class="math inline">\(\lambda(\mathbf{\tilde
+x})\)</span>, which is a <span class="math inline">\(k\)</span>-th
+tensor for the <span class="math inline">\(k\)</span>-th cumulant.</p>
+<p><span class="math display">\[
+\nabla_{\mathbf{\tilde x}}^k \lambda(\mathbf{\tilde x}) =
+\mathbb{E}_{p(\mathbf{\eta}|\mathbf{\tilde x})} \left[(\mathbf{\eta} -
+\mathbb{E}_{p(\mathbf{\eta}|\mathbf{\tilde x})}[\mathbf{\eta}])^{\otimes
+k}\right] = \kappa_k(\mathbf{\eta}|\mathbf{\tilde x})
+\]</span></p>
+<h4 id="denoising-tweedie-and-sure">Denoising, Tweedie and SURE</h4>
+<p>Stein’s Unbiased Risk Estimator (SURE) provides an unbiased estimate
+of the mean squared error (MSE) between a denoised estimate and the true
+signal without access to the true signal.</p>
+<p><span class="math display">\[
+\tilde x = x + \sigma \epsilon, \quad \epsilon \sim \mathcal{N}(0, I)
+\]</span> A denoiser is any weakly differentiable function <span
+class="math inline">\(\mathbf{D}: \mathbb{R}^D \to \mathbb{R}^D\)</span>
+that maps the noisy observation <span class="math inline">\(\tilde
+x\)</span> to a denoised estimate <span class="math inline">\(\hat x =
+\mathbf{D}(\tilde x)\)</span>.</p>
+<p>Quality of the denoiser is measured by the MSE: <span
+class="math display">\[
+R(\mathbf{D}; \mathbf x) = \mathbb{E}_{\tilde x | x}[\|
+\mathbf{D}(\tilde x) - x \|_2^2|x].
+\]</span></p>
+<p>The SURE states that the following quantity is an unbiased estimator
+of the MSE: <span class="math display">\[
+\mathrm{SURE}(\mathbf{D}; \tilde x) = \|\mathbf{D}(\tilde x) - \tilde
+x\|_2^2 + 2 \sigma^2 \nabla_{\tilde x}\cdot \mathbf{D}(\tilde x) - D
+\sigma^2
+\]</span></p>
+<p>For the proof, first use the identity <span class="math display">\[
+\mathbb{E}[\nabla_{\mathbf z} \cdot \mathbf{D}(\mathbf z)] ] =
+\mathbb{E}[\mathbf z^{\top} \mathbf{D}(\mathbf z)]
+\]</span> by integration by parts on each component.</p>
+<p>Therefore <span class="math display">\[
+\begin{aligned}
+\mathbb{E} [(\tilde x- x)^{\top} \mathbf{D}(\tilde x)]&amp;=\sigma
+\mathbb{E}[\mathbf{z}^{\top} \mathbf{D}(\tilde x)] \\
+&amp;= \sigma \mathbb{E}[\nabla_{\mathbf z} \cdot \mathbf{D}(\mathbf x +
+\sigma \mathbf z)] \\
+&amp;= \sigma \mathbb{E}[\sigma \nabla_{\mathbf{\tilde x}} \cdot
+\mathbf{D}(\mathbf{\tilde x})] \\
+&amp;= \sigma^2 \mathbb{E}[\nabla_{\mathbf{\tilde x}} \cdot
+\mathbf{D}(\mathbf{\tilde x})]
+\end{aligned}
+\]</span></p>
+<p>And then expand the MSE: <span class="math display">\[
+\begin{aligned}
+R(\mathbf{D}; \mathbf x) &amp;= \mathbb{E}_{\tilde x | x}[\|
+\mathbf{D}(\tilde x) - x \|_2^2|x] \\
+&amp;= \mathbb{E}_{\tilde x | x}[\| \mathbf{D}(\tilde x) - \tilde x +
+\tilde x - x \|_2^2|x] \\
+&amp;= \mathbb{E}_{\tilde x | x}[\| \mathbf{D}(\tilde x) - \tilde x
+\|_2^2 |x] + 2 \mathbb{E}_{\tilde x | x}[(\tilde x - x)^{\top}
+(\mathbf{D}(\tilde x)- \tilde x) |x] + \mathbb{E}_{\tilde x | x}[\|
+\tilde x - x \|_2^2|x] \\
+&amp;= \mathbb{E}_{\tilde x | x}[\| \mathbf{D}(\tilde x) - \tilde x
+\|_2^2 |x] + 2 \left(\sigma^2 \mathbb{E}_{\tilde x |
+x}[\nabla_{\mathbf{\tilde x}} \cdot \mathbf{D}(\mathbf{\tilde x}) |x] -
+\mathbb{E}_{\tilde x | x}[(\tilde x - x)^{\top} \tilde x |x]\right) +
+\mathbb{E}_{\tilde x | x}[\| \tilde x - x \|_2^2|x] \\
+&amp;= \mathbb{E}_{\tilde x | x}[\| \mathbf{D}(\tilde x) - \tilde x
+\|_2^2 |x] + 2 \sigma^2 \mathbb{E}_{\tilde x | x}[\nabla_{\mathbf{\tilde
+x}} \cdot \mathbf{D}(\mathbf{\tilde x}) |x] - 2 \sigma^2 D + D \sigma^2
+\\
+&amp;= \mathbb{E}_{\tilde x | x}[\mathrm{SURE}(\mathbf{D}; \tilde x) |x]
+\end{aligned}
+\]</span></p>
+<p><span class="math display">\[
+\mathbb{E}_{\tilde x | x}[\mathrm{SURE}(\mathbf{D}; \tilde x)]  =
+\mathbb{E}_{\tilde x | x}[\| \mathbf{D}(\tilde x) - x \|_2^2]
+\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}_{(\tilde x, x)}[\| \mathbf{D}(\tilde x) - x \|_2^2] &amp;=
+\mathbb{E}_{x} [\mathbb{E}_{\tilde x | x}[\| \mathbf{D}(\tilde x) - x
+\|_2^2]] \\
+&amp;= \mathbb{E}_{x} [\mathbb{E}_{\tilde x |
+x}[\mathrm{SURE}(\mathbf{D}; \tilde x)]] \\
+&amp;= \mathbb{E}_{\tilde x} [\mathrm{SURE}(\mathbf{D}; \tilde x)] \\
+\end{aligned}
+\]</span></p>
+<p>On the other hand <span class="math display">\[
+\begin{aligned}
+\mathbb{E}_{(\tilde x, x)}[\| \mathbf{D}(\tilde x) - x \|_2^2] &amp;=
+\mathbb{E}_{\tilde x} [\mathbb{E}_{x | \tilde x}[\| \mathbf{D}(\tilde x)
+- x \|_2^2]] \\
+\end{aligned}
+\]</span> Pointwise minimization of the MSE gives <span
+class="math display">\[
+\mathbf{D}^*(\tilde x) = \mathbb{E}[x|\tilde x]
+\]</span> for almost every <span class="math inline">\(\tilde
+x\)</span>.</p>
+<p>By Tweedie’s formula, we have <span class="math display">\[
+\mathbf{D}^*(\tilde x) = \tilde x + \sigma^2 \nabla_{\tilde x} \log
+p_{\sigma}(\tilde x)
+\]</span></p>
+<p>Therefore, we deduce <span class="math display">\[
+\frac{1}{2\sigma^4} \mathrm{SURE}(\mathbf{D}; \tilde x) =
+\mathrm{Tr}(\nabla_{\tilde x} s_{\phi}(\tilde x)) + \frac{1}{2} \|
+s_{\phi}(\tilde x) \|_2^2 + C(\sigma)
+\]</span></p>
+<p>This shows the equivalence between denoising, score matching and SURE
+up to a constant depending on <span
+class="math inline">\(\sigma\)</span>.</p>
+<h4 id="generalized-score-matching">Generalized Score Matching</h4>
+<p>Omitted. TODO.</p>
+<h3 id="noise-conditional-score-network-ncsn">3.4 Noise Conditional
+Score Network (NCSN)</h3>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Machine-Learning/" class="category-chain-item">Machine Learning</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Generative-Models/" class="print-no-link">#Generative Models</a>
+      
+        <a href="/tags/Diffusion-Models/" class="print-no-link">#Diffusion Models</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Reading notes of The Principle of Diffusion Models</div>
+      <div>https://notdesigned.github.io/2025/11/03/Reading-notes-of-The-Principle-of-Diffusion-Models/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Luocheng Liang</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>November 3, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - Share-alike">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/12/15/QAOA/" title="QAOA">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">QAOA</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/09/18/Flow-matching-Score-based-Generative-Model-Schrodinger-Bridge-and-Optimal-Transport/" title="Flow matching, Score-based Generative Model, Schrödinger Bridge and Optimal Transport">
+                        <span class="hidden-mobile">Flow matching, Score-based Generative Model, Schrödinger Bridge and Optimal Transport</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"Ov23lisUTr0Y3YpBngo1","clientSecret":"4068f2efc1d2d6015f3c8089a4e0ad4c1aeb8ed2","repo":"gitalkcomment","owner":"NotDesigned","admin":["NotDesigned"],"language":"en","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://autumn-recipe-17e3.theadscn.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'b971e66fb538c8a62d16c00e6b918d53'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

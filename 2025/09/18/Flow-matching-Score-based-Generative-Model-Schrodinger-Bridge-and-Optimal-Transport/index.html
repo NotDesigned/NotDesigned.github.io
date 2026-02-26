@@ -1,0 +1,1093 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Luocheng Liang">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Reference Denoising Diffusion Probabilistic Models Diffusion Schrödinger Bridge Matching Simplified Diffusion Schrödinger Bridge Speed-accuracy relations for diffusion models: Wisdom from nonequilibri">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flow matching, Score-based Generative Model, Schrödinger Bridge and Optimal Transport">
+<meta property="og:url" content="https://notdesigned.github.io/2025/09/18/Flow-matching-Score-based-Generative-Model-Schrodinger-Bridge-and-Optimal-Transport/index.html">
+<meta property="og:site_name" content="Adscn&#39;s Blog">
+<meta property="og:description" content="Reference Denoising Diffusion Probabilistic Models Diffusion Schrödinger Bridge Matching Simplified Diffusion Schrödinger Bridge Speed-accuracy relations for diffusion models: Wisdom from nonequilibri">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-09-18T20:18:45.000Z">
+<meta property="article:modified_time" content="2026-02-26T12:57:24.804Z">
+<meta property="article:author" content="Luocheng Liang">
+<meta property="article:tag" content="Flow Matching">
+<meta property="article:tag" content="Generative Models">
+<meta property="article:tag" content="Optimal Transport">
+<meta property="article:tag" content="Score-based Models">
+<meta property="article:tag" content="Stochastic Differential Equations">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Flow matching, Score-based Generative Model, Schrödinger Bridge and Optimal Transport - Adscn&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"notdesigned.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Adscn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Blog</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Flow matching, Score-based Generative Model, Schrödinger Bridge and Optimal Transport"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-09-18 20:18" pubdate>
+          September 18, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.3k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Flow matching, Score-based Generative Model, Schrödinger Bridge and Optimal Transport</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="reference">Reference</h2>
+<p><a target="_blank" rel="noopener" href="http://arxiv.org/abs/2006.11239">Denoising Diffusion
+Probabilistic Models</a></p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2303.16852">Diffusion Schrödinger
+Bridge Matching</a></p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2403.14623">Simplified Diffusion
+Schrödinger Bridge</a></p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2407.04495">Speed-accuracy relations
+for diffusion models: Wisdom from nonequilibrium thermodynamics and
+optimal transport</a></p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2405.14449">Adversarial Schrödinger
+Bridge Matching</a></p>
+<h2 id="introduction">Introduction</h2>
+<p>Generative models resonate with two deep principles: the
+thermodynamics of entropy and the mathematics of optimal transport.</p>
+<h2 id="symbols-and-preliminaries">Symbols and Preliminaries</h2>
+<h3 id="probability-space">Probability Space</h3>
+<ul>
+<li><span class="math inline">\((\Omega,\mathcal F,\mathbb P)\)</span>
+is a probability space.</li>
+<li><span class="math inline">\((E,\mathcal E) = (\mathbb R^d, \mathcal
+B(\mathbb R^d))\)</span> is the measurable space.</li>
+<li>A random variable is a measurable map <span
+class="math inline">\(X:(\Omega,\mathcal F)\to(E,\mathcal E)\)</span>,
+i.e. <span class="math display">\[
+X^{-1}(B) \in \mathcal F, \quad \forall B\in \mathcal B(\mathbb R^d).
+\]</span></li>
+<li>The distribution (pushforward measure) of <span
+class="math inline">\(X\)</span> is <span class="math display">\[
+\mu = \mathrm{Law}(X) = \mathbb P \circ X^{-1}, \quad \mu \in \mathcal
+P(\mathbb R^d).
+\]</span></li>
+<li>If <span class="math inline">\(\mu\)</span> is absolutely continuous
+w.r.t. the Lebesgue measure <span
+class="math inline">\(\lambda\)</span>, then there exists a density
+function <span class="math inline">\(p(x): E\to [0,+\infty)\)</span>
+such that <span class="math display">\[
+d\mu(x) = p(x)\, dx.
+\]</span></li>
+<li>Notation: we write <span class="math inline">\(X\sim \mu\)</span>;
+if <span class="math inline">\(\mu\)</span> admits a density, we often
+abbreviate <span class="math inline">\(X\sim p(x)\)</span>.</li>
+</ul>
+<h3 id="stochastic-process">Stochastic Process</h3>
+<ul>
+<li>A <strong>stochastic process</strong> is a time-parametrized family
+of random variables <span class="math display">\[
+\{X_t: t\in [0,T]\},\quad X_t:(\Omega, \mathcal{F}) \to (E,\mathcal{E}).
+\]</span></li>
+<li>The marginal distribution at time <span
+class="math inline">\(t\)</span> is <span class="math display">\[
+\mu_t = \mathrm{Law}(X_t),\quad X_t\sim \mu_t.
+\]</span></li>
+</ul>
+<h4 id="standard-brownian-motion-wiener-process">Standard Brownian
+Motion (Wiener Process)</h4>
+<p>A <span class="math inline">\(d\)</span>-dimensional <strong>standard
+Brownian motion</strong> <span
+class="math inline">\((W_t)_{t\ge0}\)</span> with respect to a
+filtration <span class="math inline">\((\mathcal F_t)_{t\ge0}\)</span>
+satisfies: 1. <span class="math inline">\(W_0 = 0\)</span> almost
+surely. 2. For <span class="math inline">\(0\le s&lt;t\)</span>, the
+increment <span class="math inline">\(W_t-W_s \sim \mathcal
+N(0,(t-s)I_d)\)</span>. 3. The increments <span
+class="math inline">\(W_t-W_s\)</span> are independent of <span
+class="math inline">\(\mathcal F_s\)</span> (independent increments). 4.
+The paths <span class="math inline">\(t\mapsto W_t(\omega)\)</span> are
+almost surely continuous.</p>
+<h4 id="itô-integral-and-itôs-lemma">Itô Integral and Itô’s Lemma</h4>
+<p><strong>Quadratic Variation.</strong><br />
+For a continuous semimartingale <span
+class="math inline">\(X=(X_t)_{t\ge0}\)</span>, the quadratic variation
+is defined as <span class="math display">\[
+[X]_t = \lim_{\|\Pi\|\to 0} \sum_{k} (X_{t_{k+1}}-X_{t_k})^2,
+\]</span> where <span
+class="math inline">\(\Pi=\{0=t_0&lt;\cdots&lt;t_n=t\}\)</span> is a
+partition of <span class="math inline">\([0,t]\)</span> and the limit is
+in probability.</p>
+<p>For one-dimensional Brownian motion <span
+class="math inline">\((W_t)\)</span>, <span class="math display">\[
+[W]_t = t, \quad \text{a.s.}
+\]</span> In higher dimensions, for <span
+class="math inline">\(W=(W^{(1)},\dots,W^{(d)})\)</span>, <span
+class="math display">\[
+[W^{(i)},W^{(j)}]_t =
+\begin{cases}
+t &amp; i=j,\\
+0 &amp; i\ne j,
+\end{cases}
+\]</span> where <span class="math inline">\([X,Y]_t\)</span> denotes the
+quadratic covariation.</p>
+<hr />
+<p><strong>Itô Integral.</strong><br />
+Let <span class="math inline">\((W_t)\)</span> be a Brownian motion and
+let <span class="math inline">\(\phi_t\)</span> be an adapted process
+with <span class="math display">\[
+\mathbb E\int_0^T \|\phi_t\|^2 dt &lt; \infty.
+\]</span> Then the Itô integral is defined as <span
+class="math display">\[
+\int_0^T \phi_t\, dW_t = L^2\text{-}\lim_{\|\Pi\|\to0}\sum_k
+\phi_{t_k}(W_{t_{k+1}}-W_{t_k}).
+\]</span> It satisfies the <strong>Itô isometry</strong>: <span
+class="math display">\[
+\mathbb E\left[\left(\int_0^T \phi_t\, dW_t\right)^2\right]
+= \mathbb E\int_0^T \phi_t^2\, dt.
+\]</span></p>
+<hr />
+<p><strong>Itô’s Lemma (Itô formula, one-dimensional).</strong><br />
+Suppose <span class="math inline">\(X_t\)</span> satisfies the SDE <span
+class="math display">\[
+dX_t = f(X_t,t)\,dt + g(X_t,t)\,dW_t,
+\]</span> and let <span class="math inline">\(F:\mathbb
+R\times[0,T]\to\mathbb R\)</span> be <span
+class="math inline">\(C^{2,1}\)</span> (twice continuously
+differentiable in <span class="math inline">\(x\)</span> and once in
+<span class="math inline">\(t\)</span>). Then <span
+class="math display">\[
+dF(X_t,t) = \Big(\partial_t F + f\,\partial_x F + \tfrac{1}{2}
+g^2\,\partial_{xx}F\Big)\,dt
++ g\,\partial_x F\, dW_t.
+\]</span></p>
+<hr />
+<p><strong>Multidimensional Itô’s Lemma.</strong><br />
+If <span class="math inline">\(X_t\in\mathbb R^d\)</span> satisfies
+<span class="math display">\[
+dX_t = f(X_t,t)\,dt + G(X_t,t)\,dW_t, \quad G\in\mathbb R^{d\times m},
+\]</span> and <span class="math inline">\(F:\mathbb
+R^d\times[0,T]\to\mathbb R\)</span> is <span
+class="math inline">\(C^{2,1}\)</span>, then <span
+class="math display">\[
+dF(X_t,t) = \Big(\partial_t F
++ f^\top \nabla_x F
++ \tfrac12 \mathrm{Tr}\!\big(GG^\top \nabla_x^2 F\big)\Big)dt
++ (\nabla_x F)^\top G\, dW_t.
+\]</span></p>
+<hr />
+<p><strong>Remark.</strong><br />
+- The term <span class="math inline">\(\tfrac12 g^2
+\partial_{xx}F\)</span> (or <span class="math inline">\(\tfrac12
+\mathrm{Tr}(GG^\top\nabla^2F)\)</span> in higher dimensions) arises from
+the quadratic variation of Brownian motion, i.e. <span
+class="math inline">\([W]_t=t\)</span>.<br />
+- This correction term is what distinguishes Itô calculus from classical
+calculus and is fundamental in stochastic analysis.</p>
+<h3 id="other">Other</h3>
+<p>The Kullback–Leibler (KL) divergence between two probability measures
+are: <span class="math display">\[
+D_{\mathrm{KL}}(\mu \|
+\nu)=\int_{E}\log\left(\frac{d\mu}{d\nu}(x)\right) d\mu(x),
+\]</span> where the <span
+class="math inline">\(\frac{d\mu}{d\nu}\)</span> is the Radon-Nikodym
+derivative.</p>
+<p>For KL divergence between Gaussian distribution, we have</p>
+<p><span class="math display">\[
+\begin{align*}
+\mathrm{KL}(\mathcal{N}({\mu}_x,{\Sigma}_x)\|\mathcal{N}({\mu}_y,{\Sigma}_y))
+&amp;=\frac{1}{2}\left[\log\frac{|{\Sigma}_y|}{|{\Sigma}_x|} - d +
+\text{tr}({\Sigma}_y^{-1}{\Sigma}_x)
++ ({\mu}_y-{\mu}_x)^T {\Sigma}_y^{-1} ({\mu}_y-{\mu}_x)\right]
+\end{align*}
+\]</span></p>
+<h2 id="diffusion-models">Diffusion Models</h2>
+<h3 id="ddpm">DDPM</h3>
+<p><span class="math display">\[
+x\sim q(x)
+\]</span></p>
+<p>How to sample from <span class="math inline">\(q(x)\)</span>?</p>
+<p>We define a markovian stochastic process <span
+class="math inline">\(x_t\)</span> as the <strong>forward
+process</strong>, such that: <span class="math display">\[
+x_0=x\\
+q(x_{1:T}|x_0) = \prod_{t=1}^{T} q(x_t|x_{t-1}),
+\]</span> where <span class="math inline">\(q(x_t|x_{t-1}) =
+\mathcal{N}(x_t;\sqrt{1-\beta_t}x_{t-1}, \beta_t I) =
+\frac{1}{\sqrt{(2\pi\beta_t)^d}}\exp(-\frac{\|x_t-\sqrt{1-\beta_t}x_{t-1}\|^2}{2\beta_t})\)</span>.</p>
+<p>We call <span class="math inline">\(\{\beta_t\}_{t=1}^T\)</span> as a
+variance schedule.</p>
+<p>By induction, we know <span class="math inline">\(x_t =
+\sqrt{\bar\alpha_t}x_0 + \sqrt{1-\bar\alpha_t}\epsilon,\quad \epsilon
+\sim\mathcal{N}(0,I),\quad \bar\alpha_t
+=\prod_{s=1}^{t}(1-\beta_s)\)</span>,</p>
+<p><span class="math display">\[
+x_t \sim \mathcal{N}(\sqrt{\bar \alpha_t}x_0, (1-\bar\alpha_t)I).
+\]</span></p>
+<p>So we can sample <span class="math inline">\(x_t\)</span>
+directly.</p>
+<p>Assume <span class="math inline">\(\bar\alpha_t \to 0\)</span>, we
+can regard <span class="math display">\[
+x_T \sim N(0,I).
+\]</span></p>
+<p>Now given <span class="math inline">\(x_T\)</span>, we want sample
+<span class="math inline">\(x_0\)</span> from <span
+class="math inline">\(x_T\)</span>.</p>
+<p>Calculate the posterior probability density: <span
+class="math display">\[
+q(x_t|x_{t+1}) = \int q(x_{t-1}|x_{t},x_{0}) q(x_0|x_t) d x_0
+\]</span> Which is impractical to calculate since we has to integrate
+over <span class="math inline">\(x_0\)</span>.</p>
+<p>Instead we consider <span class="math display">\[
+q(x_{t-1}|x_t,x_0) = \frac{q(x_t|x_{t-1})q(x_{t-1}|x_{0})}{q(x_t|x_0)}
+\]</span> So <span class="math display">\[
+q(x_{t-1}|x_t,x_0)\propto q(x_t|x_{t-1})q(x_{t-1}|x_{0})
+\]</span> is still a Gaussian distribution. <span
+class="math display">\[
+q(x_{t-1}|x_t,x_0) = \mathcal{N}(x_{t-1};\mu,\Sigma)
+\]</span> Recall <span
+class="math inline">\(\Sigma^{-1}=\Sigma_{1}^{-1}+\Sigma_{2}^{-1},
+\Sigma^{-1}\mu = \Sigma_1^{-1}\mu_1+\Sigma_1^{-1}\mu_2\)</span></p>
+<p>Note that <span class="math display">\[
+q(x_t|x_{t-1}) = \mathcal{N}(x_t;\sqrt{1-\beta_t}x_{t-1},\beta_t
+I)=\mathcal{N}(x_{t-1};\frac{1}{\sqrt{1-\beta_t}}x_{t},
+\frac{\beta_t}{1-\beta_t}I)
+\]</span> <span class="math inline">\(\Sigma_1=\frac{\beta_t}{1-\beta_t}
+I,\mu_1=\frac{1}{\sqrt{1-\beta_t}}x_{t}\)</span>.</p>
+<p><span
+class="math inline">\(\Sigma_2=(1-\bar\alpha_{t-1})I,\mu_2=\sqrt{\bar
+\alpha_{t-1}}x_0\)</span>.</p>
+<p><span
+class="math inline">\(\Sigma_t=(\frac{1-\beta_{t}}{\beta_t}+\frac{1}{1-\bar\alpha_{t-1}})^{-1}I=\frac{1-\bar\alpha_{t-1}}{1-\bar\alpha_t}\beta_tI=\tilde
+\beta_t I\)</span></p>
+<p><span
+class="math inline">\(\mu_t=\frac{1-\bar\alpha_{t-1}}{1-\bar\alpha_t}\beta_t(\frac{\sqrt{1-\beta_t}}{\beta_t}x_t+\frac{\sqrt{\bar\alpha_{t-1}}}{1-\bar\alpha_{t-1}}x_0)
+= \frac{\beta_t\sqrt{\bar\alpha_{t-1}}}{1-\bar\alpha_t}x_0 +
+\frac{(1-\bar\alpha_{t-1})\sqrt{1-\beta_t}}{1-\bar\alpha_t}x_t\)</span>.</p>
+<p>Now, to train the <span
+class="math inline">\(p_{\theta}(x_{t-1}|x_t)\)</span>, fix the variance
+<span class="math inline">\(\tilde \beta_t\)</span>, let model predict
+the <span class="math inline">\(\mu_t\)</span>.</p>
+<p>we minimize the KL divergence: <span class="math display">\[
+L_t(\theta)=\mathrm{KL}(q(x_{t-1}|x_0,x_t)\|p_{\theta}(x_{t-1}|x_t))
+\propto \mathbb{E}[\|\mu_t(x_t,x_0)-\mu_{\theta}(x_t,t)\|^2]
+\]</span> Or let the model predict the noise <span
+class="math inline">\(\epsilon=\frac{x_t-\sqrt{\bar\alpha_t}x_0}{\sqrt{1-\bar\alpha_t}}\)</span>,
+<span
+class="math inline">\(x_0=\frac{1}{\sqrt{\bar\alpha_t}}(x_t-\sqrt{1-\bar\alpha_t}\epsilon)\)</span>.</p>
+<p>And minimize <span class="math display">\[
+\mathbb
+E_{x_0,\epsilon,t}\left[\|\epsilon-\epsilon_{\theta}(x_t,t)\|^2\right].
+\]</span> This reparametrization setting generally yields better
+performance.</p>
+<h3 id="score-based-generative-model-sgm">Score-based Generative Model
+(SGM)</h3>
+<p>We view noise injection as an SDE and learn the
+<strong>score</strong> <span class="math inline">\(s_t(x) := \nabla_x
+\log p_t(x)\)</span> of the noisy marginal <span
+class="math inline">\((p_t)_{t\in [0,1]}\)</span>. Sampling is done by
+integrating a reverse-time SDE (or its ODE counterpart), where the score
+guides the dynamics back to data.</p>
+<h4 id="forward-sde">Forward SDE</h4>
+<p>Let <span class="math inline">\(X_t\in \mathbb R^d\)</span> solve:
+<span class="math display">\[
+dX_t = f(X_t,t) dt + g(t) dW_t, \quad t\in [0,1],
+\]</span> with <span class="math inline">\(f:\mathbb R^d\times [0,1] \to
+\mathbb R^d\)</span>, diffusion scale <span
+class="math inline">\(g:[0,1]\to \mathbb R_+\)</span>. Denote <span
+class="math inline">\(p_t = \mathrm{Law}(X_t)\)</span>.</p>
+<hr />
+<h4 id="ddpm-as-vp-sde">DDPM as VP-SDE</h4>
+<p>Set the Variance-Preserving (VP) SDE <span class="math display">\[
+dX_t = -\frac{1}{2}\beta(t)X_t dt + \sqrt{\beta(t)} d W_t,
+\]</span> with <span class="math inline">\(\beta(t)\geq 0\)</span>
+integratable and <span class="math inline">\(X_0 \sim
+p_{data}\)</span>.</p>
+<p>This linear SDE has the explicit solution <span
+class="math display">\[
+X_t = \sqrt{\bar \alpha_t} X_0 + \underbrace{\int_0^t
+\exp\left(-\frac{1}{2}\int_s^t \beta(u) du\right)\sqrt{\beta(s)}
+dW_s}_{\text{zero-mean Gaussian}},
+\]</span> where <span
+class="math inline">\(\bar\alpha_t:=\exp\left(-\int_0^t\beta(s)ds\right)\)</span>.</p>
+<p>Hence the marginal conditional matches DDPM.</p>
+<p><span class="math display">\[
+X_t|X_0\sim \mathcal{N}(\sqrt{\bar\alpha_t}X_0, (1-\bar\alpha_t)I).
+\]</span></p>
+<p><strong>Claim.</strong> The DDPM forward chain with <span
+class="math inline">\(\beta_1,\ldots,\beta_T\)</span> is an
+Euler-Maruyama discretization of the VP-SDE with piecewise-constant
+<span class="math inline">\(\beta(t)\)</span> and share the same
+marginals <span class="math inline">\(q(x_t|x_0)\)</span>.</p>
+<h4 id="variance-exploding-sde-ve-sde">Variance-Exploding SDE
+(VE-SDE)</h4>
+<p>Alternatively, set <span class="math display">\[
+dX_t = g(t)\,dW_t, \qquad f\equiv 0,
+\]</span> with <span
+class="math inline">\(g(t)=\sqrt{d[\sigma^2(t)]/dt}\)</span> and <span
+class="math inline">\(\sigma(0)=0\)</span>. Then <span
+class="math display">\[
+X_t = X_0 + \sigma(t)Z,\quad Z\sim\mathcal N(0,I).
+\]</span> So <span class="math inline">\(p_t = p_0 * \mathcal
+N(0,\sigma(t)^2I)\)</span>, i.e. Gaussian smoothing.</p>
+<h4 id="reverse-time-sde-and-probability-flow-ode">Reverse-time SDE and
+Probability Flow ODE</h4>
+<p>The reverse SDE (Anderson, 1982) is <span class="math display">\[
+dX_t = \big(f(X_t,t)-g(t)^2\nabla_x\log p_t(X_t)\big)dt + g(t)\,d\bar
+W_t,
+\]</span> where <span class="math inline">\(\bar W_t\)</span> is a
+backward Wiener process. Replacing <span
+class="math inline">\(\nabla_x\log p_t\)</span> with a learned <span
+class="math inline">\(s_\theta\)</span> gives a generative sampler.</p>
+<p>The equivalent deterministic probability flow ODE is <span
+class="math display">\[
+\frac{dX_t}{dt} = f(X_t,t) - \tfrac12 g(t)^2 \nabla_x\log p_t(X_t).
+\]</span> This is the continuous analogue of DDIM.</p>
+<h4 id="noise-prediction-vs.-score-prediction">Noise Prediction
+vs. Score Prediction</h4>
+<p>For VP, <span class="math display">\[
+\nabla_{x_t}\log q(x_t|x_0) =
+-\frac{x_t-\sqrt{\bar\alpha_t}x_0}{1-\bar\alpha_t} =
+-\frac{\epsilon}{\sqrt{1-\bar\alpha_t}}.
+\]</span> Thus noise prediction and score prediction are equivalent:
+<span class="math display">\[
+s_\theta(x_t,t) = -\frac{\epsilon_\theta(x_t,t)}{\sqrt{1-\bar\alpha_t}}.
+\]</span></p>
+<p>An alternative data predictor: <span class="math display">\[
+\hat x_0(x_t) =
+\frac{1}{\sqrt{\bar\alpha_t}}\big(x_t-\sqrt{1-\bar\alpha_t}\,\epsilon_\theta(x_t,t)\big).
+\]</span></p>
+<h3 id="denoising-score-matching-dsm">Denoising Score Matching
+(DSM)</h3>
+<p>Training objective: <span class="math display">\[
+\min_\theta\; \mathbb E_{x_0,\sigma,z}\;\Big\|s_\theta(x_0+\sigma
+z,\sigma) + \tfrac{z}{\sigma}\Big\|^2.
+\]</span></p>
+<p>For VP, choosing <span
+class="math inline">\(\sigma(t)=\sqrt{1-\bar\alpha_t}\)</span> reduces
+DSM to the DDPM noise-prediction MSE.</p>
+<h4 id="derivation-and-intuition">Derivation and Intuition</h4>
+<p>TODO: Weak form.</p>
+<h2 id="flow-matching-models">Flow Matching Models</h2>
+<p>See <a
+href="https://notdesigned.github.io/2025/08/09/Flow-Matching/">Flow
+Matching</a></p>
+<h2 id="schrödinger-bridge-models">Schrödinger Bridge Models</h2>
+<h3 id="relation-with-entropy-regularized-optimal-transport">Relation
+with Entropy-Regularized Optimal Transport</h3>
+<h3 id="ipf-dsb-s-dsb">IPF (DSB, S-DSB)</h3>
+<h3 id="imf">IMF</h3>
+<h3 id="d-imf-adsb">D-IMF (ADSB)</h3>
+<h3 id="cdsb">CDSB</h3>
+<p>TODO.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Machine-Learning/" class="category-chain-item">Machine Learning</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Generative-Models/" class="print-no-link">#Generative Models</a>
+      
+        <a href="/tags/Flow-Matching/" class="print-no-link">#Flow Matching</a>
+      
+        <a href="/tags/Score-based-Models/" class="print-no-link">#Score-based Models</a>
+      
+        <a href="/tags/Optimal-Transport/" class="print-no-link">#Optimal Transport</a>
+      
+        <a href="/tags/Stochastic-Differential-Equations/" class="print-no-link">#Stochastic Differential Equations</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Flow matching, Score-based Generative Model, Schrödinger Bridge and Optimal Transport</div>
+      <div>https://notdesigned.github.io/2025/09/18/Flow-matching-Score-based-Generative-Model-Schrodinger-Bridge-and-Optimal-Transport/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Luocheng Liang</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>September 18, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - Share-alike">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/11/03/Reading-notes-of-The-Principle-of-Diffusion-Models/" title="Reading notes of The Principle of Diffusion Models">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Reading notes of The Principle of Diffusion Models</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/08/25/Variational-Calculus-in-VAE/" title="Variational Calculus in VAE">
+                        <span class="hidden-mobile">Variational Calculus in VAE</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"Ov23lisUTr0Y3YpBngo1","clientSecret":"4068f2efc1d2d6015f3c8089a4e0ad4c1aeb8ed2","repo":"gitalkcomment","owner":"NotDesigned","admin":["NotDesigned"],"language":"en","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://autumn-recipe-17e3.theadscn.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '396ee64d1dca736e8dc8b0c3ac4a0cf2'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

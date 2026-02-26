@@ -1,0 +1,1011 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Luocheng Liang">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="参考文献: Wikipedia - Submodular function Lecture 7: Submodular Functions, Lovász Extension and Minimization Learning with Submodular Functions: A Convex Optimization Perspective 子模函数 (Submodular Function">
+<meta property="og:type" content="article">
+<meta property="og:title" content="子模函数以及Lovász拓展">
+<meta property="og:url" content="https://notdesigned.github.io/2025/06/11/%E5%AD%90%E6%A8%A1%E5%87%BD%E6%95%B0%E4%BB%A5%E5%8F%8ALovasz%E6%8B%93%E5%B1%95/index.html">
+<meta property="og:site_name" content="Adscn&#39;s Blog">
+<meta property="og:description" content="参考文献: Wikipedia - Submodular function Lecture 7: Submodular Functions, Lovász Extension and Minimization Learning with Submodular Functions: A Convex Optimization Perspective 子模函数 (Submodular Function">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-06-11T17:04:05.000Z">
+<meta property="article:modified_time" content="2026-02-26T12:57:24.809Z">
+<meta property="article:author" content="Luocheng Liang">
+<meta property="article:tag" content="Optimization">
+<meta property="article:tag" content="Submodular Functions">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>子模函数以及Lovász拓展 - Adscn&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"notdesigned.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Adscn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Blog</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="子模函数以及Lovász拓展"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-11 17:04" pubdate>
+          June 11, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.7k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">子模函数以及Lovász拓展</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>参考文献:</p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Submodular_function">Wikipedia
+- Submodular function</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://www.cs.princeton.edu/~hy2/teaching/fall22-cos521/notes/SFM.pdf">Lecture
+7: Submodular Functions, Lovász Extension and Minimization</a></p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1111.6453">Learning with Submodular
+Functions: A Convex Optimization Perspective</a></p>
+<h2 id="子模函数-submodular-function">子模函数 (Submodular
+Function)</h2>
+<p>一个函数 <span class="math inline">\(f: 2^N \to \mathbb{R}\)</span>
+被称为子模函数，如果对于任意的 <span class="math inline">\(A \subseteq B
+\subseteq N\)</span> 和 <span class="math inline">\(x \in N \setminus
+B\)</span>，都有以下不等式成立：</p>
+<p><span class="math display">\[
+f(A \cup \{x\}) - f(A) \geq f(B \cup \{x\}) - f(B)
+\]</span></p>
+<p>一个等价的定义是，如果对于任意的 <span class="math inline">\(A
+\subseteq B\)</span> 和 <span class="math inline">\(x \in N \setminus
+B\)</span>，都有：</p>
+<p><span class="math display">\[
+f(A \cup \{x\}) - f(A) \geq f(B \cup \{x\}) - f(B)
+\]</span></p>
+<p>第一个不等式可以被解释为“边际收益递减”，即添加一个元素到集合 <span
+class="math inline">\(A\)</span>
+的收益大于或等于添加同样的元素到更大的集合 <span
+class="math inline">\(B\)</span> 的收益。</p>
+<p>几个常见的子模函数示例包括：</p>
+<ul>
+<li>令图 <span class="math inline">\(G = (V, E)\)</span>，定义函数 <span
+class="math inline">\(f(S) = |E(S, \bar S)|\)</span>，则<span
+class="math inline">\(f\)</span> 是子模的，其中 <span
+class="math inline">\(E(S, \bar S)\)</span> 表示集合 <span
+class="math inline">\(S\)</span> 和其补集 <span
+class="math inline">\(\bar S\)</span> 之间的边集。</li>
+<li>令图 <span class="math inline">\(G = (U, V, E)\)</span>
+为一个二分图，<span class="math inline">\(|U| = n\)</span>。 对于所有
+<span class="math inline">\(S \subseteq U\)</span>，定义 <span
+class="math inline">\(f(S) = |N(S)|\)</span>，其中 <span
+class="math inline">\(N(S)\)</span> 是 <span
+class="math inline">\(S\)</span> 的邻居节点集合，则 <span
+class="math inline">\(f\)</span> 是子模的。<span
+class="math inline">\(f\)</span>也是单调的。</li>
+<li>令 <span class="math inline">\(x_1,x_2,\cdots, x_n\)</span> 是 <span
+class="math inline">\(n\)</span> 个离散随机变量。对任意 <span
+class="math inline">\(A \subseteq [n]\)</span>，定义 <span
+class="math inline">\(f(A) = H(X_A)\)</span>，其中 <span
+class="math inline">\(H(X_A)\)</span> 是 <span
+class="math inline">\(X_A\)</span> 的熵，则 <span
+class="math inline">\(f\)</span> 是子模的。</li>
+</ul>
+<h2 id="lovász拓展-lovász-extension">Lovász拓展 (Lovász Extension)</h2>
+<blockquote>
+<p>In a word, the Lovasz extension is a weighted average of the values
+at the corners.</p>
+</blockquote>
+<p>对于函数 <span class="math inline">\(f: 2^N \to
+\mathbb{R}\)</span>，其Lovász拓展定义为：</p>
+<p><span class="math display">\[
+\begin{align}
+\hat{f}(x) = \mathbb{E}_{\lambda \sim \text{Uniform}(0,1)}[f(\{i \in N :
+x_i \geq \lambda\})]
+\end{align}
+\]</span></p>
+<p>其中 <span class="math inline">\(x = (x_1, x_2, \ldots, x_n)\in
+\mathbb{R}^n\)</span>。</p>
+<p>Lovász拓展被称为拓展，因为它保留了离散点集上的函数值。注意到，对于离散点<span
+class="math inline">\(z\in \{0,1\}^n, \lambda \in [0,
+1]\)</span>，都有：<span class="math inline">\(\{ i | z_i\geq \lambda\}
+= \{ i | z_i = 1 \} = S\)</span>。所以 <span class="math inline">\(\hat
+f\)</span> 与 <span class="math inline">\(f\)</span>
+在离散点集上是相同的。</p>
+<h3 id="等价的构造定义">等价的构造定义</h3>
+<p>将向量 <span class="math inline">\(x\)</span> 的分量按降序重新排列为
+<span class="math inline">\(x_{\sigma(1)} \geq x_{\sigma(2)} \geq \ldots
+\geq x_{\sigma(n)}\)</span>，然后定义集合序列 <span
+class="math inline">\(S_i = \{ \sigma(1), \sigma(2), \ldots, \sigma(i)
+\} = \{i \in N : x_i \geq x_{\sigma(i)}\}\)</span>。</p>
+<p>则：</p>
+<p><span class="math display">\[
+\begin{align}
+\hat{f}(x) = \sum_{i=1}^n f(S_{i}) \cdot (x_{\sigma(i)} -
+x_{\sigma(i+1)})
+\end{align}
+\]</span></p>
+<p>并约定 <span class="math inline">\(x_{\sigma(n+1)} = 0\)</span>。</p>
+<p>这个定义可以看作是对函数 <span class="math inline">\(f\)</span>
+在每个集合 <span class="math inline">\(S_i\)</span>
+上的值进行加权平均，其中权重是相邻元素之间的差值。</p>
+<p>对于子模函数 <span
+class="math inline">\(f\)</span>，另一个有用的定义是，令 <span
+class="math inline">\(B(f)\)</span> 为 <span
+class="math inline">\(f\)</span> 的拟阵多面体（polymatroid）</p>
+<p><span class="math display">\[
+B(f) = \{ w\in \mathbb{R}^n : w(N) = f(N), w(A) \leq f(A) \text{ for all
+} A \subseteq N \}
+\]</span></p>
+<p>则</p>
+<p><span class="math display">\[
+\begin{align}
+\hat{f}(x) = \max_{y \in B(f)} \langle x, y \rangle
+\end{align}
+\]</span></p>
+<h3 id="等价性证明">等价性证明</h3>
+<p><span class="math inline">\((1)\iff (2)\)</span></p>
+<p><span class="math display">\[
+\begin{align*}
+\hat{f}(x) &amp;= \mathbb{E}_{\lambda \sim \text{Uniform}(0,1)}[f(\{i
+\in N : x_i \geq \lambda\})] \\
+&amp;= \int_0^1 f(\{i \in N : x_i \geq \lambda\}) d\lambda \\
+\end{align*}
+\]</span> 按 <span class="math inline">\(\{x_{\sigma(i)}\}\)</span>
+分段积分： <span class="math display">\[
+\begin{align*}
+\hat{f}(x) &amp;= \int_{\sigma(1)}^1 f(\{j \in N : x_j \geq \lambda\})
+d\lambda + \sum_{i=1}^{n} \int_{x_{\sigma(i+1)}}^{x_{\sigma(i)}} f(\{j
+\in N : x_j \geq \lambda\}) \, d\lambda \\
+&amp;= 0 + \sum_{i=0}^{n} f(\{j \in N : x_j \geq x_{\sigma(i)}\}) \cdot
+(x_{\sigma(i)} - x_{\sigma(i+1)}) \\
+&amp;= \sum_{i=1}^{n} f(\{j \in N : x_j \geq x_{\sigma(i)}\}) \cdot
+(x_{\sigma(i)} - x_{\sigma(i+1)}) \\
+&amp;= \sum_{i=1}^{n} f(S_i) \cdot (x_{\sigma(i)} - x_{\sigma(i+1)})
+\end{align*}
+\]</span></p>
+<p><span class="math inline">\((2) \iff (3)\)</span></p>
+<p><strong>引理：</strong></p>
+<p>对于子模函数 <span class="math inline">\(f\)</span>，其拟阵多面体
+<span class="math inline">\(B(f)\)</span> 的顶点一一对应于排列 <span
+class="math inline">\(\pi\)</span> <span class="math display">\[
+\begin{align*}
+w_i^{\pi} = f(\{j \in N : \sigma^{-1}(j) \leq \sigma^{-1}(i)\}) - f(\{j
+\in N : \sigma^{-1}(j) &lt; \sigma^{-1}(i)\})
+\end{align*}
+\]</span></p>
+<p>证明：</p>
+<p><span class="math inline">\(w^{\pi}(N)=f(N)\)</span>是平凡的</p>
+<p>对于任意的 <span class="math inline">\(A \subseteq
+N\)</span>，考虑一个排列 <span
+class="math inline">\(\tau\)</span>，它首先列出 <span
+class="math inline">\(A\)</span> 中的元素（按某种顺序），然后列出 <span
+class="math inline">\(N \setminus A\)</span> 中的元素。</p>
+<p>对于这个排列 <span class="math inline">\(\tau\)</span>，我们有：
+<span class="math display">\[
+\begin{align*}
+w^{\tau}(A) &amp;= f(A) - f(\emptyset) \\
+&amp;= f(A)
+\end{align*}
+\]</span></p>
+<p>现在考虑任意的排列 <span
+class="math inline">\(\pi\)</span>，我们可以证明如果某个 <span
+class="math inline">\(a\notin A\)</span> 出现在 <span
+class="math inline">\(b\in A\)</span> 的前面，则交换它们的位置不会减少
+<span class="math inline">\(w(A)\)</span> 的值。</p>
+<p>原来 <span class="math inline">\(b\)</span> 的贡献是 <span
+class="math inline">\(f(S\cup \{a,b\}) - f(S\cup \{a\})\)</span>，
+交换后变为 <span class="math inline">\(f(S\cup {b}) -
+f(S)\)</span>。</p>
+<p>而子模函数性质告诉我们，<span class="math inline">\(f(S\cup \{a,b\})
+- f(S\cup \{a\}) \geq f(S\cup \{b\}) - f(S)\)</span>。</p>
+<p>因此，<span class="math inline">\(w^{\tau}(A)\)</span> 在所有排列
+<span class="math inline">\(\pi\)</span> 中是最大的。</p>
+<p>所以<span class="math inline">\(w^{\pi}(A) \leq f(A), \forall
+\pi\)</span></p>
+<p>另外，注意到 <span class="math inline">\(\forall \sigma, \forall
+1\leq k \leq n, w^\sigma(\{\sigma(1), \sigma(2), \ldots, \sigma(k)\}) =
+f(\{\sigma(1), \sigma(2), \ldots, \sigma(k)\})\)</span>。</p>
+<p>所以 <span class="math inline">\(w^{\sigma}\)</span> 满足 <span
+class="math inline">\(n\)</span> 个线性无关约束，故 <span
+class="math inline">\(w^{\sigma}\)</span> 是 <span
+class="math inline">\(B(f)\)</span> 的顶点。</p>
+<p><span class="math inline">\(\square\)</span></p>
+<p>现在证明 <span class="math inline">\((2) \iff (3)\)</span>：</p>
+<p>不难知道最优解 <span class="math inline">\(w^*\)</span>
+一定是对应排列 <span class="math inline">\(\sigma\)</span> 的顶点。</p>
+<p>注意到 <span class="math inline">\(\{j| j \in N : \sigma^{-1}(j) \leq
+i\} = \{j| x_j \geq x_{\sigma(i)}\}\)</span></p>
+<p>我们有：</p>
+<p><span class="math display">\[
+\begin{align*}
+\hat{f}(x) &amp;= \max_{y \in B(f)} \langle x, y \rangle \\
+&amp;= \max_{\pi} \langle x, w^{\pi} \rangle \\
+&amp;= \sum_{i=1}^{n} x_{\sigma(i)} (f(\{j \in N : \sigma^{-1}(j) \leq
+i\}) - f(\{j \in N : \sigma^{-1}(j) &lt; i\})) \\
+&amp;= \sum_{i=1}^{n} x_{\sigma(i)} (f(\{j \in N : x_j \geq
+x_{\sigma(i)}\}) - f(\{j \in N : x_j &gt; x_{\sigma(i)}\})) \\
+&amp;= \sum_{i=1}^{n} f(\{j \in N : x_j \geq x_{\sigma(i)}\})
+(x_{\sigma(i)} - x_{\sigma(i+1)}) \\
+&amp;= \sum_{i=1}^{n} f(S_i) (x_{\sigma(i)} - x_{\sigma(i+1)}) \\
+\end{align*}
+\]</span></p>
+<h3 id="lovász拓展在子模函数上的性质">Lovász拓展在子模函数上的性质</h3>
+<p>我们有如下定理：</p>
+<p><strong>定理</strong>：对于函数 <span class="math inline">\(f: 2^N
+\to \mathbb{R}\)</span>，<span class="math inline">\(f\)</span>
+是子模函数当且仅当其 Lovász 拓展 <span
+class="math inline">\(\hat{f}\)</span> 是凸函数。</p>
+<p>充分性：如果 <span class="math inline">\(f\)</span>
+是子模函数，则对于任意的 <span class="math inline">\(x, y \in
+\mathbb{R}^n\)</span> 和 <span class="math inline">\(\theta \in [0,
+1]\)</span>，都有： <span class="math display">\[
+\hat{f}(\theta x + (1 - \theta) y) \leq \theta \hat{f}(x) + (1 - \theta)
+\hat{f}(y)
+\]</span> 证明：由 Lovász 拓展的定义，我们有： <span
+class="math display">\[
+\begin{align*}
+\hat{f}(\theta x + (1 - \theta) y) &amp;= \mathbb{E}_{\lambda \sim
+\text{Uniform}(0,1)}[f(\{i \in N : (\theta x + (1 - \theta) y)_i \geq
+\lambda\})] \\
+&amp;= \mathbb{E}_{\lambda \sim \text{Uniform}(0,1)}[f(\{i \in N :
+\theta x_i + (1 - \theta) y_i \geq \lambda\})] \\
+&amp;\leq \mathbb{E}_{\lambda \sim \text{Uniform}(0,1)}[\theta f(\{i \in
+N : x_i \geq \lambda\}) + (1 - \theta) f(\{i \in N : y_i \geq
+\lambda\})] \\
+&amp;= \theta \mathbb{E}_{\lambda \sim \text{Uniform}(0,1)}[f(\{i \in N
+: x_i \geq \lambda\})] + (1 - \theta) \mathbb{E}_{\lambda \sim
+\text{Uniform}(0,1)}[f(\{i \in N : y_i \geq \lambda\})] \\
+&amp;= \theta \hat{f}(x) + (1 - \theta) \hat{f}(y)
+\end{align*}
+\]</span> 因此，<span class="math inline">\(\hat{f}\)</span>
+是凸函数。</p>
+<p>必要性：如果 <span class="math inline">\(\hat{f}\)</span>
+是凸函数，则对于任意的 <span class="math inline">\(A \subseteq
+B\)</span> 和 <span class="math inline">\(x \in N \setminus
+B\)</span>，（这里将<span class="math inline">\(f\)</span>视作<span
+class="math inline">\(\hat f\)</span>限制到<span
+class="math inline">\(\{0,1\}^N\)</span>上）</p>
+<p>都有： <span class="math display">\[
+f(A \cup \{x\}) - f(A) \geq f(B \cup \{x\}) - f(B)
+\]</span> 证明：</p>
+<p>令 <span class="math inline">\(A&#39; = A \cup \{x\}\)</span> 和
+<span class="math inline">\(B&#39; = B \cup \{x\}\)</span></p>
+<p><span class="math display">\[
+\mathbb{1}_{A&#39;}+\mathbb{1}_{B} = \mathbb{1}_{A} +
+\mathbb{1}_{B&#39;}
+\]</span> 因此， <span class="math display">\[
+\begin{align*}
+\hat{f}(\frac 12 \mathbb{1}_{A&#39;} +\frac 12\mathbb{1}_{B}) &amp;\leq
+\frac 12 \hat{f}(\mathbb{1}_{A&#39;}) + \frac 12 \hat{f}(\mathbb{1}_{B})
+\\
+\iff \hat{f}(\frac 12 \mathbb{1}_{A} +\frac 12\mathbb{1}_{B&#39;})
+&amp;\leq \frac 12 f(A&#39;) + \frac 12 f(B) \\
+\end{align*}
+\]</span></p>
+<p>现在我们用Lovász拓展的定义来计算左侧，设 <span
+class="math inline">\(z = \frac 12 \mathbb{1}_{A} +\frac
+12\mathbb{1}_{B&#39;}\)</span>，则： - 对于 <span
+class="math inline">\(i \in A\)</span>，<span class="math inline">\(z_i
+= 1\)</span> - 对于 <span class="math inline">\(i \in (B\setminus A)\cup
+\{x\}\)</span>，<span class="math inline">\(z_i = 1/2\)</span> -
+其他情况， <span class="math inline">\(z_i = 0\)</span></p>
+<p>所以 <span class="math display">\[
+\begin{align*}
+\hat{f}(\frac 12 \mathbb{1}_{A} +\frac 12\mathbb{1}_{B&#39;}) &amp;=
+\int_0^{\frac 12} f(\{i \in N : z_i \geq \lambda\}) d\lambda +
+\int_{\frac 12}^1 f(\{i \in N : z_i \geq \lambda\}) d\lambda \\
+&amp;= \int_0^{\frac 12} f(B&#39;) d\lambda + \int_{\frac 12}^1 f(A)
+d\lambda \\
+&amp;= \frac 12 f(B&#39;) + \frac 12 f(A) \\
+\end{align*}
+\]</span></p>
+<p>因此，我们得到了： <span class="math display">\[
+\begin{align*}
+\frac 12 f(B&#39;) + \frac 12 f(A) &amp;\leq \frac 12 f(A&#39;) + \frac
+12 f(B)\\
+\iff f(A \cup \{x\}) - f(A) &amp;\geq f(B \cup \{x\}) - f(B)
+\end{align*}
+\]</span> 这就证明了必要性。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Mathematics/" class="category-chain-item">Mathematics</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Optimization/" class="print-no-link">#Optimization</a>
+      
+        <a href="/tags/Submodular-Functions/" class="print-no-link">#Submodular Functions</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>子模函数以及Lovász拓展</div>
+      <div>https://notdesigned.github.io/2025/06/11/子模函数以及Lovasz拓展/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Luocheng Liang</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>June 11, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - Share-alike">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/14/Random-Coordinate-Descent-Methods/" title="Random Coordinate Descent Methods">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Random Coordinate Descent Methods</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/10/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%AD%E5%B8%B8%E8%A7%81%E7%9A%84%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/" title="机器学习中常见的损失函数">
+                        <span class="hidden-mobile">机器学习中常见的损失函数</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"Ov23lisUTr0Y3YpBngo1","clientSecret":"4068f2efc1d2d6015f3c8089a4e0ad4c1aeb8ed2","repo":"gitalkcomment","owner":"NotDesigned","admin":["NotDesigned"],"language":"en","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://autumn-recipe-17e3.theadscn.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '9595ab88c91ff40a23bc7a690e88a997'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,1154 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Luocheng Liang">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Reference Renormalization Group Flow as Optimal Transport Introduction I have very little knowledge in physics, so there might be many errors in this post. If you see any errors, please point it out i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Renormalization Group Flow as Optimal Transport">
+<meta property="og:url" content="https://notdesigned.github.io/2025/08/21/Renormalization-Group-Flow-as-Optimal-Transport/index.html">
+<meta property="og:site_name" content="Adscn&#39;s Blog">
+<meta property="og:description" content="Reference Renormalization Group Flow as Optimal Transport Introduction I have very little knowledge in physics, so there might be many errors in this post. If you see any errors, please point it out i">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-08-21T20:07:27.000Z">
+<meta property="article:modified_time" content="2026-02-26T12:57:24.807Z">
+<meta property="article:author" content="Luocheng Liang">
+<meta property="article:tag" content="Optimal Transport">
+<meta property="article:tag" content="Renormalization Group">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Renormalization Group Flow as Optimal Transport - Adscn&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"notdesigned.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Adscn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Blog</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Renormalization Group Flow as Optimal Transport"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-21 20:07" pubdate>
+          August 21, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.8k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Renormalization Group Flow as Optimal Transport</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="reference">Reference</h2>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2202.11737">Renormalization Group Flow
+as Optimal Transport</a></p>
+<h2 id="introduction">Introduction</h2>
+<p>I have very little knowledge in physics, so there might be many
+errors in this post. If you see any errors, please point it out in the
+comment!</p>
+<p>Renormalization theory, to put it simply, is a theory describing that
+every theory is the optimal theory under our capability of
+understanding, thus might be only effective to some extent.</p>
+<h2 id="ising-model">Ising Model</h2>
+<h3 id="the-lattice">The Lattice</h3>
+<p>A <span class="math inline">\(d\)</span>-dimensional lattice <span
+class="math inline">\(\mathbb Z^d\)</span> is the set of all integer
+points in <span class="math inline">\(d\)</span>-dimensional Euclidean
+space <span class="math inline">\(\mathbb R^d\)</span>. To make it
+easier to deal with, we usually take a subset <span
+class="math inline">\(L\subseteq \mathbb Z^d\)</span> and put
+<strong>periodic boundary conditions</strong> on <span
+class="math inline">\(L\)</span> (like the Snake game).</p>
+<p>Every point <span class="math inline">\(i=(i_1,\ldots,i_d)\in \mathbb
+Z^d\)</span> in the lattice is called a <strong>site</strong>.</p>
+<p>For every two neighbors <span class="math inline">\(i,j\)</span>, if
+<span class="math inline">\(\|i-j\|_{1}=1\)</span>, we call them
+<strong>nearest neighbors</strong>, denoted as <span
+class="math inline">\(\langle i,j \rangle\)</span>.</p>
+<h3 id="configuration-space">Configuration Space</h3>
+<p>For every site <span class="math inline">\(i\in L\)</span>, we have a
+state <span class="math inline">\(s_i\in V\)</span>, where <span
+class="math inline">\(V=\{-1,1\}\)</span> is the set of all possible
+states of the system.</p>
+<p>A configuration <span class="math inline">\(\sigma\)</span> is a
+function <span class="math inline">\(\sigma:L\to V\)</span>, which means
+every site <span class="math inline">\(i\in L\)</span> has a state <span
+class="math inline">\(\sigma(i)\in V\)</span>.</p>
+<p>The configuration space <span class="math inline">\(\Lambda\)</span>
+is the set of all possible configurations, i.e., <span
+class="math inline">\(\Lambda = \{ \sigma : L \to V \}\cong
+V^{N}\)</span>, where <span class="math inline">\(N=|L|\)</span> is the
+number of sites in <span class="math inline">\(L\)</span>.</p>
+<h3 id="operators">Operators</h3>
+<p>An operator <span class="math inline">\(O\)</span> is a functional
+<span class="math inline">\(O:\Lambda\to \mathbb R\)</span>, which means
+it takes a configuration <span class="math inline">\(\sigma\)</span> and
+returns a real number.</p>
+<p>The most important operator is the <strong>Hamiltonian</strong> <span
+class="math inline">\(H\)</span>, which describes the energy of a
+configuration <span class="math inline">\(\sigma\)</span>.</p>
+<h4 id="symmetry">Symmetry</h4>
+<p>We may constrain the possible configurations by some symmetry.</p>
+<p>We say a physical system <span class="math inline">\((\mathcal S, S,
+\mathcal O)\)</span> with state space <span
+class="math inline">\(\mathcal S\)</span>, law of dynamics <span
+class="math inline">\(S\)</span> and observables <span
+class="math inline">\(\mathcal O\)</span> has a symmetry <span
+class="math inline">\(T:\mathcal{S} \to \mathcal{S}\)</span> if for any
+observable <span class="math inline">\(O \in \mathcal{O}\)</span>, we
+have <span class="math inline">\(O(T(\sigma)) = O(\sigma)\)</span> for
+all <span class="math inline">\(\sigma \in \mathcal{S}\)</span>.</p>
+<p>So we can use the symmetry to reduce the number of operators we need
+to consider.</p>
+<p>For the Ising model, we mainly focus on two operators:</p>
+<h4 id="magnetization-operator">Magnetization Operator</h4>
+<p><span class="math display">\[
+O_M(\sigma) = \sum_{i\in L} h_i \sigma(i)
+\]</span></p>
+<h4 id="nearest-neighbor-interaction-operator">Nearest-Neighbor
+Interaction Operator</h4>
+<p><span class="math display">\[
+O_{NN}(\sigma) = \sum_{\langle i,j\rangle} J_{i,j} \sigma(i)\sigma(j)
+\]</span></p>
+<p>The Hamiltonian is defined as a linear combination over a basis <span
+class="math inline">\(\{O\}\)</span> of the linear vector space <span
+class="math inline">\(\Lambda\)</span>.</p>
+<p>For the Ising model, <span class="math display">\[
+H(J,h;\sigma) = O_{NN}(\sigma) + h O_M(\sigma) = \sum_{\langle
+i,j\rangle} J_{i,j} \sigma(i)\sigma(j) + \sum_{i\in L}h_i\sigma(i)
+\]</span></p>
+<p>where <span class="math inline">\(J,h\)</span> are coupling constants
+describing the strength of the interaction and the external field.</p>
+<p>When the external field is zero everywhere, <span
+class="math inline">\(h = 0\)</span>, the Ising model is symmetric under
+switching the value of the spin in all the lattice sites; a nonzero
+field breaks this symmetry.</p>
+<h3 id="the-partition-function">The Partition Function</h3>
+<p>The partition function <span class="math inline">\(Z\)</span> is a
+function of the Hamiltonian <span class="math inline">\(H\)</span> and
+the temperature <span class="math inline">\(T\)</span>, defined as:
+<span class="math display">\[
+Z(J,h,\beta) = \sum_{\sigma \in \Lambda} e^{-\beta H(J,h;\sigma)}
+\]</span></p>
+<p>The configuration probability is given by the Boltzmann distribution
+<span class="math display">\[
+P(\sigma) = \frac{1}{Z(J,h,\beta)} e^{-\beta H(J,h;\sigma)}
+\]</span> where <span class="math inline">\(\beta = 1/k_{B} T\)</span>,
+and <span class="math inline">\(k_{B}\)</span> is the Boltzmann
+constant.</p>
+<h2 id="continuous-generalization">Continuous Generalization</h2>
+<h3 id="from-lattice-to-continuum">From Lattice to Continuum</h3>
+<p>Let the distance between two points approach <span
+class="math inline">\(0\)</span>, then <span
+class="math inline">\(\sigma\in \Lambda\)</span> becomes a real scalar
+field <span class="math inline">\(\phi(x)\)</span> on <span
+class="math inline">\(\Omega \subset \mathbb R^d\)</span>.</p>
+<p>The Hamiltonian <span class="math inline">\(H\)</span> becomes the
+action functional <span class="math inline">\(S\)</span> as the integral
+of the Lagrangian density <span class="math display">\[
+S[\phi] = \int_{\Omega} \mathcal{L}(\phi,\partial_\mu \phi) d^d x
+\]</span></p>
+<p>The partition function becomes the functional integral: <span
+class="math display">\[
+Z[\phi] = \int \mathcal{D}\phi \, e^{-S[\phi]}
+\]</span></p>
+<h3 id="fourier-transform-convention-and-momentum-space">Fourier
+Transform Convention and Momentum Space</h3>
+<p><strong>Convention</strong>: We use the Fourier transform convention:
+<span class="math display">\[
+\phi(x) = \int \frac{d^d p}{(2\pi)^d} e^{ip \cdot x} \tilde{\phi}(p)
+\]</span> <span class="math display">\[
+\tilde{\phi}(p) = \int d^d x \, e^{-ip \cdot x} \phi(x)
+\]</span></p>
+<p>where <span class="math inline">\(p \cdot x = p_\mu x^\mu\)</span>
+(Einstein summation convention), and we set <span
+class="math inline">\(\hbar = c = 1\)</span>.</p>
+<p><strong>Key Identity</strong>: The crucial relationship between
+position and momentum space derivatives is: <span
+class="math display">\[
+\frac{\partial}{\partial x^\mu} \phi(x) \leftrightarrow i p_\mu
+\tilde{\phi}(p)
+\]</span></p>
+<p><strong>Derivation of the duality</strong>: Starting from the Fourier
+transform: <span class="math display">\[
+\frac{\partial \phi(x)}{\partial x^\mu} = \frac{\partial}{\partial
+x^\mu} \int \frac{d^d p}{(2\pi)^d} e^{ip \cdot x} \tilde{\phi}(p)
+\]</span></p>
+<p>Since <span class="math inline">\(\frac{\partial}{\partial x^\mu}
+e^{ip \cdot x} = \frac{\partial}{\partial x^\mu} e^{ip_\nu x^\nu} = i
+p_\mu e^{ip \cdot x}\)</span>, we get: <span class="math display">\[
+\frac{\partial \phi(x)}{\partial x^\mu} = \int \frac{d^d p}{(2\pi)^d} (i
+p_\mu) e^{ip \cdot x} \tilde{\phi}(p)
+\]</span></p>
+<p>This shows that <strong>differentiation in position space becomes
+multiplication by <span class="math inline">\(ip_\mu\)</span> in
+momentum space</strong>.</p>
+<h3 id="momentum-space-integrals">Momentum Space Integrals</h3>
+<p><strong>Parseval’s theorem</strong> for scalar fields gives us: <span
+class="math display">\[
+\int d^d x \, \phi(x)^2 = \int \frac{d^d p}{(2\pi)^d} \tilde{\phi}(p)
+\tilde{\phi}(-p)
+\]</span></p>
+<p><strong>For derivatives</strong>: Using the duality <span
+class="math inline">\(\partial_\mu \leftrightarrow i p_\mu\)</span>:
+<span class="math display">\[
+\int d^d x \, (\partial_\mu \phi(x))^2 = \int \frac{d^d p}{(2\pi)^d} (i
+p_\mu)^2 \tilde{\phi}(p) \tilde{\phi}(-p) = \int \frac{d^d p}{(2\pi)^d}
+p_\mu^2 \tilde{\phi}(p) \tilde{\phi}(-p)
+\]</span></p>
+<p>More generally: <span class="math display">\[
+\int d^d x \, (\partial_\mu \phi)(\partial^\mu \phi) = \int \frac{d^d
+p}{(2\pi)^d} p^2 \tilde{\phi}(p) \tilde{\phi}(-p)
+\]</span> where <span class="math inline">\(p^2 = p_\mu p^\mu =
+|\vec{p}|^2\)</span> in Euclidean space.</p>
+<h3 id="transformation-of-operators">Transformation of Operators</h3>
+<p>Now we can transform our operators to momentum space:</p>
+<p><strong>Magnetization operator</strong> (with external source <span
+class="math inline">\(j(x)\)</span>): <span class="math display">\[
+O_M[\phi] = \int d^d x \, j(x) \phi(x) \to \int \frac{d^d p}{(2\pi)^d}
+\tilde{j}(p) \tilde{\phi}(-p)
+\]</span></p>
+<p><strong>Kinetic term</strong>: <span class="math display">\[
+\int d^d x \, \frac{1}{2}(\partial_\mu\phi)^2 \to \int \frac{d^d
+p}{(2\pi)^d} \frac{1}{2} p^2 \tilde{\phi}(p) \tilde{\phi}(-p)
+\]</span></p>
+<p><strong>Mass term</strong>: <span class="math display">\[
+\int d^d x \, \frac{1}{2} m^2 \phi^2 \to \int \frac{d^d p}{(2\pi)^d}
+\frac{1}{2} m^2 \tilde{\phi}(p) \tilde{\phi}(-p)
+\]</span></p>
+<h3 id="the-action-in-momentum-space">The Action in Momentum Space</h3>
+<p>If we assume the interaction coupling constants are uniform, we can
+write the action as: <span class="math display">\[
+S[\phi] = \int d^d x
+\left[\frac{1}{2}(\partial_{\mu}\phi)^2+\frac{1}{2}m^2\phi^2+\frac{u_0}{4!}\phi^4+j(x)\phi(x)\right]
+\]</span></p>
+<p><strong>In momentum space</strong>, this becomes: <span
+class="math display">\[
+S[\tilde{\phi}] = \int \frac{d^d p}{(2\pi)^d}
+\left[\frac{1}{2}(p^2+m^2)\tilde{\phi}(p)\tilde{\phi}(-p) +
+\tilde{j}(p)\tilde{\phi}(-p)\right ] + S_{int}[\tilde{\phi}]
+\]</span></p>
+<p>where <span class="math inline">\(\tilde{j}(p)\)</span> is the
+Fourier transform of <span class="math inline">\(j(x)\)</span> and <span
+class="math inline">\(S_{int}[\tilde{\phi}]\)</span> contains the
+interaction terms.</p>
+<h2 id="propagator">Propagator</h2>
+<h3 id="definition">Definition</h3>
+<p>After defining the behavior of the field <span
+class="math inline">\(\phi\)</span> <span
+class="math inline">\((S[\phi])\)</span> and its statistical
+distribution <span class="math inline">\(P[\phi]=
+\exp(-S[\phi])\)</span>, we shall ask the fundamental question—What is
+the relation between the different point in a field.</p>
+<p>In other words, if I know the value <span
+class="math inline">\(\phi(x)\)</span> at point <span
+class="math inline">\(x\)</span>, what can I say about the value <span
+class="math inline">\(\phi(y)\)</span> at another point <span
+class="math inline">\(y\)</span>?</p>
+<p>We introduce the <strong>propagator</strong> (also Green’s function,
+two-point correlation function)</p>
+<p><span class="math display">\[
+G(x,y) \equiv \langle \phi(x) \phi(y) \rangle = \frac{1}{Z} \int
+\mathcal{D}\phi \, \phi(x) \phi(y) e^{-S[\phi]}
+\]</span> as the expectation value of the product of the fields at two
+different points.</p>
+<p>In the momentum space, the propagator is defined as: <span
+class="math display">\[
+D(p) \equiv \langle \tilde{\phi}(p) \tilde{\phi}(-p) \rangle =
+\frac{1}{Z} \int \mathcal{D}\tilde{\phi} \, \tilde{\phi}(p)
+\tilde{\phi}(-p) e^{-S[\tilde{\phi}]}
+\]</span></p>
+<p>The relation is given by the Fourier transform:</p>
+<p><span class="math display">\[
+\begin{align*} G(x, y) &amp;= \langle \phi(x)\phi(y) \rangle \\
+&amp;= \left\langle \left( \int \frac{d^d p}{(2\pi)^d} e^{ip \cdot x}
+\tilde{\phi}(p) \right) \left( \int \frac{d^d q}{(2\pi)^d} e^{iq \cdot
+y} \tilde{\phi}(q) \right) \right\rangle \\
+&amp;= \int \frac{d^d p}{(2\pi)^d} \int \frac{d^d q}{(2\pi)^d} e^{ip
+\cdot x} e^{iq \cdot y} \langle \tilde{\phi}(p)\tilde{\phi}(q) \rangle
+\\
+&amp;= \int \frac{d^d p}{(2\pi)^d} \int \frac{d^d q}{(2\pi)^d} e^{ip
+\cdot x} e^{iq \cdot y} \left( (2\pi)^d \delta^{(d)}(p+q) D(p) \right)
+\\
+\end{align*}
+\]</span> Let <span class="math inline">\(q = -p\)</span>： <span
+class="math display">\[
+\begin{align*} G(x, y) &amp;= \int \frac{d^d p}{(2\pi)^d} e^{ip \cdot x}
+e^{-ip \cdot y} D(p) \\
+&amp;= \int \frac{d^d p}{(2\pi)^d} e^{ip \cdot (x-y)} D(p)
+\end{align*}
+\]</span></p>
+<h3 id="the-source-field-method-as-partitional-generating-function">The
+Source Field Method (as Partitional Generating Function)</h3>
+<p>Calculate the propagator directly from the definition is very
+complicated due to the presence of interactions.</p>
+<p>For the <strong>free field</strong> (no interactions, <span
+class="math inline">\(u_0 = 0\)</span>), the action is quadratic: <span
+class="math display">\[
+S_0[\tilde{\phi}] = \int \frac{d^d p}{(2\pi)^d}
+\frac{1}{2}(p^2+m^2)\tilde{\phi}(p)\tilde{\phi}(-p)
+\]</span></p>
+<p>If we calculate the propagator directly, we get:</p>
+<p><span class="math display">\[
+\begin{align*}
+D(p) = \frac{1}{Z} \int \mathcal{D}\tilde{\phi} \, \tilde{\phi}(p)
+\tilde{\phi}(-p) e^{-S_0[\tilde{\phi}]} \\
+= \frac{\int \mathcal{D}\tilde{\phi} \, \tilde{\phi}(p) \tilde{\phi}(-p)
+e^{-S_0[\tilde{\phi}]}}{\int \mathcal{D}\tilde{\phi} \,
+e^{-S_0[\tilde{\phi}]}}\\
+\end{align*}
+\]</span></p>
+<p>To calculate this propagator, we need to evaluate the Gaussian
+integrals involved.</p>
+<p>But actually, we can use the technique of generating function.</p>
+<p>Recall that, for a random variable <span
+class="math inline">\(X\)</span>, we can define its generating function
+as:</p>
+<p><span class="math display">\[
+G_X(t) = \mathbb{E}[e^{tX}]
+\]</span> And its moment <span
+class="math inline">\(\mathbb{E}[X^n]\)</span> can be obtained by
+differentiating <span class="math inline">\(G_X(t)\)</span> <span
+class="math inline">\(n\)</span> times and evaluating at <span
+class="math inline">\(t=0\)</span>:</p>
+<p>Now we are dealing with a field <span
+class="math inline">\(\phi\)</span> and functional partition function
+<span class="math inline">\(Z[\phi] =
+\mathbb{E}[\exp(-S[\phi])]\)</span>.</p>
+<p>Similarly, we introduce a source field <span
+class="math inline">\(J\)</span> and define the partition function with
+source <span class="math inline">\(J\)</span> as: <span
+class="math display">\[
+Z[J] = \mathbb{E}[\exp(-S[\phi] + \int d^d x J(x) \phi(x))]
+\]</span> or, in momentum space <span class="math display">\[
+Z[\tilde J] = \mathbb{E}[\exp(-S[\tilde{\phi}] + \int d^d p \tilde J(p)
+\tilde{\phi}(-p))]
+\]</span> Take the functional derivative of <span
+class="math inline">\(Z[J]\)</span>, we obtain: <span
+class="math display">\[
+\frac{\delta}{\delta \tilde J(p)} Z[\tilde J] =
+\mathbb{E}[\tilde{\phi}(-p) \exp(-S[\tilde{\phi}] + \int d^d \tilde J(p)
+\tilde \phi(-p))]
+\]</span> <span class="math display">\[
+\frac{\delta}{\delta \tilde J(p)}\frac{\delta}{\delta \tilde J(-p)}
+Z[\tilde J] = \mathbb{E}[\tilde{\phi}(-p) \tilde{\phi}(p)
+\exp(-S[\tilde{\phi}] + \int d^d \tilde J(p) \tilde \phi(-p))]
+\]</span> And evaluate it at <span class="math inline">\(\tilde J =
+0\)</span>, this is exactly the definition of propagator: <span
+class="math display">\[
+D(p) = \frac{1}{Z} \left. \frac{\delta}{\delta \tilde
+J(p)}\frac{\delta}{\delta \tilde J(-p)} Z[\tilde J] \right|_{\tilde J =
+0} = \left. \frac{\delta}{\delta \tilde J(p)}\frac{\delta}{\delta \tilde
+J(-p)} W[\tilde J] \right|_{\tilde J = 0}
+\]</span> where <span class="math inline">\(W[\tilde J] = \ln Z[\tilde
+J]\)</span>.</p>
+<p>For the free field, <span class="math display">\[
+\begin{align*}
+Z_0[\tilde J] &amp;= \int \mathcal{D}\tilde{\phi} \, \exp \left[
+-\frac{1}{2} \int \frac{d^d p}{(2\pi)^d} (p^2 + m^2) \tilde{\phi}(p)
+\tilde{\phi}(-p) + \int d^d p \tilde J(p) \tilde{\phi}(-p) \right]\\
+&amp;=\int \mathcal{D} \tilde \phi \exp\left(-\int\frac{d^d
+p}{(2\pi)^d}\left[\frac{1}{2}\tilde\phi&#39;(-p)(p^2+m^2)\tilde\phi&#39;(p)+(p^2+m^2)^{-1}\tilde
+J(p)\tilde J(-p)\right]\right)\\
+&amp;= Z_0[0] \exp \left[ \frac{1}{2} \int \frac{d^d p}{(2\pi)^d} (p^2 +
+m^2)^{-1} \tilde J(p) \tilde J(-p) \right]
+\end{align*}
+\]</span> where <span class="math inline">\(\tilde\phi(p) = \tilde
+\phi&#39;(p) + D(p)\tilde J(p)\)</span>.</p>
+<p>This substitution is called the completing the square technique.</p>
+<p>The propagator is: <span class="math display">\[
+D(p) = \frac{1}{p^2 + m^2}
+\]</span></p>
+<p>This gives the familiar result that in position space, the two-point
+correlation function is: <span class="math display">\[
+\langle \phi(x) \phi(y) \rangle = \int \frac{d^d p}{(2\pi)^d}
+\frac{e^{ip \cdot (x-y)}}{p^2 + m^2}
+\]</span></p>
+<h3 id="connection-to-exact-rg">Connection to Exact RG</h3>
+<p>This momentum space formulation naturally leads to the <strong>exact
+renormalization group</strong> approach, where we systematically
+integrate out high-momentum modes while keeping track of how the
+effective action changes. The cutoff function <span
+class="math inline">\(K_\Lambda(p^2)\)</span> mentioned in the paper
+provides a smooth way to suppress high-momentum modes above the scale
+<span class="math inline">\(\Lambda\)</span>.</p>
+<h2 id="renormalization">Renormalization</h2>
+<p>If we directly calculate the correlation, we will encounter infinity
+when <span class="math inline">\(d&gt;4\)</span>.</p>
+<h3 id="introduction-1">Introduction</h3>
+<p>TODO.</p>
+<h3 id="polchinski-equation">Polchinski Equation</h3>
+<p>Here is the detailed version of section <span
+class="math inline">\(2.1.1\)</span> in the paper.</p>
+<p><span class="math display">\[
+Z_{\Lambda}[J] =\int \mathcal D\phi \exp (-S_{\Lambda}[\phi,J]) =\int
+\mathcal D\phi \, \exp \left[ -\frac{1}{2} \int \frac{d^d p}{(2\pi)^d}
+\left(\phi(p)\phi(-p) (p^2 + m^2) K_\Lambda(p^2)^{-1} + J(p)
+\phi(-p)\right) - S_{int,\Lambda} [\phi] \right]
+\]</span></p>
+<p>where <span class="math inline">\(S_{int,\Lambda}[\phi]\)</span> is
+the interaction term that depends on the cutoff scale <span
+class="math inline">\(\Lambda\)</span>, <span
+class="math inline">\(K_\Lambda(p^2)\)</span> is a soft cutoff function,
+i.e. it is <span class="math inline">\(1\)</span> for <span
+class="math inline">\(p^2 &lt; \Lambda^2\)</span> and smoothly approach
+<span class="math inline">\(0\)</span> for <span
+class="math inline">\(p^2 &gt; \Lambda^2\)</span>.</p>
+<p>Then we consider a small scale <span
+class="math inline">\(\Lambda_{R}\)</span>, which is the scale at which
+we want to integrate out the high-momentum modes.</p>
+<p>We want the probability functional shall not change under the
+perturbation of our scale <span class="math inline">\(\Lambda\)</span>,
+so the partition function can only change by multiple amount inrelevent
+to <span class="math inline">\(\phi\)</span> and only relevent to <span
+class="math inline">\(\Lambda\)</span>. <span class="math display">\[
+- \Lambda \frac{d}{d \Lambda} Z_{\Lambda}[J] = C_{\Lambda}
+Z_{\Lambda}[J]
+\]</span></p>
+<p>Calculate the LHS directly <span class="math display">\[
+\begin{align*}
+-\Lambda \frac{d}{d \Lambda} Z_{\Lambda}[J] &amp;= -\Lambda \int
+\mathcal D\phi \, \left[ \exp (-S_{\Lambda}[\phi,J]) \cdot
+\left(-\frac{dS_{\Lambda}[\phi,J]}{d\Lambda}\right) \right] \\
+&amp;= \int \mathcal D\phi \, \left( \Lambda
+\frac{dS_{\Lambda}[\phi,J]}{d\Lambda} \right) \exp
+(-S_{\Lambda}[\phi,J]) \\
+&amp;=\int \mathcal D\phi \, \left( \frac{1}{2}\int \frac{d^d
+p}{(2\pi)^d}  \phi(p) \phi(-p) (p^2 + m^2) \Lambda \frac{\partial
+K_\Lambda^{-1}(p^2)}{\partial \Lambda} + \Lambda \frac{\partial
+S_{int,\Lambda}[\phi]}{\partial \Lambda} \right) \exp
+(-S_{\Lambda}[\phi,J])\\
+&amp;=Z_{\Lambda}[J]\cdot\left\langle \frac{1}{2}\int \frac{d^d
+p}{(2\pi)^d} \phi(p) \phi(-p) (p^2 + m^2) \Lambda \frac{\partial
+K_\Lambda^{-1}(p^2)}{\partial \Lambda} + \Lambda \frac{\partial
+S_{int,\Lambda}[\phi]}{\partial \Lambda}  \right\rangle \bigg|_{J}
+\end{align*}
+\]</span></p>
+<p>So <span class="math display">\[
+- \Lambda \frac{1}{Z_{\Lambda}[J]}\frac{d}{d \Lambda}
+Z_{\Lambda}[J]=-\Lambda \frac{d \ln
+Z_{\Lambda}[J]}{d\Lambda}=C_{\Lambda} = \left\langle \frac{1}{2}\int
+\frac{d^d p}{(2\pi)^d}\phi(p) \phi(-p) (p^2 + m^2) \Lambda
+\frac{\partial K_\Lambda^{-1}(p^2)}{\partial \Lambda} + \Lambda
+\frac{\partial S_{int,\Lambda}[\phi]}{\partial \Lambda}  \right\rangle
+\bigg|_{J}
+\]</span></p>
+<p>By the arbitrarity of <span class="math inline">\(J\)</span>, <span
+class="math display">\[
+\frac{1}{2}\int \frac{d^d p}{(2\pi)^d} \left( \phi(p) \phi(-p) (p^2 +
+m^2) \Lambda \frac{\partial K_\Lambda^{-1}(p^2)}{\partial
+\Lambda}\right) + \Lambda \frac{\partial S_{int,\Lambda}[\phi]}{\partial
+\Lambda}  = C_{\Lambda}
+\]</span> And the standard form is: <span class="math display">\[
+\Lambda \frac{\partial S_{int,\Lambda}}{\partial\Lambda} =
+-\frac{dS_{int}}{d\Lambda/\Lambda} = \frac{1}{2} \int
+\frac{d^dp}{(2\pi)^d} \dot{C}_{\Lambda}(p^2) \left[ \frac{\delta^2
+S_{int}}{\delta\phi(p)\delta\phi(-p)} - \frac{\delta S_{int}}{\delta
+\phi(p)} \frac{\delta S_{int}}{\delta \phi(-p)} \right]
+\]</span></p>
+<p>To make it match the form of the RHS, we should adjust the coupling
+constants in the interaction term <span
+class="math inline">\(S_{int,\Lambda}[\phi]\)</span> accordingly.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Physics/" class="category-chain-item">Physics</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Optimal-Transport/" class="print-no-link">#Optimal Transport</a>
+      
+        <a href="/tags/Renormalization-Group/" class="print-no-link">#Renormalization Group</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Renormalization Group Flow as Optimal Transport</div>
+      <div>https://notdesigned.github.io/2025/08/21/Renormalization-Group-Flow-as-Optimal-Transport/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Luocheng Liang</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>August 21, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - Share-alike">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/08/25/Variational-Calculus-in-VAE/" title="Variational Calculus in VAE">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Variational Calculus in VAE</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/08/09/Flow-Matching/" title="Flow Matching">
+                        <span class="hidden-mobile">Flow Matching</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"Ov23lisUTr0Y3YpBngo1","clientSecret":"4068f2efc1d2d6015f3c8089a4e0ad4c1aeb8ed2","repo":"gitalkcomment","owner":"NotDesigned","admin":["NotDesigned"],"language":"en","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://autumn-recipe-17e3.theadscn.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'd821fc93fbb044dc5d76f189795529f3'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

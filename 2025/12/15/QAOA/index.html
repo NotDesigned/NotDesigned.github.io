@@ -1,0 +1,965 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Luocheng Liang">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Quantum Approximate Optimization Algorithm (QAOA) Problem Setting Let \(z&#x3D;z_1 z_2 \ldots z_n\) be a string of \(n\) bits, where each bit \(z_i \in \{0, 1\}\). We define a cost function \(C(z)\) that a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QAOA">
+<meta property="og:url" content="https://notdesigned.github.io/2025/12/15/QAOA/index.html">
+<meta property="og:site_name" content="Adscn&#39;s Blog">
+<meta property="og:description" content="Quantum Approximate Optimization Algorithm (QAOA) Problem Setting Let \(z&#x3D;z_1 z_2 \ldots z_n\) be a string of \(n\) bits, where each bit \(z_i \in \{0, 1\}\). We define a cost function \(C(z)\) that a">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-12-15T15:42:28.000Z">
+<meta property="article:modified_time" content="2026-02-26T12:57:24.804Z">
+<meta property="article:author" content="Luocheng Liang">
+<meta property="article:tag" content="Optimization">
+<meta property="article:tag" content="QAOA">
+<meta property="article:tag" content="Quantum Computing">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>QAOA - Adscn&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"notdesigned.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Adscn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Blog</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="QAOA"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-12-15 15:42" pubdate>
+          December 15, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          797 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          7 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">QAOA</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="quantum-approximate-optimization-algorithm-qaoa">Quantum
+Approximate Optimization Algorithm (QAOA)</h1>
+<h2 id="problem-setting">Problem Setting</h2>
+<p>Let <span class="math inline">\(z=z_1 z_2 \ldots z_n\)</span> be a
+string of <span class="math inline">\(n\)</span> bits, where each bit
+<span class="math inline">\(z_i \in \{0, 1\}\)</span>. We define a cost
+function <span class="math inline">\(C(z)\)</span> that assigns a real
+value to each bit string. The goal is to find the bit string <span
+class="math inline">\(z^*\)</span> that maximizes the cost function:
+<span class="math display">\[
+z^* = \arg\max_{z \in \{0,1\}^n} C(z)=\arg\max_{z \in \{0,1\}^n}
+\sum_{\alpha} C_{\alpha}(z)
+\]</span> where <span class="math inline">\(C_{\alpha}(z)\)</span> are
+indicator functions <span class="math inline">\(\mathbf{1}_{\text{clause
+} \alpha \text{ is satisfied by } z}\)</span>.</p>
+<h2 id="hamiltonian-representation">Hamiltonian Representation</h2>
+<p>We can represent the cost function as a Hamiltonian operator acting
+on a quantum state. The Hamiltonian <span
+class="math inline">\(H_C\)</span> corresponding to the cost function
+<span class="math inline">\(C(z)\)</span> is given by: <span
+class="math display">\[
+H_C = \sum_{\alpha} H_{C_{\alpha}}
+\]</span> where each <span class="math inline">\(H_{C_{\alpha}}\)</span>
+is a diagonal operator in the computational basis defined as: <span
+class="math display">\[
+H_{C_{\alpha}} \ket{z}= C_{\alpha}(z) \ket{z}
+\]</span> Each <span class="math inline">\(H_{C_{\alpha}}\)</span> is
+Hermitian, so is <span class="math inline">\(H_C\)</span> and <span
+class="math inline">\(H_C \ket{z} = C(z) \ket{z}\)</span>.</p>
+<p>We now seek to find the maximum eigenvalue <span
+class="math inline">\(\lambda^*\)</span> of <span
+class="math inline">\(H_C\)</span> and the corresponding eigenstate
+<span class="math inline">\(\ket{z^*}\)</span>.</p>
+<h2 id="what-we-can-learn-from-score-based-model-sbm">What we can learn
+from Score Based Model (SBM)</h2>
+<p>In EBM, we define a probability distribution via the energy function
+(Hamiltonian):</p>
+<p><span class="math display">\[
+p(z) = \frac{\exp(-E(z))}{Z}, Z = \int \exp(-E(z)) dz
+\]</span></p>
+<p>consider a parameterized model <span class="math inline">\(p(z;
+\theta)\)</span>, we can learn the parameters <span
+class="math inline">\(\theta\)</span> by learning the score function
+<span class="math inline">\(\nabla_z \log p(z; \theta)\)</span>.</p>
+<p><span class="math display">\[
+\boxed{
+\mathcal{L}_{\mathrm{SM}}(\theta) = \mathbb{E}_{p_{data}(x)}
+\left[\mathrm{Tr}(\nabla_x s_{\theta}(x)) + \frac{1}{2} \| s_{\theta}(x)
+\|_2^2\right]
+}
+\]</span> where <span class="math inline">\(s_{\theta}(x)= \nabla_x \log
+p(x; \theta)\)</span> is the score function parameterized by <span
+class="math inline">\(\theta\)</span>.</p>
+<hr />
+<p>In QAOA’s scenario, the energy function is fixed and we want to find
+the state <span class="math inline">\(\ket{z^*}\)</span> that maximizes
+the energy.</p>
+<p>Let’s define a quantum state <span
+class="math inline">\(\ket{\psi(\theta)} = U(\theta) \ket{0}\)</span>
+parameterized by <span class="math inline">\(\theta\)</span>.</p>
+<p>We can measure: <span class="math display">\[
+\langle H_C \rangle_{\theta} = \bra{\psi(\theta)} H_C \ket{\psi(\theta)}
+\]</span> We want to maximize: <span class="math display">\[
+J(\theta) = \langle \psi(\theta) | H_C | \psi(\theta) \rangle = \sum_{z
+\in \{0,1\}^n} P(z|\theta) C(z)
+\]</span> where <span class="math inline">\(P(z|\theta) = |\langle z |
+\psi(\theta) \rangle|^2\)</span> is the probability of measuring the
+state <span class="math inline">\(\ket{z}\)</span> given the parameter
+<span class="math inline">\(\theta\)</span>.</p>
+<p>In the first glance, we try to estimiate the log gradient: <span
+class="math display">\[
+\begin{aligned}
+\nabla_\theta J(\theta) &amp;= \nabla_\theta \sum_{z} P(z|\theta) C(z)
+\\
+&amp;= \sum_{z} C(z) \nabla_\theta P(z|\theta) \\
+&amp;= \sum_{z} C(z) P(z|\theta) \nabla_\theta \log P(z|\theta) \\
+&amp;= \mathbb{E}_{z \sim P(z|\theta)} \left[ C(z) \nabla_\theta \log
+P(z|\theta) \right]
+\end{aligned}
+\]</span> This is similar to the REINFORCE learning gradient method with
+reward <span class="math inline">\(C(z)\)</span>. However, this gradient
+is not calculable directly on quantum computer since <span
+class="math inline">\(\log P(z|\theta)\)</span> cannot be computed
+efficiently. (<span class="math inline">\(2^n\)</span> terms). And it
+does not use the result of measure <span
+class="math inline">\(J(\theta)\)</span> directly.</p>
+<p>On the other hand, if we sampling through <span
+class="math display">\[
+\lim_{\epsilon \to 0} \frac{J(\theta + \epsilon) - J(\theta)}{\epsilon}
+= \nabla_\theta J(\theta)
+\]</span> This suffers from high variance issue. The high variance is
+due to the high dimensionality of the output space.</p>
+<h2 id="parameter-shift-rule">Parameter Shift Rule</h2>
+<p>Remember that in Denoising Score Matching, we can avoid calculating
+the score function directly by introducing noise and learning to
+denoise, then the score function can be computed directly. And under
+Gaussian noise, the score function has a closed form.</p>
+<p>This inspires us to introduce a particular parameterization of <span
+class="math inline">\(U(\theta)\)</span> in QAOA such that we can
+compute the gradient of <span class="math inline">\(J(\theta)\)</span>
+directly.</p>
+<p>For <span class="math inline">\(U(\theta) = e^{-i \frac{\theta}{2}
+G}\)</span>, where <span class="math inline">\(G\)</span> is a Hermitian
+operator (generator), we have: <span class="math display">\[
+\frac{d}{d\theta} U(\theta) = -\frac{i}{2} G U(\theta) = - \frac{i}{2}
+U(\theta) G
+\]</span> this uses the property that <span
+class="math inline">\(G\)</span> commutes with <span
+class="math inline">\(U(\theta)\)</span>.</p>
+<p>Thus, <span class="math display">\[
+\begin{aligned}
+\nabla_\theta J(\theta) &amp;= \nabla_\theta \langle \psi_0 |
+U^\dagger(\theta) H_C U(\theta) | \psi_0 \rangle \\
+= &amp; \langle \psi_0 | \left( \frac{d}{d\theta} U^\dagger(\theta)
+\right) H_C U(\theta) | \psi_0 \rangle + \langle \psi_0 |
+U^\dagger(\theta) H_C \left( \frac{d}{d\theta} U(\theta) \right) |
+\psi_0 \rangle \\
+= &amp; \langle \psi_0 | \left( \frac{i}{2} U^\dagger(\theta) G \right)
+H_C U(\theta) | \psi_0 \rangle + \langle \psi_0 | U^\dagger(\theta) H_C
+\left( -\frac{i}{2} G U(\theta) \right) | \psi_0 \rangle \\
+= &amp; \frac{i}{2} \langle \psi(\theta) | [G, H_C] | \psi(\theta)
+\rangle
+\end{aligned}
+\]</span> where <span class="math inline">\([G, H_C] = G H_C - H_C
+G\)</span> is the commutator of <span class="math inline">\(G\)</span>
+and <span class="math inline">\(H_C\)</span>, <span
+class="math inline">\(\psi(\theta) = U(\theta)
+\ket{\psi_0}\)</span>.</p>
+<p>Now, note that <span class="math display">\[
+\begin{aligned}
+H_+ &amp;= (e^{-i \frac{\pi}{4} G})^\dagger H_C (e^{-i \frac{\pi}{4} G})
+= e^{i \frac{\pi}{4} G} H_C e^{-i \frac{\pi}{4} G}\\
+&amp;= \frac{1}{2} (I + iG) H_C (I - iG) \\
+&amp;= \frac{1}{2} (H_C - i H_C G + i G H_C + G H_C G)\\
+H_- &amp;= (e^{i \frac{\pi}{4} G})^\dagger H_C (e^{i \frac{\pi}{4} G}) =
+e^{-i \frac{\pi}{4} G} H_C e^{i \frac{\pi}{4} G}\\
+&amp;= \frac{1}{2} (H_C + i H_C G - i G H_C + G H_C G)
+\end{aligned}
+\]</span> Thus, <span class="math display">\[
+H_+ - H_- = i (G H_C - H_C G) = i [G, H_C]
+\]</span> Therefore, we have: <span class="math display">\[
+\nabla_\theta J(\theta) = \frac{1}{2} \langle \psi(\theta) | (H_+ - H_-)
+| \psi(\theta) \rangle
+= \frac{1}{2} \left( J(\theta + \frac{\pi}{2}) - J(\theta -
+\frac{\pi}{2}) \right)
+\]</span> This means we can compute the gradient of <span
+class="math inline">\(J(\theta)\)</span> by evaluating <span
+class="math inline">\(J\)</span> at two shifted parameter values,
+avoiding the need to compute the score function directly.</p>
+<h2 id="parameterized-quantum-circuit-in-qaoa">Parameterized Quantum
+Circuit in QAOA</h2>
+<p>In QAOA, the parameterized quantum circuit is constructed using two
+types of unitary operators: the cost unitary <span
+class="math inline">\(U_C(\gamma)\)</span> and the mixing unitary <span
+class="math inline">\(U_B(\beta)\)</span>. The overall circuit for <span
+class="math inline">\(p\)</span> layers is given by: <span
+class="math display">\[
+U(\boldsymbol{\gamma}, \boldsymbol{\beta}) = U_B(\beta_p) U_C(\gamma_p)
+\ldots U_B(\beta_1) U_C(\gamma_1)
+\]</span></p>
+<p>The cost unitary is defined as: <span class="math display">\[
+U_C(\gamma) = e^{-i \gamma H_C}
+\]</span> and the mixing unitary is defined as: <span
+class="math display">\[
+U_B(\beta) = e^{-i \beta H_B}
+\]</span> where <span class="math inline">\(H_B = \sum_{i=1}^n
+X_i\)</span> with <span class="math inline">\(X_i = I^{\otimes (i-1)}
+\otimes X \otimes I^{\otimes (n-i)}\)</span> being the Pauli-X operator
+acting on qubit <span class="math inline">\(i\)</span>.</p>
+<p>The initial state is typically chosen as the uniform superposition
+state: <span class="math display">\[
+\ket{\psi_0} = \frac{1}{\sqrt{2^n}} \sum_{z \in \{0,1\}^n} \ket{z}
+\]</span> which is the ground state of the mixing Hamiltonian <span
+class="math inline">\(H_B\)</span>.</p>
+<p>Reason (Can be omitted, I don’t know very well about this quantum
+physics part):</p>
+<blockquote>
+<p>The Adiabatic Theorem suggests that if we vary the parameters <span
+class="math inline">\(\boldsymbol{\gamma}\)</span> and <span
+class="math inline">\(\boldsymbol{\beta}\)</span> slowly enough, the
+system will remain in its ground state, allowing us to approximate the
+optimal solution to the original combinatorial optimization problem.
+<span class="math display">\[
+H(t) = (1 - \frac{t}{T}) H_B + \frac{t}{T} H_C
+\]</span> The time evolution operator can be approximated using the
+Trotter-Suzuki decomposition: <span class="math display">\[
+e^{-i (A+B) t} \approx \left( e^{-i A \frac{t}{n}} e^{-i B \frac{t}{n}}
+\right)^n
+\]</span></p>
+</blockquote>
+<h2 id="algorithm-summary">Algorithm Summary</h2>
+<ol type="1">
+<li>Initialize the quantum state <span
+class="math inline">\(\ket{\psi_0}\)</span> as the uniform superposition
+state.</li>
+<li>Choose the number of layers <span class="math inline">\(p\)</span>
+and initialize the parameters <span
+class="math inline">\(\boldsymbol{\gamma},
+\boldsymbol{\beta}\)</span>.</li>
+<li>Construct the parameterized quantum circuit <span
+class="math inline">\(U(\boldsymbol{\gamma},
+\boldsymbol{\beta})\)</span>.</li>
+<li>Measure the expectation value <span
+class="math inline">\(J(\boldsymbol{\gamma}, \boldsymbol{\beta}) =
+\langle \psi(\boldsymbol{\gamma}, \boldsymbol{\beta}) | H_C |
+\psi(\boldsymbol{\gamma}, \boldsymbol{\beta}) \rangle\)</span>.</li>
+<li>Use the parameter shift rule to compute the gradients <span
+class="math inline">\(\nabla_{\boldsymbol{\gamma}} J\)</span> and <span
+class="math inline">\(\nabla_{\boldsymbol{\beta}} J\)</span>.</li>
+<li>Update the parameters <span
+class="math inline">\(\boldsymbol{\gamma}, \boldsymbol{\beta}\)</span>
+using a classical optimization algorithm (e.g., gradient descent).</li>
+<li>Repeat steps 3-6 until convergence or a stopping criterion is
+met.</li>
+<li>Measure the final state to obtain a bit string <span
+class="math inline">\(z\)</span> that approximates the optimal solution
+to the original problem.</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Machine-Learning/" class="category-chain-item">Machine Learning</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Optimization/" class="print-no-link">#Optimization</a>
+      
+        <a href="/tags/Quantum-Computing/" class="print-no-link">#Quantum Computing</a>
+      
+        <a href="/tags/QAOA/" class="print-no-link">#QAOA</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>QAOA</div>
+      <div>https://notdesigned.github.io/2025/12/15/QAOA/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Luocheng Liang</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>December 15, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - Share-alike">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/01/01/%E9%9A%8F%E6%9C%BA%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%EF%BC%88SDE%EF%BC%89/" title="随机微分方程（SDE）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">随机微分方程（SDE）</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/11/03/Reading-notes-of-The-Principle-of-Diffusion-Models/" title="Reading notes of The Principle of Diffusion Models">
+                        <span class="hidden-mobile">Reading notes of The Principle of Diffusion Models</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"Ov23lisUTr0Y3YpBngo1","clientSecret":"4068f2efc1d2d6015f3c8089a4e0ad4c1aeb8ed2","repo":"gitalkcomment","owner":"NotDesigned","admin":["NotDesigned"],"language":"en","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://autumn-recipe-17e3.theadscn.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '3d5d27e631bf634383862042e871c029'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
